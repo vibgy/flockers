@@ -38,7 +38,7 @@ enable :sessions
 
 get '/main' do
 @he=Event.all
-haml:main6
+haml:main
 end
 
 post '/insert' do
