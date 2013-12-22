@@ -1,0 +1,160 @@
+!!!
+%html{:lang => "en"}
+  %head
+    %meta{:charset => "utf-8"}
+      %meta{:content => "IE=edge", "http-equiv" => "X-UA-Compatible"}
+        %meta{:content => "width=device-width, initial-scale=1.0", :name => "viewport"}
+          %meta{:content => "", :name => "description"}
+            %meta{:content => "", :name => "author"}
+              %link{:href => "/docs-assets/ico/favicon.png", :rel => "shortcut icon"}
+                %title Event Planner
+                %link{:href => "/dist/css/bootstrap.css", :rel => "stylesheet"}
+                  / Custom styles for this template
+                  %link{:href => "jumbotron.css", :rel => "stylesheet"}
+                    / Just for debugging purposes. Don't actually copy this line!
+                    /[if lt IE 9] <script src="/docs-assets/js/ie8-responsive-file-warning.js"></script>
+                    / HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries
+                    /[if lt IE 9]
+                      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+                      <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+                    %script{:src => "/login.js"}  
+                    :javascript
+                      function demoVisibility()
+                      {
+                      document.getElementById("show1").style.visibility="hidden";
+                      demoVisibility2();
+                      }
+                      function demoVisibility2()
+                      {
+                      document.getElementById("b1").style.visibility="hidden";
+                      }
+  %body{:onload => "demoVisibility()"}
+    %div{:role => "navigation", :style => "background:#000000"}
+      .container
+        .navbar-header
+          %button.navbar-toggle{"data-target" => ".navbar-collapse", "data-toggle" => "collapse", :type => "button"}
+            %span.sr-only Toggle navigation
+            %span.icon-bar
+          %a.navbar-brand{:href => "#"}
+            %h4 Event Planner
+        .navbar-collapse.collapse
+          %form.navbar-form.navbar-right{:role => "form"}
+            %button#show12.btn.btn-primary.btn-lg{"data-target" => "#myModal", "data-toggle" => "modal"} Sign In
+            / Modal
+            #myModal.modal.fade{"aria-hidden" => "true", "aria-labelledby" => "myModalLabel", :role => "dialog", :tabindex => "-1"}
+              .modal-dialog
+                .modal-content
+                  .modal-header
+                    %button.close{"aria-hidden" => "true", "data-dismiss" => "modal", :type => "button"} &times;
+                    %h4#myModalLabel.modal-title Sign In
+                  .modal-body
+                    %form.form-signin
+                      %div{:style => "padding:10px;"}
+                        Username:
+                        %input.input-block-level{:name => "uname", :placeholder => "Email address", :style => "width:300px;padding:10px;margin:0;font-family: inherit;font-size: 100%;cursor: pointer;-webkit-appearance: button;line-height: normal", :type => "text"}
+                      %div{:style => "padding:10px;"}
+                        Password:&nbsp&nbsp
+                        %input.input-block-level{:name => "pwd", :placeholder => "Password", :style => "width:300px;padding:10px;margin: 0;font-family: inherit; font-size: 100%;cursor: pointer;-webkit-appearance: button;line-height: normal", :type => "password"}
+                          %br
+                      %div{:style => "padding:10px;"}
+                        %label.checkbox
+                          %input{:type => "checkbox", :value => "remember-me"}
+                            Remember me
+                        %button#show.btn.btn-large.btn-primary{:onclick => " return insert12(uname.value,pwd.value)", :type => "submit"} Sign in              
+                .modal-footer
+                  Not Yet Registered
+                  %button.btn.btn-default{"data-dismiss" => "modal", :onclick => "flock()", :type => "button"} Register
+              / /.modal-content
+            / /.modal-dialog
+        / /.modal
+      / /.navbar-collapse
+    / Main jumbotron for a primary marketing message or call to action
+    .jumbotron
+      .container
+        %h1 College Flockers
+        %p
+          %button#b1.btn.btn-primary.btn-lg{"data-target" => "#myModal1", "data-toggle" => "modal"}Create Event
+    #flocker
+      .container
+        / Example row of columns
+        .row
+          - unless @he.empty?
+            - @he.each do |he|
+              .col-md-4
+                %h2
+                  %a{:href => " "}= he.ename
+                %label Date : 
+                %label{}= he.date
+                %br
+                %label Time : 
+                %label{}= he.time
+                %br
+                %label Place: 
+                %label{}= he.place
+                %br
+                %label Fees : 
+                %label{}= he.fees
+                %br
+                %label Prize: 
+                %label{}= he.prize
+                %br
+                %label Description: 
+                %label{}= he.description
+                %br
+                %a.btn.btn-default{:href => "#", :role => "button"} Participate
+          %div
+            / Modal
+            #myModal1.modal.fade{"aria-hidden" => "true", "aria-labelledby" => "myModalLabel", :role => "dialog", :tabindex => "-1"}
+              .modal-dialog
+                .modal-content
+                  .modal-header
+                    %button.close{"aria-hidden" => "true", "data-dismiss" => "modal", :type => "button"} &times;
+                    %h4#myModalLabel.modal-title Create Your Own Event
+                  .modal-body
+                    %form.form-signin
+                      %div{:style => "padding:10px;"}
+                        %label Event Name:
+                        %input.input-block-level{:placeholder => "Event Name", :style => "width:300px;padding:10px;margin:0;font-family: inherit;font-size: 100%;cursor: pointer;-webkit-appearance: button;line-height: normal", :type => "email",:name =>"eventname"}
+                      %div{:style => "padding:10px;"}
+                        %label Date:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        %input.input-block-level{:placeholder => "Date", :style => "width:300px;padding:10px;margin:0;font-family: inherit;font-size: 100%;cursor: pointer;-webkit-appearance: button;line-height: normal", :type => "date",:name =>"date"}
+                      %div{:style => "padding:10px;"}
+                        %label Time:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        %input.input-block-level{:placeholder => "Time", :style => "width:300px;padding:10px;margin:0;font-family: inherit;font-size: 100%;cursor: pointer;-webkit-appearance: button;line-height: normal", :type => "time",:name =>"time"}
+                      %div{:style => "padding:10px;"}
+                        %label Fees: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        %input.input-block-level{:placeholder => "Fees", :style => "width:300px;padding:10px;margin:0;font-family: inherit;font-size: 100%;cursor: pointer;-webkit-appearance: button;line-height: normal", :type => "text",:name =>"fee"}
+                      %div{:style => "padding:10px;"}
+                        %label Prize:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        %input.input-block-level{:placeholder => "Prize", :style => "width:300px;padding:10px;margin:0;font-family: inherit;font-size: 100%;cursor: pointer;-webkit-appearance: button;line-height: normal", :type => "text",:name =>"prize"}
+                      %div{:style => "padding:10px;"}
+                        %label Place:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        %input.input-block-level{:placeholder => "Place", :style => "width:300px;padding:10px;margin:0;font-family: inherit;font-size: 100%;cursor: pointer;-webkit-appearance: button;line-height: normal", :type => "text",:name =>"place"}
+                      %div{:style => "padding:10px;"}
+                        %label Description: &nbsp;
+                        %input.input-block-level{:placeholder => "Description", :style => "width:300px;padding:10px;margin:0;font-family: inherit;font-size: 100%;cursor: pointer;-webkit-appearance: button;line-height: normal", :type => "text",:name =>"description"}
+                        .modal-footer
+                        %button.btn.btn-default{"data-dismiss" => "modal", :type => "button"} Close
+                        %button.btn.btn-primary{:type => "button",:onclick => "return insert1(eventname.value,date.value,time.value,fee.value,prize.value,place.value,description.value)"} Create Event
+                / /.modal-content
+              / /.modal-dialog
+            / /.modal
+          #show1.container
+            / Example row of columns
+            %hr
+              %footer
+                %p &copy; Company 2013
+          / /container
+          /
+            Bootstrap core JavaScript
+            \==================================================
+          / Placed at the end of the document so the pages load faster
+          %script{:src => "https://code.jquery.com/jquery-1.10.2.min.js"}
+          %script{:src => "/dist/js/bootstrap.min.js"}
+          %script{:src => "/register1.js"}
+          :javascript
+                        
+          function flo()
+          {
+          document.getElementById("show1").innerHTML="hello";
+          }
