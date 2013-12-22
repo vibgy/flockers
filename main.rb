@@ -6,7 +6,7 @@ require 'haml'
 
 DataMapper::Logger.new($stdout, :debug)
 
-DataMapper.setup(:default, "mysql://root:astha@localhost/me")
+DataMapper.setup(:default, "mysql://root:pooja@localhost/flockers")
 
 DataMapper::Property.auto_validation(false)
 DataMapper::Property.required(false)
