@@ -4,6 +4,7 @@ require 'dm-sqlite-adapter'
 require 'sinatra'
 require 'haml'
 require 'json'
+require 'pry-debugger'
 
 DataMapper::Logger.new($stdout, :debug)
 
@@ -38,7 +39,7 @@ DataMapper.finalize
 enable :sessions
 
 get '/home' do
-haml:home
+haml :home
 end
 
 post '/login' do 
@@ -49,4 +50,15 @@ post '/login' do
     else
     @he.to_json;
     end
+end
+
+get '/loggedIn' do
+  @user = session['user'];
+  haml :profile
+end
+
+post '/createEvent' do
+  event = params[:event];
+  status = Event.create(:ename => event[:ename],:date => event[:date],:time => event[:time],:place => event[:place],:organizer => session['user'],:fees => event[:fees],:prize => event[:prize],:description =>event[:description]);
+ return status;
 end

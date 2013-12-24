@@ -8,9 +8,13 @@ function login(user,pas)
           {
              data = JSON.parse(data);
              if(data.status == 'not success')
-             document.getElementById("InvalidUser").style.visibility="visible";
+             {
+                 document.getElementById("InvalidUser").style.visibility="visible";
+             }
              else
-             document.getElementById("Welcome").style.visibility="visible";
+             {
+                 $.get('/loggedIn');
+             }
 	  }
           );  
     return false;
