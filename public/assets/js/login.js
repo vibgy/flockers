@@ -4,6 +4,8 @@ function login(user,pas)
           {user_name : user, pass : pas},
           function(data)
           {
+             document.getElementById("InvalidUser").style.visibility="hidden";
+             document.getElementById("Welcome").style.visibility="hidden";
              data = JSON.parse(data);
              if(data.status == 'not success')
              document.getElementById("InvalidUser").style.visibility="visible";

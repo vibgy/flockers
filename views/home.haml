@@ -11,12 +11,32 @@
       %p#Welcome{:style => 'visibility : hidden'} Welcome User
       %p#InvalidUser{:style => 'visibility : hidden'}Incorrect Username And Password
       %p#SuccessfulSignup{:style => 'visibility : hidden'}You have signed up successfully
+      %div#PublicEvent.row
+        - unless @he.empty?
+          - @he.each do |he|
+            %div.col-md-4
+              %h2
+                %a{:href => ""}= he.ename
+              %label Date:
+              %label{}= he.date
+              %label Time:
+              %label{}= he.time
+              %label Place: 
+              %label{}= he.place
+              %label Fees : 
+              %label{}= he.fees
+              %label Prize: 
+              %label{}= he.prize
+              %label Description: 
+              %label{}= he.description
+              %br
+              %a.btn.btn-default{:href => "", :role => "button"} Participate
       #signInModal.modal.fade.hide
         .modal-header
           %button.close{"aria-hidden" => "true", "data-dismiss" => "modal", :type => "button"} &times;
           %h4.modal-title Sign In
         .modal-body
-          %form.form-signin                    
+          %form                    
             %label Username
             %input{:name => "uname", :placeholder => "Email address",:type => "text"}
                       
@@ -34,7 +54,7 @@
           %button.close{"aria-hidden" => "true", "data-dismiss" => "modal", :type => "button"} &times;
           %h4.modal-title Sign Up
         .modal-body
-          %form.form-signin                    
+          %form                  
             %label Username
             %input{:name => "uname", :placeholder => "Email address",:type => "text"}
                       

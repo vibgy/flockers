@@ -38,7 +38,8 @@ DataMapper.finalize
 enable :sessions
 
 get '/home' do
-haml:home
+    @he=Event.all
+    haml:home
 end
 
 post '/login' do 
