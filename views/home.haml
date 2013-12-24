@@ -1,0 +1,34 @@
+!!!
+%html{:lang => "en"}
+  %head
+    %title Event Planner
+    %link{:href => "../assets/css/bootstrap.css", :rel => "stylesheet"}
+  %body
+    .container
+      %h1 Event Planner
+      %button.btn.btn-success.btn-lg{"data-target" => "#signInModal", "data-toggle" => "modal"} Sign In
+      %p#Welcome{:style => 'visibility : hidden'} Welcome User
+      %p#InvalidUser{:style => 'visibility : hidden'}Incorrect Username And Password
+      #signInModal.modal.fade.hide
+        .modal-header
+          %button.close{"aria-hidden" => "true", "data-dismiss" => "modal", :type => "button"} &times;
+          %h4.modal-title Sign In
+        .modal-body
+          %form.form-signin                    
+            %label Username
+            %input{:name => "uname", :placeholder => "Email address",:type => "text"}
+                      
+            %label Password
+            %input{:name => "pwd", :placeholder => "Password",:type => "password"}
+                          
+            %label.checkbox
+            %input{:type => "checkbox", :value => "remember-me"}
+            Remember me
+            %button#show.btn.btn-large.btn-primary{:'data-dismiss' => "modal",:onclick => " return login(uname.value,pwd.value)", :type => "submit"} Sign In              
+        .modal-footer
+          Not Yet Registered    
+    %script{:src => "../assets/js/login.js"}
+    %script{:src => "../assets/js/jquery.min.js"}
+    %script{:src => "../assets/js/bootstrap.min.js"} 
+    %script{:src => "../assets/js/register.js"} 
+

@@ -3,6 +3,7 @@ require 'data_mapper'
 require 'dm-sqlite-adapter'
 require 'sinatra'
 require 'haml'
+require 'json'
 
 DataMapper::Logger.new($stdout, :debug)
 
@@ -36,35 +37,16 @@ DataMapper.auto_upgrade!
 DataMapper.finalize
 enable :sessions
 
-get '/main' do
-@he=Event.all
-haml:main
+get '/home' do
+haml:home
 end
 
-post '/insert' do
-Account.create(:uname => params[:ffname],:password => params[:ppwd])
-end
-
-post '/login1' do 
+post '/login' do 
     @he =Account.first(:uname => params[:user_name], :password => params[:pass]); 
-    session['user']=@he.uname;
+    session['user']=params[:user_name];
+    if @he.nil?
+     return {:status => 'not success'}.to_json;
+    else
     @he.to_json;
-end
-
-post '/logout' do
-    session['user'] = ''
-end	
-post '/login12' do 
-    @he =Account.first(:uname => params[:user_name], :password => params[:pass]).uname;
-    session['user']=@he;
-    @he=Event.all(:organizer => session['user']);
-    @he.to_json;
-end
-
-post '/insrt' do
-Event.create(:ename => params[:eename],:date => params[:ddat],:time => params[:ttim],:place => params[:pplac],:organizer => session['user'],:fees => params[:ffees],:prize => params[:pprze],:description =>params[:ddescrption])
-end
-
-post '/check' do
-@check=Account.first[:uname => params[:uunme],:password => params[:ppass]]
+    end
 end
