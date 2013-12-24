@@ -62,6 +62,7 @@ post '/createEvent' do
   event = params[:event];
   status = Event.create(:ename => event[:ename],:date => event[:date],:time => event[:time],:place => event[:place],:organizer => session['user'],:fees => event[:fees],:prize => event[:prize],:description =>event[:description]);
  return status;
+end
 
 post '/signup' do
      Account.create(:uname => params[:user_name],:password => params[:pass])
