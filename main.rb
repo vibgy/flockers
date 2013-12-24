@@ -7,7 +7,7 @@ require 'json'
 
 DataMapper::Logger.new($stdout, :debug)
 
-DataMapper.setup(:default, "mysql://root:pooja@localhost/flockers")
+DataMapper.setup(:default, "mysql://root:astha@localhost/me")
 
 DataMapper::Property.auto_validation(false)
 DataMapper::Property.required(false)
@@ -49,4 +49,8 @@ post '/login' do
     else
     @he.to_json;
     end
+end
+
+post '/signup' do
+     Account.create(:uname => params[:user_name],:password => params[:pass])
 end
