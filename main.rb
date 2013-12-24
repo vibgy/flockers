@@ -8,7 +8,7 @@ require 'pry-debugger'
 
 DataMapper::Logger.new($stdout, :debug)
 
-DataMapper.setup(:default, "mysql://root:pooja@localhost/flockers")
+DataMapper.setup(:default, "mysql://root:astha@localhost/me")
 
 DataMapper::Property.auto_validation(false)
 DataMapper::Property.required(false)
@@ -39,7 +39,8 @@ DataMapper.finalize
 enable :sessions
 
 get '/home' do
-haml :home
+   @he=Event.all
+    haml:home
 end
 
 post '/login' do 
@@ -61,4 +62,7 @@ post '/createEvent' do
   event = params[:event];
   status = Event.create(:ename => event[:ename],:date => event[:date],:time => event[:time],:place => event[:place],:organizer => session['user'],:fees => event[:fees],:prize => event[:prize],:description =>event[:description]);
  return status;
+
+post '/signup' do
+     Account.create(:uname => params[:user_name],:password => params[:pass])
 end

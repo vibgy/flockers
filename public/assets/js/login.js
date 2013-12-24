@@ -1,11 +1,11 @@
 function login(user,pas)
 {
-    document.getElementById("InvalidUser").style.visibility="hidden";
-    document.getElementById("Welcome").style.visibility="hidden";
     $.post("/login",
           {user_name : user, pass : pas},
           function(data)
           {
+             document.getElementById("InvalidUser").style.visibility="hidden";
+             document.getElementById("Welcome").style.visibility="hidden";
              data = JSON.parse(data);
              if(data.status == 'not success')
              {
@@ -17,6 +17,24 @@ function login(user,pas)
              }
 	  }
           );  
+    return false;
+}
+function signup(user,pas,confirmpas)
+{
+    if(pas==confirmpas)
+    {
+    	$.post("/signup",
+    	      {user_name :user,pass :pas},
+    	      function(data)
+    	      {
+    	      document.getElementById("SuccessfulSignup").style.visibility="visible";
+    	      }
+    	      );
+    }
+    else
+    {
+    alert("Password does not match");
+    }
     return false;
 }
 
