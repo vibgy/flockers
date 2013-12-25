@@ -74,11 +74,8 @@ GEM
       tzinfo
     do_mysql (0.10.13-x86-mingw32)
       data_objects (= 0.10.13)
-    do_postgres (0.10.13)
-      data_objects (= 0.10.13)
     do_postgres (0.10.13-x86-mingw32)
       data_objects (= 0.10.13)
-    eventmachine (1.0.3)
     eventmachine (1.0.3-x86-mingw32)
     fastercsv (1.5.5)
     haml (4.0.4)
@@ -88,11 +85,8 @@ GEM
     json_pure (1.8.1)
     method_source (0.8.1)
     multi_json (1.8.2)
+    newrelic_rpm (3.5.5.38)
     pg (0.17.1-x86-mingw32)
-    pry (0.9.10)
-      coderay (~> 1.0.5)
-      method_source (~> 0.8)
-      slop (~> 3.3.1)
     pry (0.9.10-x86-mingw32)
       coderay (~> 1.0.5)
       method_source (~> 0.8)
@@ -143,6 +137,7 @@ DEPENDENCIES
   dm-zone-types
   haml
   json
+  newrelic_rpm
   pg
   pry
   pry-debugger

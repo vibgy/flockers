@@ -3,7 +3,7 @@ require 'data_mapper'
 require 'sinatra'
 require 'haml'
 require 'json'
-require 'pry-debugger'
+#require 'pry-debugger'
 
 enable :sessions
 
