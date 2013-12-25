@@ -7,6 +7,10 @@ require 'json'
 
 enable :sessions
 
+get '/' do
+"Hello World"
+end
+
 get '/home' do
    @he=Event.all
     haml:home
