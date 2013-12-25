@@ -10,6 +10,7 @@ gem 'thin'
 gem 'dalli'
 gem 'dm-zone-types'
 gem 'dm-mysql-adapter'
+gem 'newrelic_rpm'
 
 group :development, :test do
   gem 'pry-debugger'
