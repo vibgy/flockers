@@ -1,6 +1,5 @@
 require 'rubygems'
 require 'data_mapper'
-require 'dm-sqlite-adapter'
 require 'sinatra'
 require 'haml'
 require 'json'
@@ -8,7 +7,12 @@ require 'pry-debugger'
 
 DataMapper::Logger.new($stdout, :debug)
 
-DataMapper.setup(:default, "mysql://root:astha@localhost/me")
+DataMapper.setup :default,
+                 :adapter => "mysql",
+                 :host => "127.0.0.1",
+                 :database => 'cf_db_test',
+                 :username => "root",
+                 :password => ""
 
 DataMapper::Property.auto_validation(false)
 DataMapper::Property.required(false)
