@@ -5,21 +5,6 @@ require 'haml'
 require 'json'
 require 'pry-debugger'
 
-DataMapper::Logger.new($stdout, :debug)
-
-DataMapper.setup :default,
-                 :adapter => "mysql",
-                 :host => "127.0.0.1",
-                 :database => 'cf_db_test',
-                 :username => "root",
-                 :password => ""
-
-DataMapper::Property.auto_validation(false)
-DataMapper::Property.required(false)
-
-DataMapper.auto_upgrade!
-
-DataMapper.finalize
 enable :sessions
 
 get '/home' do

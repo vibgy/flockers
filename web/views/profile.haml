@@ -1,0 +1,47 @@
+!!!
+%html{:lang => "en"}
+  %head
+    %title Event Planner
+    %link{:href => "../assets/css/bootstrap.css", :rel => "stylesheet"}
+    %link{:href => "../assets/css/bootstrap-timepicker.css", :rel => "stylesheet"}
+    %link{:href => "../assets/css/datepicker.css", :rel => "stylesheet"}
+  %body
+    .container
+      %h1 Event Planner
+      %input.hide{:id =>"current_user", :value => "#{@user}"}
+      %p.alert.alert-info{:"data-bind" => "visible: message, text: message"}
+      %button.btn-success.btn-large{"data-target" => "#createEventModal", "data-toggle" => "modal" , :"data-bind" => "click : createEvent"} Create Event
+      
+      #createEventModal.modal.fade.hide
+        .modal-header
+          %button.close{"aria-hidden" => "true", "data-dismiss" => "modal", :type => "button"} &times;
+          %h4.modal-title Create Event
+        .modal-body
+          %form                   
+            %label Event Name
+            %input{:placeholder => "Enter Event Name", :"data-bind" => "value: event().ename", :required => "", :type => "text"}
+                      
+            %label Date
+            %input{:"data-bind" => "value: event().date", :required => "",:type => 'date', :placeholder => "Click to Pick"}  
+
+            %label Time
+            %input{:"data-bind" => "value: event().time", :required => "", :type => "text"}
+
+            %label Fees
+            %input{:"data-bind" => "value: event().fees", :type => "text"}
+
+            %label Prize
+            %input{:"data-bind" => "value: event().prize", :type => "text"}
+
+            %label Place
+            %input{:"data-bind" => "value: event().place", :required => "", :type => "text"}
+
+            %label Description
+            %textarea{:"data-bind" => "value: event().description"}
+      
+        .modal-footer
+          %button.btn-large{:'data-dismiss' => "modal",:"data-bind" => "click : createEventHelper"} Create 
+    %script{:src => "../assets/js/knockout-2.2.1.js"} 
+    %script{:src => "../assets/js/jquery.min.js"}
+    %script{:src => "../assets/js/bootstrap.min.js"}  
+    %script{:src => "../assets/js/profile.js"}
