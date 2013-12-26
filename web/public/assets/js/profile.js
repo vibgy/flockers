@@ -30,6 +30,7 @@ function EventViewModel() {
     this.event = ko.observable({});
     this.createEventState = false;
     this.message = ko.observable('');
+    this.myEvents = ko.observableArray();
 
     this.createEvent = function()
     {
@@ -42,14 +43,14 @@ function EventViewModel() {
     {
         var self = this;
         $.post('/createEvent',
-               { event : this.event()},
+               {event : this.event()},
                 function(data){
                     self.message("Event Created Successfully");
+                    self.myEvents.push(self.event());
                 }
                 );
     };
 
-    this.myEvents = ko.observableArray();
     this.showMyEvents = function(){
         var event = {};
         var self = this;
