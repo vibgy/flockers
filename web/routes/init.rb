@@ -22,6 +22,22 @@ post '/login' do
     end
 end
 
+post '/signout' do
+    session['user']='';
+    @he=Event.all
+    unless @he.nil?
+        return {:status => 'success'}.to_json;
+    else
+        return {:status => 'not success'}.to_json;
+    end
+end
+
+get '/myEvents.json' do
+    @user = session['user'];
+    @hm=Event.all(:organizer => session['user'])
+    @hm.to_json;
+end
+
 get '/loggedIn' do
   @user = session['user'];
   haml :profile

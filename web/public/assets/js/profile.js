@@ -22,7 +22,7 @@ function EventModel(data)
     this.organizer = ko.observable(data.organizer);
     this.fees = ko.observable(data.fees);
     this.prize = ko.observable(data.prize);
-    this.description = ko.observable(data.desription);
+    this.description = ko.observable(data.description);
 }
 
 function EventViewModel() {
@@ -48,12 +48,55 @@ function EventViewModel() {
                 }
                 );
     };
+
+    this.myEvents = ko.observableArray();
+    this.showMyEvents = function(){
+        var event = {};
+        var self = this;
+        $.get(
+            '/myEvents.json',
+            function(data){
+              data = JSON.parse(data);
+              var events = $.map(data,function(item) 
+              {
+                event.id = item.id;
+                event.ename = item.ename;
+                event.date = item.date;
+                event.time = item.time;
+                event.place = item.place;
+                event.organizer = item.organizer;
+                event.fees = item.fees;
+                event.prize = item.prize;
+                event.description = item.description;
+                return new EventModel(event);
+              });
+              self.myEvents(events);
+            });
+    };
+
+    this.signOut = function(){
+        
+        var self = this;
+        $.post('/signout',
+               function(data)
+               {
+                   data = JSON.parse(data);
+                   if(data.status == 'success')
+                   {
+                       window.location.href = '/home';
+                   }
+                   else
+                   {
+                       self.message("Sign Out Unsuccessful");
+                   } 
+               });
+    }
 }
 
 eventViewModel = new EventViewModel();
 
 $().ready(function() {
-
+    
     ko.applyBindings(eventViewModel);
 });
 
