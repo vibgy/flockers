@@ -25,6 +25,8 @@
           %td{:"data-bind" => "text : place()"}
           %td{:"data-bind" => "text : time()"}
           %td{:"data-bind" => "text : description()"}
+          %td
+            %button.btn-primary{:"data-bind" => "click : DeleteEvent"}Delete Me 
       #createEventModal.modal.fade.hide
         .modal-header
           %button.close{"aria-hidden" => "true", "data-dismiss" => "modal", :type => "button"} &times;

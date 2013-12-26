@@ -52,3 +52,13 @@ end
 post '/signup' do
      Account.create(:uname => params[:user_name],:password => params[:pass])
 end
+
+post '/delete' do
+     zoo = Event.first(:id => params[:event_id])
+     zoo.destroy
+     if zoo.destroyed?
+     return {:status => 'success'}.to_json;
+     else
+     return {:status => 'not_success'}.to_json; 
+     end
+end
