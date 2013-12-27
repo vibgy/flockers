@@ -23,8 +23,33 @@ function EventModel(data)
     this.fees = ko.observable(data.fees);
     this.prize = ko.observable(data.prize);
     this.description = ko.observable(data.description);
-}
 
+    this.message = ko.observable('');
+    this.DeleteEvent=function(){
+          var self=this;
+          $.post("/delete",
+          {event_id : this.id()},
+          function(data)
+          {
+          data = JSON.parse(data);
+          if(data.status == 'not_success')
+          {
+          self.message("Event Cannot be Deleted");
+          }
+          else
+          {
+          var oldevent = ko.utils.arrayFirst(eventViewModel.myEvents(),function(item){
+          return item.id() == self.id(); 
+          }
+          );
+          eventViewModel.myEvents.remove(oldevent);
+          self.message("Event Deleted Successfully");
+          }
+          }
+          );
+       
+       };
+}
 function EventViewModel() {
 
     this.event = ko.observable({});

@@ -7,15 +7,15 @@ gem 'rake'
 gem 'haml'
 gem 'json'
 gem 'thin'
-gem 'dalli'
+#gem 'dalli'
 gem 'dm-zone-types'
 gem 'dm-mysql-adapter'
-gem 'newrelic_rpm'
+#gem 'newrelic_rpm'
 
 group :development, :test do
-  gem 'pry-debugger'
-  gem 'pry-stack_explorer'
-  gem 'pry'
+  #gem 'pry-debugger'
+  #gem 'pry-stack_explorer'
+  #gem 'pry'
 end
 
 group :test do

@@ -11,8 +11,8 @@ module Flockers
 
     configure :production do
       # Force SSL in this app at all times.
-      require 'rack/ssl-enforcer'
-      use Rack::SslEnforcer
+      #require 'rack/ssl-enforcer'
+      #use Rack::SslEnforcer
 
       set :logging, true
     end

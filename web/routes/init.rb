@@ -7,6 +7,10 @@ require 'pry-debugger'
 
 enable :sessions
 
+get '/' do
+"Hello World"
+end
+
 get '/home' do
    @he=Event.all
     haml:home
@@ -62,4 +66,13 @@ post '/search' do
         data = {:status => 'Failure'}.to_json;
     end
     return data;
+
+post '/delete' do
+     zoo = Event.first(:id => params[:event_id])
+     zoo.destroy
+     if zoo.destroyed?
+     return {:status => 'success'}.to_json;
+     else
+     return {:status => 'not_success'}.to_json; 
+     end
 end

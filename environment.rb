@@ -16,7 +16,7 @@ require 'haml'
 require 'ostruct'
 require 'rack'
 #require 'rack/recaptcha'
-require 'pry' unless ENV['RACK_ENV'] == 'production'
+#require 'pry' unless ENV['RACK_ENV'] == 'production'
 #require 'mail'
 
 require_relative 'scripts/db/connect.rb'
