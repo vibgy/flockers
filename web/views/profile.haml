@@ -16,6 +16,18 @@
       %p.alert.alert-info{:"data-bind" => "visible: message, text: message"}
       %button.btn-success.btn-large{"data-target" => "#createEventModal", "data-toggle" => "modal" , :"data-bind" => "click : createEvent"} Create Event
       %button.btn-primary.btn-large{:"data-bind" => "click : showMyEvents"}My Events 
+      %form
+        %input{:type =>"text",:"data-bind" => "value: event().ename"}
+        %button.btn-primary{:"data-bind" => "click : searchEvent"}Search 
+      %table.table.table-striped{:"data-bind"=>"foreach:searchEvents",:border => '0'}
+        %tr
+          %td{:"data-bind" => "text : ename()"}
+          %td{:"data-bind" => "text : date()"}
+          %td{:"data-bind" => "text : fees()"}
+          %td{:"data-bind" => "text : prize()"}
+          %td{:"data-bind" => "text : place()"}
+          %td{:"data-bind" => "text : time()"}
+          %td{:"data-bind" => "text : description()"}
       %table.table.table-striped{:"data-bind"=>"foreach:myEvents",:border => '0'}
         %tr
           %td{:"data-bind" => "text : ename()"}

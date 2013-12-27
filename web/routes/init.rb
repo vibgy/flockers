@@ -52,3 +52,14 @@ end
 post '/signup' do
      Account.create(:uname => params[:user_name],:password => params[:pass])
 end
+
+post '/search' do
+    @hs=Event.all(:ename => params[:record])
+
+    if @hs.any?
+        data = @hs.to_json;
+    else
+        data = {:status => 'Failure'}.to_json;
+    end
+    return data;
+end

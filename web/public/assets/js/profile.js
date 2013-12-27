@@ -31,6 +31,7 @@ function EventViewModel() {
     this.createEventState = false;
     this.message = ko.observable('');
     this.myEvents = ko.observableArray();
+    this.searchEvents = ko.observableArray();
 
     this.createEvent = function()
     {
@@ -92,6 +93,38 @@ function EventViewModel() {
                    } 
                });
     }
+
+    this.searchEvent = function() {
+        var self = this;
+        var SEvent={};
+        $.post('/search',
+             {record : this.event().ename},
+             function(data)
+             {
+                 data = JSON.parse(data);
+                 if(data.status == 'Failure')
+                 {
+                     self.message("No Matches Found");
+                 }
+                 else
+                 {
+                     var SEvents = $.map(data,function(item) 
+                     {
+                         SEvent.id =item.id;
+                         SEvent.ename = item.ename;
+                         SEvent.date = item.date;
+                         SEvent.time = item.time;
+                         SEvent.place = item.place;
+                         SEvent.organizer = item.organizer;
+                         SEvent.fees = item.fees;
+                         SEvent.prize = item.prize;
+                         SEvent.description = item.description;
+                         return new EventModel(SEvent);
+                     });
+                     self.searchEvents(SEvents);
+                 }
+            }); 
+        };
 }
 
 eventViewModel = new EventViewModel();
