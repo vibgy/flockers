@@ -9,8 +9,8 @@ require ::File.join( Root, 'web/app.rb' ) unless defined?(Flockers::WebApp)
 # this instance.  This is a type of server-side session.
 
 class Sinatra::Application
-  require "dalli"
-  require "rack/session/dalli"
+  #require "dalli"
+  #require "rack/session/dalli"
 
   #use Rack::Session::Dalli
 end
