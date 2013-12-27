@@ -7,11 +7,26 @@
     %link{:href => "../assets/css/datepicker.css", :rel => "stylesheet"}
   %body
     .container
-      %h1 Event Planner
+      .row
+        .span8
+          %h1 Flockers
+        .span4
+          %button.btn-large.btn-danger{:"data-bind" => "click : signOut"} Sign Out
       %input.hide{:id =>"current_user", :value => "#{@user}"}
       %p.alert.alert-info{:"data-bind" => "visible: message, text: message"}
       %button.btn-success.btn-large{"data-target" => "#createEventModal", "data-toggle" => "modal" , :"data-bind" => "click : createEvent"} Create Event
-      
+      %button.btn-primary.btn-large{:"data-bind" => "click : showMyEvents"}My Events 
+      %table.table.table-striped{:"data-bind"=>"foreach:myEvents",:border => '0'}
+        %tr
+          %td{:"data-bind" => "text : ename()"}
+          %td{:"data-bind" => "text : date()"}
+          %td{:"data-bind" => "text : fees()"}
+          %td{:"data-bind" => "text : prize()"}
+          %td{:"data-bind" => "text : place()"}
+          %td{:"data-bind" => "text : time()"}
+          %td{:"data-bind" => "text : description()"}
+          %td
+            %button.btn-primary{:"data-bind" => "click : DeleteEvent"}Delete Me 
       #createEventModal.modal.fade.hide
         .modal-header
           %button.close{"aria-hidden" => "true", "data-dismiss" => "modal", :type => "button"} &times;

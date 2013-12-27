@@ -13,7 +13,7 @@ function login(user,pas)
              }
              else
              {
-                 $.get('/loggedIn');
+                 window.location.href="/loggedIn";
              }
 	  }
           );  
