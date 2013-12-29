@@ -129,7 +129,8 @@ function EventViewModel() {
                  data = JSON.parse(data);
                  if(data.status == 'Failure')
                  {
-                     self.message("No Matches Found");
+                     self.message("No Matches Found,You Can Create One");
+                     document.getElementById("CreateEvent").style.visibility="visible";
                  }
                  else
                  {
