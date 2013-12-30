@@ -16,6 +16,11 @@ get '/home' do
     haml:home
 end
 
+get '/events' do
+  @events = Event.all
+  @events.to_json;
+end
+
 post '/login' do 
     @he =Account.first(:uname => params[:user_name], :password => params[:pass]); 
     session['user']=params[:user_name];
@@ -66,6 +71,7 @@ post '/search' do
         data = {:status => 'Failure'}.to_json;
     end
     return data;
+end
 
 post '/delete' do
      zoo = Event.first(:id => params[:event_id])

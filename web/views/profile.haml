@@ -8,37 +8,39 @@
   %body
     .container
       .row
-        .span8
-          %h1 Flockers
         .span4
-          %button.btn-large.btn-danger{:"data-bind" => "click : signOut"} Sign Out
+          %h1 Flockers
+      .row
+        .span8
+          %form
+            %input{:placeholder => 'Search by Event Name',:type =>"text",:"data-bind" => "value: event().ename"}
+            %button.btn-primary{:"data-bind" => "click : searchEvent"}Search 
+        .span4
+          %button.btn.btn-danger{:"data-bind" => "click : signOut"} Sign Out
       %input.hide{:id =>"current_user", :value => "#{@user}"}
       %p.alert.alert-info{:"data-bind" => "visible: message, text: message"}
+      %button.btn-primary.btn{:"data-bind" => "click : showMyEvents"}My Events 
       .row
         .span12
-          %table
+          %label Would you like to play:
+          %div{:"data-bind"=>"foreach:topEvents",:border => '0'}
+            %button.btn-success{:"data-bind" => "text :event,  click: function () { $root.searchEventHelper(event);} "}
+      .row
+        .span12
+          %table.table.table-striped{:"data-bind"=>"foreach:searchEvents",:border => '0'}
             %tr
+              %td{:"data-bind" => "text : ename()"}
+              %td{:"data-bind" => "text : date()"}
+              %td{:"data-bind" => "text : fees()"}
+              %td{:"data-bind" => "text : prize()"}
+              %td{:"data-bind" => "text : place()"}
+              %td{:"data-bind" => "text : time()"}
+              %td{:"data-bind" => "text : description()"}
               %td
-                %h6 Would You Like To Take Part In 
-              %td
-                %form
-                  %input{:type =>"text",:"data-bind" => "value: event().ename"}
-                  %button.btn-primary{:"data-bind" => "click : searchEvent"}Search 
-                  %table.table.table-striped{:"data-bind"=>"foreach:searchEvents",:border => '0'}
-                    %tr
-                      %td{:"data-bind" => "text : ename()"}
-                      %td{:"data-bind" => "text : date()"}
-                      %td{:"data-bind" => "text : fees()"}
-                      %td{:"data-bind" => "text : prize()"}
-                      %td{:"data-bind" => "text : place()"}
-                      %td{:"data-bind" => "text : time()"}
-                      %td{:"data-bind" => "text : description()"}
-                      %td
-                        %button.btn-primary{}Participate
+                %button.btn-primary{}Participate
         .row
           .span12
-            %button#CreateEvent.btn-success.btn-large{"data-target" => "#createEventModal", "data-toggle" => "modal" , :"data-bind" => "click : createEvent",:style =>"visibility:hidden"} Create Event
-            %button.btn-primary.btn-large{:"data-bind" => "click : showMyEvents"}My Events 
+            %button#CreateEvent.btn-success.btn-large{"data-target" => "#createEventModal", "data-toggle" => "modal" , :"data-bind" => "click : createEvent , visible : createEventFlag"} Create Event
             %table.table.table-striped{:"data-bind"=>"foreach:myEvents",:border => '0'}
               %tr
                 %td{:"data-bind" => "text : ename()"}
