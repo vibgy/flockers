@@ -107,6 +107,7 @@ function EventViewModel() {
 
     this.showMyEvents = function(){
         var event = {};
+        this.reset();
         var self = this;
         $.get(
             '/myEvents.json',
@@ -149,6 +150,7 @@ function EventViewModel() {
 
     this.showParticipationEvents = function(){
         var event = {};
+        this.reset();
         var self = this;
         $.get(
             '/participationID.json',
@@ -195,7 +197,7 @@ function EventViewModel() {
     this.searchEvent = function() {
         var self = this;
         var SEvent={};
-        this.message('');
+        this.reset();
         $.post('/search',
              {record : this.event().ename},
              function(data)
@@ -262,6 +264,15 @@ function EventViewModel() {
 
         this.getTopEvents();
     }
+
+    this.reset = function(){
+  
+        this.myEvents.removeAll();
+        this.searchEvents.removeAll();
+        this.participationEvents.removeAll();
+        this.message('');
+        this.createEventFlag(false);
+   }
 }
 
 function isUnique(event ,array)

@@ -1,24 +1,3 @@
-function login(user,pas)
-{
-    $.post("/login",
-          {user_name : user, pass : pas},
-          function(data)
-          {
-             document.getElementById("InvalidUser").style.visibility="hidden";
-             document.getElementById("Welcome").style.visibility="hidden";
-             data = JSON.parse(data);
-             if(data.status == 'not success')
-             {
-                 document.getElementById("InvalidUser").style.visibility="visible";
-             }
-             else
-             {
-                 window.location.href="/loggedIn";
-             }
-	  }
-          );  
-    return false;
-}
 function signup(user,pas,confirmpas)
 {
     if(pas==confirmpas)
