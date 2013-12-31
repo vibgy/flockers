@@ -52,6 +52,18 @@
                 %td{:"data-bind" => "text : description()"}
                 %td
                   %button.btn-primary{:"data-bind" => "click : DeleteEvent"}Delete Me
+            %button.btn-primary.btn-large{:"data-bind" => "click : showParticipationEvents"}Participated Events
+            %table.table.table-striped{:"data-bind"=>"foreach:participationEvents",:border => '0'}
+              %tr
+                %td{:"data-bind" => "text : ename()"}
+                %td{:"data-bind" => "text : date()"}
+                %td{:"data-bind" => "text : fees()"}
+                %td{:"data-bind" => "text : prize()"}
+                %td{:"data-bind" => "text : place()"}
+                %td{:"data-bind" => "text : time()"}
+                %td{:"data-bind" => "text : description()"}
+                %td
+                  %button.btn-primary{:"data-bind" => "click : deleteParticipateEvent"}Delete Me
       #createEventModal.modal.fade.hide
         .modal-header
           %button.close{"aria-hidden" => "true", "data-dismiss" => "modal", :type => "button"} &times;

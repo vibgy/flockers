@@ -11,26 +11,19 @@
       %p#Welcome{:style => 'visibility : hidden'} Welcome User
       %p#InvalidUser{:style => 'visibility : hidden'}Incorrect Username And Password
       %p#SuccessfulSignup{:style => 'visibility : hidden'}You have signed up successfully
-      %div#PublicEvent.row
-        - unless @he.empty?
-          - @he.each do |he|
-            %div.col-md-4
-              %h2
-                %a{:href => ""}= he.ename
-              %label Date:
-              %label{}= he.date
-              %label Time:
-              %label{}= he.time
-              %label Place: 
-              %label{}= he.place
-              %label Fees : 
-              %label{}= he.fees
-              %label Prize: 
-              %label{}= he.prize
-              %label Description: 
-              %label{}= he.description
-              %br
-              %a.btn.btn-default{:href => "", :role => "button"} Participate
+      .row
+        %button.btn-primary.btn-large{:"data-bind" => "click : showPublicEvents"}Public Events 
+        %table.table.table-striped{:"data-bind"=>"foreach:publicEvents",:border => '0'}
+          %tr
+            %td{:"data-bind" => "text : ename()"}
+            %td{:"data-bind" => "text : date()"}
+            %td{:"data-bind" => "astext : fees()"}
+            %td{:"data-bind" => "text : prize()"}
+            %td{:"data-bind" => "text : place()"}
+            %td{:"data-bind" => "text : time()"}
+            %td{:"data-bind" => "text : description()"}
+            %td
+              %button.btn-primary{"data-target" => "#signInModal", "data-toggle" => "modal",:"data-bind" => "click : participateVar"}Participate
       #signInModal.modal.fade.hide
         .modal-header
           %button.close{"aria-hidden" => "true", "data-dismiss" => "modal", :type => "button"} &times;
@@ -38,15 +31,15 @@
         .modal-body
           %form                    
             %label Username
-            %input{:name => "uname", :placeholder => "Email address",:type => "text"}
+            %input{:"data-bind" => "value : uname", :placeholder => "Email address",:type => "text"}
                       
             %label Password
-            %input{:name => "pwd", :placeholder => "Password",:type => "password"}
+            %input{:"data-bind" => "value : pas", :placeholder => "Password",:type => "password"}
                           
             %label.checkbox
             %input{:type => "checkbox", :value => "remember-me"}
             Remember me
-            %button#show.btn.btn-large.btn-primary{:'data-dismiss' => "modal",:onclick => " return login(uname.value,pwd.value)", :type => "submit"} Sign In              
+            %button#show.btn.btn-large.btn-primary{:'data-dismiss' => "modal",:"data-bind" => "click : login"} Sign In              
         .modal-footer
           Not Yet Registered  
       #signUpModal.modal.fade.hide
@@ -56,10 +49,10 @@
         .modal-body
           %form                  
             %label Username
-            %input{:name => "uname", :placeholder => "Email address",:type => "text"}
+            %input{ :placeholder => "Email address",:type => "text"}
                       
             %label Create Password
-            %input{:name => "pwd", :placeholder => "Create Password",:type => "password"}
+            %input{ :placeholder => "Create Password",:type => "password"}
             
             %label Confirm Password
             %input{:name => "confirmpwd", :placeholder => "Confirm Password",:type => "password"}
@@ -68,7 +61,7 @@
             
             %button#show.btn.btn-large.btn-primary{:'data-dismiss' => "modal",:onclick => " return signup(uname.value,pwd.value,confirmpwd.value)", :type => "submit"} Sign Up               
     %script{:src => "../assets/js/login.js"}
+    %script{:src => "../assets/js/knockout-2.2.1.js"}  
     %script{:src => "../assets/js/jquery.min.js"}
-    %script{:src => "../assets/js/bootstrap.min.js"} 
-    %script{:src => "../assets/js/register.js"} 
-
+    %script{:src => "../assets/js/bootstrap.min.js"}  
+    %script{:src => "../assets/js/participate.js"} 

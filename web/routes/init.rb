@@ -47,6 +47,31 @@ get '/myEvents.json' do
     @hm.to_json;
 end
 
+get '/publicEvents.json' do
+    @hm=Event.all
+    @hm.to_json;
+end
+
+get '/participationID.json' do
+    @hm=Participation.all(:user_id => session['user'],:fields => [:id,:event_id])
+    if @hm.any?
+    @hm.to_json;
+    else 
+    {:status => 'Failure'}.to_json;
+    end
+    #binding.pry
+end
+
+post '/participationEvents.json' do
+    array=params[:event]
+    events = Array.new
+    array.each do |i|
+	  events << Event.first(:id => i.to_i)
+          #binding.pry
+    end
+    return events.to_json;
+end
+
 get '/loggedIn' do
   @user = session['user'];
   haml :profile
@@ -74,11 +99,32 @@ post '/search' do
 end
 
 post '/delete' do
-     zoo = Event.first(:id => params[:event_id])
+     zoo = Event.first(:id => params[:event_id].to_i)
+     foo = Participation.all(:event_id => params[:event_id].to_i)
+     unless foo.nil?
+     foo.destroy
+     end
      zoo.destroy
      if zoo.destroyed?
      return {:status => 'success'}.to_json;
      else
      return {:status => 'not_success'}.to_json; 
      end
+end
+
+post '/deleteParticipationEvent' do
+     zoo = Participation.first(:event_id => params[:event_id].to_i)
+     zoo.destroy
+     if zoo.destroyed?
+     return {:status => 'success'}.to_json;
+     else
+     return {:status => 'not_success'}.to_json; 
+     end
+end
+
+post '/participate' do
+	#Participation.create(:event_id => params[:event],:user_id => params[:user_name]);
+ zoo = Participation.new
+ zoo.attributes = { :event_id => params[:event],:user_id => params[:user_name] }
+ zoo.save
 end

@@ -48,6 +48,32 @@ function EventModel(data)
           });
        
        };
+    
+    this.deleteParticipateEvent = function() {
+   
+    var self=this;
+          $.post("/deleteParticipationEvent",
+          {event_id : this.id()},
+          function(data)
+          {
+              data = JSON.parse(data);
+              if(data.status == 'not_success')
+              {
+                   self.message("Event Cannot be Deleted");
+              }
+              else
+              {
+                   var oldevent = ko.utils.arrayFirst(eventViewModel.participationEvents(),
+                                                     function(item){
+                                                         return item.id() == self.id(); 
+                                                     });
+                   eventViewModel.participationEvents.remove(oldevent);
+                   self.message("Event Deleted Successfully");
+              }
+          });
+       
+       };
+
 }
 function EventViewModel() {
 
@@ -58,6 +84,7 @@ function EventViewModel() {
     this.searchEvents = ko.observableArray();
     this.topEvents = ko.observableArray();
     this.createEventFlag = ko.observable(false);
+    this.participationEvents = ko.observableArray();
 
     this.createEvent = function()
     {
@@ -119,6 +146,44 @@ function EventViewModel() {
                    } 
                });
     }
+
+    this.showParticipationEvents = function(){
+        var event = {};
+        var self = this;
+        $.get(
+            '/participationID.json',
+            function(data){
+              data = JSON.parse(data);
+              if(data.status=='Failure'){
+              self.message("No such events");    
+            }
+            else
+            {
+                var e=$.map(data,function(item){return item.event_id});
+                $.post(
+              		'/participationEvents.json',
+              		{'event' : e},
+              		function(data){
+              		//alert(data);
+              		data=JSON.parse(data);
+              		var events = $.map(data,function(item) 
+		        {
+		        event.id = item.id;
+		        event.ename = item.ename;
+		        event.date = item.date;
+		        event.time = item.time;
+		        event.place = item.place;
+		        event.organizer = item.organizer;
+		        event.fees = item.fees;
+		        event.prize = item.prize;
+		        event.description = item.description;
+		        return new EventModel(event);
+		      });
+		      self.participationEvents(events);
+		    });
+            }
+    });
+    };
 
     this.searchEventHelper = function(data)
     {
@@ -184,7 +249,7 @@ function EventViewModel() {
                        }
                    }
                    uniqueEvents.sort(compare);
-                   for( var i = 0 ; i < 5 ; i++)
+                   for( var i = 0 ; i < 5 && i < uniqueEvents.length  ; i++)
                    {
                        self.topEvents.push({event : uniqueEvents[i].event});
                    }

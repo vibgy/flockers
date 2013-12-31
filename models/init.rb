@@ -20,3 +20,10 @@ class Event
        property :prize, Integer
        property :description,String
 end
+
+class Participation
+	include DataMapper::Resource
+	property :id,   Serial
+	property :event_id, Integer
+	property :user_id, String
+end
