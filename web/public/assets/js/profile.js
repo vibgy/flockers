@@ -74,6 +74,17 @@ function EventModel(data)
        
        };
 
+    this.createEvent = function(event){
+    var self = this;
+        $.post('/createEvent',
+               {event : event},
+                function(data){
+                    eventViewModel.message("Event Created Successfully");
+                    eventViewModel.myEvents.push(self);
+                }
+                );
+    }
+
 }
 function EventViewModel() {
 
@@ -95,15 +106,9 @@ function EventViewModel() {
 
     this.createEventHelper = function()
     {
-        var self = this;
-        $.post('/createEvent',
-               {event : this.event()},
-                function(data){
-                    self.message("Event Created Successfully");
-                    self.myEvents.push(self.event());
-                }
-                );
+        this.event().createEvent(JSON.parse(ko.toJSON(this.event())));
     };
+    
 
     this.showMyEvents = function(){
         var event = {};
