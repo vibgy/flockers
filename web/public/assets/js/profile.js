@@ -1,4 +1,5 @@
 var eventViewModel;
+var wantsToParticipate;
 
 var emptyEvent = new function() {
     this.id = "";
@@ -25,6 +26,12 @@ function EventModel(data)
     this.description = ko.observable(data.description);
 
     this.message = ko.observable('');
+    
+    this.participateVar=function()
+    {
+	wantsToParticipate=true;
+	oldeventID = this.id(); 
+    }
     this.DeleteEvent=function(){
           var self=this;
           $.post("/delete",
@@ -96,6 +103,75 @@ function EventViewModel() {
     this.topEvents = ko.observableArray();
     this.createEventFlag = ko.observable(false);
     this.participationEvents = ko.observableArray();
+    this.category = ko.observableArray();
+    
+    this.publicEvents = ko.observableArray();
+    this.uname=ko.observable();
+    this.pas=ko.observable('');
+    
+    this.participate = function(eventid)
+   {
+        var self=this;
+        $.post("/participate",
+	{event: eventid,user_name : this.uname()},
+	function(data){
+         self.message("You have participated successfully!!");
+       });
+   }
+   
+   this.showPublicEvents = function(){
+        var event = {};
+        var self = this;
+        $.get(
+            '/publicEvents.json',
+            function(data){
+              data = JSON.parse(data);
+              var events = $.map(data,function(item) 
+              {
+                event.id = item.id;
+                event.ename = item.ename;
+                event.date = item.date;
+                event.time = item.time;
+                event.place = item.place;
+                event.organizer = item.organizer;
+                event.fees = item.fees;
+                event.prize = item.prize;
+                event.description = item.description;
+                return new EventModel(event);
+              });
+              self.publicEvents(events);
+            });
+    };
+    
+    
+   this.login=function()
+	{
+                       var self = this;
+			var user=this.uname();
+			$.post("/login",
+				  {user_name : user, pass : this.pas()},
+				  function(data)
+				  {
+					 document.getElementById("InvalidUser").style.visibility="hidden";
+					 document.getElementById("Welcome").style.visibility="hidden";
+					 data = JSON.parse(data);
+					 if(data.status == 'not success')
+					 {
+						 document.getElementById("InvalidUser").style.visibility="visible";
+					 }
+					 else
+					 {
+						 if(wantsToParticipate==true)
+						 {
+							 self.participate(oldeventID);
+						 }
+						//alert(user);
+						window.location.href="/loggedIn";
+					 }
+				  }
+			 );
+		
+	};
 
     this.createEvent = function()
     {
@@ -233,6 +309,41 @@ function EventViewModel() {
                  }
             }); 
         };
+        
+        this.searchEventByCategory = function(data) {
+        var self = this;
+        var SEvent={};
+        self.searchEvents.removeAll();
+        this.uname($("#current_user").val());
+        $.get('/searchEventByCategory',
+             {record : data},
+             function(data)
+             {
+                 alert(data);data = JSON.parse(data);
+                 if(data.status == 'Failure')
+                 {
+                     self.message("No Matches Found");                     
+                 }
+                 else
+                 {
+                     var SEvents = $.map(data,function(item) 
+                     {
+                         SEvent.id =item.id;
+                         SEvent.ename = item.ename;
+                         SEvent.date = item.date;
+                         SEvent.time = item.time;
+                         SEvent.place = item.place;
+                         SEvent.organizer = item.organizer;
+                         SEvent.fees = item.fees;
+                         SEvent.prize = item.prize;
+                         SEvent.description = item.description;
+                         return new EventModel(SEvent);
+                     });
+                     self.searchEvents(SEvents);
+                 }
+            }); 
+        };
+
 
     this.getTopEvents = function(){
 
@@ -264,9 +375,30 @@ function EventViewModel() {
               });
 
     };
+    
+    this.drawWheel = function() {
+     
+        var self = this;   
+        var category = new Array();
+        $.get('/events',
+              function(data)
+              {
+                   data = JSON.parse(data);
+                   
+                   for(var i = 0 ; i < data.length; i++)
+                   {
+                       if(category.indexOf(data[i].category)==-1)
+                       {
+                            category.push(data[i].category);
+                       }
+                   }
+                   alert(category);  
+                   self.category(category);  
+              });
+    }
 
     this.init = function() {
-
+        this.drawWheel();
         this.getTopEvents();
     }
 
@@ -311,6 +443,11 @@ $().ready(function() {
     
     ko.applyBindings(eventViewModel);
     eventViewModel.init();
+     $(".wheel-button").wheelmenu({
+      		trigger: "hover",
+      		animation: "fly",
+      		angle: [0, 360]
+    	});
 });
 
 

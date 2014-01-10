@@ -3,12 +3,16 @@ require 'data_mapper'
 require 'sinatra'
 require 'haml'
 require 'json'
-require 'pry-debugger'
+#require 'pry'
 
 enable :sessions
 
 get '/' do
 "Hello World"
+end
+
+get '/bar' do
+  haml :ar
 end
 
 get '/home' do
@@ -19,6 +23,16 @@ end
 get '/events' do
   @events = Event.all
   @events.to_json;
+end
+
+get '/searchEventByCategory' do
+ @hs=Event.all(:category => params[:record])
+    if @hs.any?
+        data = @hs.to_json;
+    else
+        data = {:status => 'Failure'}.to_json;
+    end
+    return data;
 end
 
 post '/login' do 

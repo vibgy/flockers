@@ -19,6 +19,7 @@ class Event
        property :fees,Integer
        property :prize, Integer
        property :description,String
+       property :category,String
 end
 
 class Participation
