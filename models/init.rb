@@ -49,3 +49,7 @@ class Participation
 	belongs_to :participatedEvent, :model => Event, :key => true, :child_key => [:event_id]
 	belongs_to :attendee, :model => Account, :key => true, :child_key => [:account_id]
 end
+
+# this is very cricial otherwise you get the 
+#  undefined method `include?' for nil:NilClass:
+DataMapper.finalize
