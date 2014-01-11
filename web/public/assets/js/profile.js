@@ -34,7 +34,7 @@ function EventModel(data)
     }
     this.DeleteEvent=function(){
           var self=this;
-          $.post("/delete",
+          $.get("/delete",
           {event_id : this.id()},
           function(data)
           {
@@ -58,8 +58,8 @@ function EventModel(data)
     
     this.deleteParticipateEvent = function() {
    
-    var self=this;
-          $.post("/deleteParticipationEvent",
+          var self=this;
+          $.get("/deleteParticipationEvent",
           {event_id : this.id()},
           function(data)
           {
@@ -82,7 +82,7 @@ function EventModel(data)
        };
 
     this.createEvent = function(event){
-    var self = this;
+        var self = this;
         $.post('/createEvent',
                {event : event},
                 function(data){
@@ -110,14 +110,14 @@ function EventViewModel() {
     this.pas=ko.observable('');
     
     this.participate = function(eventid)
-   {
+    {
         var self=this;
         $.post("/participate",
-	{event: eventid,user_name : this.uname()},
-	function(data){
-         self.message("You have participated successfully!!");
+	      {event: eventid,user_name : this.uname()},
+	      function(data){
+              self.message("You have participated successfully!!");
        });
-   }
+    }
    
    this.showPublicEvents = function(){
         var event = {};
@@ -148,7 +148,7 @@ function EventViewModel() {
 	{
                        var self = this;
 			var user=this.uname();
-			$.post("/login",
+			$.get("/login",
 				  {user_name : user, pass : this.pas()},
 				  function(data)
 				  {
@@ -214,7 +214,7 @@ function EventViewModel() {
     this.signOut = function(){
         
         var self = this;
-        $.post('/signout',
+        $.get('/signout',
                function(data)
                {
                    data = JSON.parse(data);
@@ -243,7 +243,7 @@ function EventViewModel() {
             else
             {
                 var e=$.map(data,function(item){return item.event_id});
-                $.post(
+                $.get(
               		'/participationEvents.json',
               		{'event' : e},
               		function(data){
@@ -279,7 +279,7 @@ function EventViewModel() {
         var self = this;
         var SEvent={};
         this.reset();
-        $.post('/search',
+        $.get('/search',
              {record : this.event().ename},
              function(data)
              {

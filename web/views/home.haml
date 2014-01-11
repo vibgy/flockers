@@ -8,9 +8,10 @@
       %h1 Flockers
       %button.btn.btn-success.btn-lg{"data-target" => "#signInModal", "data-toggle" => "modal"} Sign In
       %button.btn.btn-primary.btn-lg{"data-target" => "#signUpModal", "data-toggle" => "modal"} Sign Up
-      %p#Welcome{:style => 'visibility : hidden'} Welcome User
-      %p#InvalidUser{:style => 'visibility : hidden'}Incorrect Username And Password
-      %p#SuccessfulSignup{:style => 'visibility : hidden'}You have signed up successfully
+      %br
+      %span.alert.alert-danger#InvalidUser{:style => 'visibility : hidden',:'data-bind' => 'text : error'}
+      %span.alert.alert-success#SuccessfulSignup{:style => 'visibility : hidden'}You have signed up successfully
+      %br
       .row
         %button.btn-primary.btn-large{:"data-bind" => "click : showPublicEvents"}Public Events 
         %table.table.table-striped{:"data-bind"=>"foreach:publicEvents",:border => '0'}
@@ -49,18 +50,18 @@
         .modal-body
           %form                  
             %label Username
-            %input{ :placeholder => "Email address",:type => "text"}
+            %input{:placeholder => "Email address",:type => "text",:'data-bind' => "value : uname"}
                       
             %label Create Password
-            %input{ :placeholder => "Create Password",:type => "password"}
+            %input{:placeholder => "Create Password",:type => "password",:'data-bind' => "value : pass"}
             
             %label Confirm Password
-            %input{:name => "confirmpwd", :placeholder => "Confirm Password",:type => "password"}
+            %input{:placeholder => "Confirm Password",:type => "password",:'data-bind' => "value : confirmpass"}
             
             %br              
             
-            %button#show.btn.btn-large.btn-primary{:'data-dismiss' => "modal",:onclick => " return signup(uname.value,pwd.value,confirmpwd.value)", :type => "submit"} Sign Up               
-    %script{:src => "../assets/js/login.js"}
+            %button#show.btn.btn-large.btn-primary{:'data-dismiss' => "modal",:'data-bind'=> " click : signup", :type => "submit"} Sign Up               
+    /%script{:src => "../assets/js/login.js"}
     %script{:src => "../assets/js/knockout-2.2.1.js"}  
     %script{:src => "../assets/js/jquery.min.js"}
     %script{:src => "../assets/js/bootstrap.min.js"}  

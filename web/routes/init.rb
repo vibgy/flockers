@@ -3,7 +3,7 @@ require 'data_mapper'
 require 'sinatra'
 require 'haml'
 require 'json'
-require 'pry-debugger'
+require 'pry'
 
 enable :sessions
 
@@ -31,17 +31,25 @@ get '/searchEventByCategory' do
    return data;
 end
 
-post '/login' do 
+get '/login' do 
+   
+ begin 
+   
    @he =Account.first(:uname => params[:user_name], :password => params[:pass]); 
    session['user']=params[:user_name];
-   if @he.nil?
-      return {:status => 'not success'}.to_json;
-   else
-      @he.to_json;
+   raise "Invalid Username or Password" if @he.nil?
+      
+   response = @he;
+
+   rescue => e
+        response = {:error => {:message => e.message}}
    end
+
+   content_type :json
+   response.to_json
 end
 
-post '/signout' do
+get '/signout' do
    session['user']='';
    @he=Event.all
    unless @he.nil?
@@ -71,7 +79,7 @@ get '/participationID.json' do
    end
 end
 
-post '/participationEvents.json' do
+get '/participationEvents.json' do
    array=params[:event]
    events = Array.new
    array.each do |i|
@@ -92,10 +100,23 @@ post '/createEvent' do
 end
 
 post '/signup' do
-   Account.create(:uname => params[:user_name],:password => params[:pass])
+
+   begin
+   zoo = Account.new
+   zoo.attributes = { :uname => params[:user_name],:password => params[:pass] }
+   raise "Unable to create Account" unless zoo.save?
+      
+   response = "Success"
+
+  rescue => e
+        response = {:error => {:message => e.message}}
+   end
+
+   content_type :json
+   response.to_json
 end
 
-post '/search' do
+get '/search' do
    @hs=Event.all(:ename => params[:record])
    if @hs.any?
       data = @hs.to_json;
@@ -105,7 +126,7 @@ post '/search' do
    return data;
 end
 
-post '/delete' do
+get '/delete' do
    zoo = Event.first(:id => params[:event_id].to_i)
    foo = Participation.all(:event_id => params[:event_id].to_i)
    unless foo.nil?
@@ -119,7 +140,7 @@ post '/delete' do
    end
 end
 
-post '/deleteParticipationEvent' do
+get '/deleteParticipationEvent' do
    zoo = Participation.first(:event_id => params[:event_id].to_i)
    zoo.destroy
    if zoo.destroyed?

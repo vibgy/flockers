@@ -25,14 +25,45 @@ function EventModel(data)
 
 
 function ParticipateViewModel() {
-
-	this.publicEvents = ko.observableArray();
-	this.uname=ko.observable('');
+  
+    this.publicEvents = ko.observableArray();
+    this.uname=ko.observable('');
+    this.pass = ko.observable();
+    this.confirmpass = ko.observable();
+    this.error = ko.observable('');
     this.pas=ko.observable('');
-	
-	this.showPublicEvents = function(){
+
+    var self = this;
+
+    this.signup = function()
+    {
+    if(this.pass() == this.confirmpass())
+    {
+    	$.post("/signup",
+    	      {user_name :this.uname(),pass : this.pass()},
+    	      function(data)
+    	      {
+                  if(data.error)
+                  {
+                      document.getElementById("InvalidUser").style.visibility="visible";
+                      self.error("Unable to create Account");
+                  }
+                  else
+                  {
+    	              document.getElementById("SuccessfulSignup").style.visibility="visible";
+                  }
+    	      }
+    	      );
+    }
+    else
+    {
+         document.getElementById("InvalidUser").style.visibility="visible";
+         this.error("Passwords do not match!!");   
+    }
+    return false;
+    }
+    this.showPublicEvents = function(){
         var event = {};
-        var self = this;
         $.get(
             '/publicEvents.json',
             function(data){
@@ -58,16 +89,16 @@ function ParticipateViewModel() {
    this.login=function()
 	{
 			var user=this.uname();
-			$.post("/login",
+			$.get("/login",
 				  {user_name : user, pass : this.pas()},
 				  function(data)
 				  {
 					 document.getElementById("InvalidUser").style.visibility="hidden";
 					 document.getElementById("Welcome").style.visibility="hidden";
-					 data = JSON.parse(data);
-					 if(data.status == 'not success')
+					 if(data.error)
 					 {
 						 document.getElementById("InvalidUser").style.visibility="visible";
+                                                 self.error(data.error.message);
 					 }
 					 else
 					 {
