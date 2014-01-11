@@ -10,7 +10,7 @@ function EventModel(data)
     this.date = ko.observable(data.date);
     this.time = ko.observable(data.time);
     this.place = ko.observable(data.place);
-    this.organizer = ko.observable(data.organizer);
+    this.account_id = ko.observable(data.account_id);
     this.fees = ko.observable(data.fees);
     this.prize = ko.observable(data.prize);
     this.description = ko.observable(data.description);
@@ -75,7 +75,7 @@ function ParticipateViewModel() {
                 event.date = item.date;
                 event.time = item.time;
                 event.place = item.place;
-                event.organizer = item.organizer;
+                event.account_id = item.account_id;
                 event.fees = item.fees;
                 event.prize = item.prize;
                 event.description = item.description;
@@ -94,7 +94,6 @@ function ParticipateViewModel() {
 				  function(data)
 				  {
 					 document.getElementById("InvalidUser").style.visibility="hidden";
-					 document.getElementById("Welcome").style.visibility="hidden";
 					 if(data.error)
 					 {
 						 document.getElementById("InvalidUser").style.visibility="visible";
@@ -105,7 +104,7 @@ function ParticipateViewModel() {
 						 if(wantsToParticipate==true)
 						 {
 							 $.post("/participate",
-								{event: oldeventID,user_name : user},
+								{event: oldeventID,user_id : data.id},
 								function(data)
 								{
 								//alert(data);

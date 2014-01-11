@@ -7,7 +7,7 @@ var emptyEvent = new function() {
     this.date = "";
     this.time = "";
     this.place = "";
-    this.organizer = "";
+    this.account_id = "";
     this.fees = "";
     this.prize = "";
     this.description = "";
@@ -20,7 +20,7 @@ function EventModel(data)
     this.date = ko.observable(data.date);
     this.time = ko.observable(data.time);
     this.place = ko.observable(data.place);
-    this.organizer = ko.observable(data.organizer);
+    this.account_id = ko.observable(data.account_id);
     this.fees = ko.observable(data.fees);
     this.prize = ko.observable(data.prize);
     this.description = ko.observable(data.description);
@@ -86,8 +86,15 @@ function EventModel(data)
         $.post('/createEvent',
                {event : event},
                 function(data){
-                    eventViewModel.message("Event Created Successfully");
-                    eventViewModel.myEvents.push(self);
+                    if(!data.error)
+                    {
+                        eventViewModel.message("Event Created Successfully");
+                        eventViewModel.myEvents.push(self);
+                    }
+                    else
+                    {
+                         eventViewModel.message(data.error.message);
+                    }
                 }
                 );
     }
@@ -108,12 +115,13 @@ function EventViewModel() {
     this.publicEvents = ko.observableArray();
     this.uname=ko.observable();
     this.pas=ko.observable('');
+    this.userid = ko.observable();
     
     this.participate = function(eventid)
     {
         var self=this;
         $.post("/participate",
-	      {event: eventid,user_name : this.uname()},
+	      {event: eventid,user_id: this.userid()},
 	      function(data){
               self.message("You have participated successfully!!");
        });
@@ -165,6 +173,7 @@ function EventViewModel() {
 						 {
 							 self.participate(oldeventID);
 						 }
+                                                 this.userid(data.id);
 						//alert(user);
 						window.location.href="/loggedIn";
 					 }
@@ -175,6 +184,7 @@ function EventViewModel() {
 
     this.createEvent = function()
     {
+        //TODO : make a dropdown for category in create event form
         var newEvent = new EventModel(emptyEvent);
         this.createEventState = true;
         this.event(newEvent);
@@ -187,6 +197,8 @@ function EventViewModel() {
     
 
     this.showMyEvents = function(){
+
+        //TODO: if a user has no events,show him create event
         var event = {};
         this.reset();
         var self = this;
@@ -315,6 +327,7 @@ function EventViewModel() {
         var SEvent={};
         self.searchEvents.removeAll();
         this.uname($("#current_user").val());
+        this.userid($("#current_user_id").val());
         $.get('/searchEventByCategory',
              {record : data},
              function(data)

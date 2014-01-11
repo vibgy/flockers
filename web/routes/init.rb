@@ -7,6 +7,11 @@ require 'pry'
 
 enable :sessions
 
+enable :sessions
+
+
+enable :sessions
+
 get '/' do
 "Hello World"
 end
@@ -36,9 +41,9 @@ get '/login' do
  begin 
    
    @he =Account.first(:uname => params[:user_name], :password => params[:pass]); 
-   session['user']=params[:user_name];
    raise "Invalid Username or Password" if @he.nil?
-      
+   session['user']=params[:user_name];
+   session['userid'] = @he.id;
    response = @he;
 
    rescue => e
@@ -51,6 +56,7 @@ end
 
 get '/signout' do
    session['user']='';
+   session['userid'] = '';
    @he=Event.all
    unless @he.nil?
       return {:status => 'success'}.to_json;
@@ -61,7 +67,7 @@ end
 
 get '/myEvents.json' do
    @user = session['user'];
-   @hm=Event.all(:organizer => session['user'])
+   @hm=Event.all(:account_id => session['userid'])
    @hm.to_json;
 end
 
@@ -71,7 +77,7 @@ get '/publicEvents.json' do
 end
 
 get '/participationID.json' do
-   @hm=Participation.all(:user_id => session['user'],:fields => [:id,:event_id])
+   @hm=Participation.all(:account_id => session['userid'],:fields => [:id,:event_id])
    if @hm.any?
       @hm.to_json;
    else 
@@ -90,13 +96,28 @@ end
 
 get '/loggedIn' do
    @user = session['user'];
+   @userid = session['userid'];
    haml :profile
 end
 
 post '/createEvent' do
+
    event = params[:event];
-   status = Event.create(:ename => event[:ename],:date => event[:date],:time => event[:time],:place => event[:place],:organizer => session['user'],:fees => event[:fees],:prize => event[:prize],:description =>event[:description]);
-   return status;
+   begin 
+   zoo = Event.new
+   zoo.attributes = { :ename => event[:ename],:date => event[:date],:time => event[:time],:place => event[:place],:account_id => session['userid'],:fees => event[:fees],:prize => event[:prize],:description =>event[:description] }
+   if zoo.save
+    response = "Success"
+   else
+    raise "Unable to Create Event"
+   end
+
+   rescue => e
+   response = {:error => {:message => e.message}}
+
+   end
+   content_type :json
+   response.to_json
 end
 
 post '/signup' do
@@ -104,9 +125,14 @@ post '/signup' do
    begin
    zoo = Account.new
    zoo.attributes = { :uname => params[:user_name],:password => params[:pass] }
-   raise "Unable to create Account" unless zoo.save?
+ 
+   if zoo.save
       
    response = "Success"
+
+   else
+   raise "Unable to create account" 
+   end
 
   rescue => e
         response = {:error => {:message => e.message}}
@@ -152,7 +178,21 @@ end
 
 post '/participate' do
    #Participation.create(:event_id => params[:event],:user_id => params[:user_name]);
+   begin 
    zoo = Participation.new
-   zoo.attributes = { :event_id => params[:event],:user_id => params[:user_name] }
-   zoo.save
+   zoo.attributes = { :event_id => params[:event],:account_id => params[:user_id] }
+   if zoo.save
+    response = "Success"
+   else
+    raise "Unable to Participate"
+   end
+
+   rescue => e
+   response = {:error => {:message => e.message}}
+
+   end
+   content_type :json
+   response.to_json
+
+
 end

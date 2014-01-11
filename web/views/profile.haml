@@ -37,6 +37,7 @@
       .row
         .span4
           %input.hide{:id =>"current_user", :value => "#{@user}"}
+          %input.hide{:id =>"current_user_id", :value => "#{@userid}"}
           %p.alert.alert-info{:"data-bind" => "visible: message, text: message"}
       .row
         .span12
