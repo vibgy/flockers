@@ -82,7 +82,7 @@ get '/publicEvents.json' do
 end
 
 get '/participationID.json' do
-   @hm=Participation.all(:account_id => session['userid'],:fields => [:id,:event_id])
+   @hm=Participation.all(:account_id => session['userid'])
    if @hm.any?
       @hm.to_json;
    else 
