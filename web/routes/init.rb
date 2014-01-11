@@ -5,12 +5,17 @@ require 'haml'
 require 'json'
 require 'pry'
 
-enable :sessions
+require_relative '../../models/init.rb'
 
 enable :sessions
 
+enable :sessions
+
 
 enable :sessions
+
+module Flockers
+  class WebApp < Sinatra::Application
 
 get '/' do
 "Hello World"
@@ -103,19 +108,23 @@ end
 post '/createEvent' do
 
    event = params[:event];
-   begin 
-   zoo = Event.new
-   zoo.attributes = { :ename => event[:ename],:date => event[:date],:time => event[:time],:place => event[:place],:account_id => session['userid'],:fees => event[:fees],:prize => event[:prize],:description =>event[:description] }
-   if zoo.save
-    response = "Success"
-   else
-    raise "Unable to Create Event"
-   end
+   puts session['userid']
+   
+   #begin 
+      Event.createEvent({ 
+         :ename => event[:ename], 
+         :date => event[:date],
+         :time => event[:time],
+         :place => event[:place],
+         :account_id => session['userid'],
+         :fees => event[:fees],
+         :prize => event[:prize],
+         :description =>event[:description]})
 
-   rescue => e
-   response = {:error => {:message => e.message}}
+   #rescue => e
+   #   response = {:error => {:message => e.message}}
+   #end
 
-   end
    content_type :json
    response.to_json
 end
@@ -123,19 +132,19 @@ end
 post '/signup' do
 
    begin
-   zoo = Account.new
-   zoo.attributes = { :uname => params[:user_name],:password => params[:pass] }
- 
-   if zoo.save
-      
-   response = "Success"
+      zoo = Account.new(
+         :uname => params[:user_name], 
+         :password => params[:pass] )
 
-   else
-   raise "Unable to create account" 
-   end
+      if zoo.save
+         response = "Success"
+      else
+         response = "Failure"
+         raise "Unable to create account" 
+      end
 
-  rescue => e
-        response = {:error => {:message => e.message}}
+   rescue => e
+      response = {:error => {:message => e.message}}
    end
 
    content_type :json
@@ -177,22 +186,20 @@ get '/deleteParticipationEvent' do
 end
 
 post '/participate' do
-   #Participation.create(:event_id => params[:event],:user_id => params[:user_name]);
    begin 
-   zoo = Participation.new
-   zoo.attributes = { :event_id => params[:event],:account_id => params[:user_id] }
-   if zoo.save
-    response = "Success"
-   else
-    raise "Unable to Participate"
-   end
+      puts params
+      response = {}
+      event = Event.first(:id => params[:event].to_i)
+      account = Account.first(:id => params[:user_id].to_i)
 
+      event.addAttendee(account)
    rescue => e
-   response = {:error => {:message => e.message}}
-
+      response = {:error => {:message => e.message}}
    end
+
    content_type :json
    response.to_json
+end
 
-
+end
 end
