@@ -9,8 +9,8 @@
       %button.btn.btn-success.btn-lg{"data-target" => "#signInModal", "data-toggle" => "modal"} Sign In
       %button.btn.btn-primary.btn-lg{"data-target" => "#signUpModal", "data-toggle" => "modal"} Sign Up
       %br
-      %span.alert.alert-danger#InvalidUser{:style => 'visibility : hidden',:'data-bind' => 'text : error'}
-      %span.alert.alert-success#SuccessfulSignup{:style => 'visibility : hidden'}You have signed up successfully
+      %p.alert.alert-danger#InvalidUser{:style => 'visibility : hidden',:'data-bind' => 'text : error'}
+      %p.alert.alert-success#SuccessfulSignup{:style => 'visibility : hidden'}You have signed up successfully
       %br
       .row
         %button.btn-primary.btn-large{:"data-bind" => "click : showPublicEvents"}Public Events 

@@ -43,6 +43,7 @@ class Event
   property :prize, Integer
   property :description,String
   property :category,String
+  property :activity,String
 
   has n, :participations
   has n, :attendees, :model => Account, :child_key => [:id], :parent_key => [:account_id], :through => :participations

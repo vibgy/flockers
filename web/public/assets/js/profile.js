@@ -24,6 +24,8 @@ function EventModel(data)
     this.fees = ko.observable(data.fees);
     this.prize = ko.observable(data.prize);
     this.description = ko.observable(data.description);
+    this.category = ko.observable(data.category);
+    this.activity = ko.observable(data.activity);
 
     this.message = ko.observable('');
     
@@ -106,13 +108,16 @@ function EventViewModel() {
     this.createEventState = false;
     this.message = ko.observable('');
     this.myEvents = ko.observableArray();
-    this.searchEvents = ko.observableArray();
+    this.searchEvents = ko.observableArray();//this is for search box
     this.topEvents = ko.observableArray();
     this.createEventFlag = ko.observable(false);
     this.participationEvents = ko.observableArray();
     this.category = ko.observableArray();
+    this.selectedCategory = ko.observable();
+    this.selectedActivity = ko.observable();
     
     this.publicEvents = ko.observableArray();
+    this.searchedEvents = ko.observableArray();//this is for wheel
     this.uname=ko.observable();
     this.pas=ko.observable('');
     this.userid = ko.observable();
@@ -290,6 +295,7 @@ function EventViewModel() {
     this.searchEvent = function() {
         var self = this;
         var SEvent={};
+        this.selectedActivity("Search Results");//this is for displaying message
         this.reset();
         $.get('/search',
              {record : this.event().ename},
@@ -323,39 +329,58 @@ function EventViewModel() {
         };
         
         this.searchEventByCategory = function(data) {
-        var self = this;
-        var SEvent={};
-        self.searchEvents.removeAll();
-        this.uname($("#current_user").val());
-        this.userid($("#current_user_id").val());
-        $.get('/searchEventByCategory',
-             {record : data},
-             function(data)
-             {
-                 alert(data);data = JSON.parse(data);
-                 if(data.status == 'Failure')
+            var self = this;
+            this.selectedCategory("I would love to "+data);
+            var SEvent={};
+            this.reset();
+            this.uname($("#current_user").val());
+            this.userid($("#current_user_id").val());
+            $.get('/searchEventByCategory',
+                 {record : data},
+                 function(data)
                  {
-                     self.message("No Matches Found");                     
-                 }
-                 else
-                 {
-                     var SEvents = $.map(data,function(item) 
-                     {
-                         SEvent.id =item.id;
-                         SEvent.ename = item.ename;
-                         SEvent.date = item.date;
-                         SEvent.time = item.time;
-                         SEvent.place = item.place;
-                         SEvent.organizer = item.organizer;
-                         SEvent.fees = item.fees;
-                         SEvent.prize = item.prize;
-                         SEvent.description = item.description;
-                         return new EventModel(SEvent);
-                     });
-                     self.searchEvents(SEvents);
-                 }
+                     data = JSON.parse(data);
+                    if(data.status == 'Failure')
+                    {
+                        self.message("No Matches Found");                     
+                    }
+                    else
+                    {
+                        var SEvents = $.map(data,function(item) 
+                        {
+                             SEvent.id =item.id;
+                             SEvent.ename = item.ename;
+                             SEvent.date = item.date;
+                             SEvent.time = item.time;
+                             SEvent.place = item.place;
+                             SEvent.organizer = item.organizer;
+                             SEvent.fees = item.fees;
+                             SEvent.prize = item.prize;
+                             SEvent.description = item.description;
+                             SEvent.category = item.category;
+                             SEvent.activity = item.activity;
+                             return new EventModel(SEvent);
+                        });
+                    self.searchedEvents(SEvents);
+                    }
             }); 
         };
+
+    //we are not getting data from BE.We are using events returned by searchEventsByCategory
+    this.searchEventByActivity = function(activity)
+    {
+         this.selectedActivity(this.selectedCategory()+ " " + activity);
+         this.searchEvents.removeAll();
+         this.createEventFlag(true);
+         for(var i = 0 ; i < this.searchedEvents().length ; i++)
+         {
+              if(this.searchedEvents()[i].activity() == activity)
+              {
+                  this.searchEvents.push(this.searchedEvents()[i]);
+              }
+         }
+    }
+
 
 
     this.getTopEvents = function(){
@@ -404,8 +429,7 @@ function EventViewModel() {
                        {
                             category.push(data[i].category);
                        }
-                   }
-                   alert(category);  
+                   } 
                    self.category(category);  
               });
     }
@@ -421,6 +445,7 @@ function EventViewModel() {
         this.searchEvents.removeAll();
         this.participationEvents.removeAll();
         this.message('');
+        this.searchedEvents.removeAll();
         this.createEventFlag(false);
    }
 }

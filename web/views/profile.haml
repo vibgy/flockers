@@ -3,6 +3,7 @@
   %head
     %title Event Planner
     %link{:href => "../assets/css/bootstrap.css", :rel => "stylesheet"}
+    /%link{:href => "../assets/css/bootstrap3.css", :rel => "stylesheet"}
     %link{:href => "../assets/css/bootstrap-timepicker.css", :rel => "stylesheet"}
     %link{:href => "../assets/css/datepicker.css", :rel => "stylesheet"}
     %script{:src => "../assets/js/jquery.min.js"}
@@ -33,12 +34,16 @@
           %ul.nav.navbar-nav.navbar-right
             %li
               %button.btn.btn-danger{:"data-bind" => "click : signOut"} Sign Out
+
+
     .container
       .row
         .span4
           %input.hide{:id =>"current_user", :value => "#{@user}"}
           %input.hide{:id =>"current_user_id", :value => "#{@userid}"}
-          %p.alert.alert-info{:"data-bind" => "visible: message, text: message"}
+        %p.alert.alert-info{:"data-bind" => "visible: message, text: message"}
+
+
       .row
         .span12
           .main
@@ -47,8 +52,22 @@
             %ul#wheel.wheel{:'data-bind' => 'foreach : category'}
               %li.item
                 %a{:'data-bind' => 'text : $data,click : function() { $root.searchEventByCategory($data);}'}
-        .well{:'data-bind' => "visible : searchEvents().length"}
-          %table.table.table-striped{:border => '0'}
+      .row
+        
+        %div.center.panel.panel-primary{:'data-bind' => 'visible : searchedEvents().length'}
+          %div.panel-heading
+            %h3{:'data-bind' => 'text : selectedCategory'}
+          %ul.list-group.panel-body{:'data-bind'=>'foreach:searchedEvents',:style =>"list-style-type : none;"}
+            %li
+              %a
+                %h4{:'data-bind'=>"click : function(){$root.searchEventByActivity(activity());},text:activity()"} 
+      .row
+
+        %table.table.table-striped.table-bordered{:'data-bind' => "visible : searchEvents().length"}
+          %caption 
+            %p
+              %h4.alert.alert-info{:'data-bind' => 'text : selectedActivity'}
+          %thead
             %tr
               %th Name
               %th Date
@@ -58,8 +77,8 @@
               %th Time
               %th Description
               %th Want To Participate
-          %table.table.table-striped{:"data-bind"=>"foreach:searchEvents",:border => '0'}
-            %tr
+          %tbody{:"data-bind"=>"foreach:searchEvents"}
+            %tr.success
               %td{:"data-bind" => "text : ename()"}
               %td{:"data-bind" => "text : date()"}
               %td{:"data-bind" => "text : fees()"}
@@ -69,6 +88,8 @@
               %td{:"data-bind" => "text : description()"}
               %td
                 %button.btn-primary{:'data-bind' =>'click : function() { $root.participate(id());}'}Participate
+
+
         .row
           .span12
             %button#CreateEvent.btn-success.btn-large{"data-target" => "#createEventModal", "data-toggle" => "modal" , :"data-bind" => "click : createEvent , visible : createEventFlag"} Create Event
@@ -94,6 +115,8 @@
                 %td{:"data-bind" => "text : description()"}
                 %td
                   %button.btn-primary{:"data-bind" => "click : DeleteEvent"}Delete Me
+
+
           .well{:'data-bind' => "visible : participationEvents().length>0"}
             %table.table.table-striped{:border => '0'}
               %tr
@@ -116,6 +139,7 @@
                 %td{:"data-bind" => "text : description()"}
                 %td
                   %button.btn-primary{:"data-bind" => "click : deleteParticipateEvent"}Delete Me
+
       #createEventModal.modal.fade.hide
         .modal-header
           %button.close{"aria-hidden" => "true", "data-dismiss" => "modal", :type => "button"} &times;
