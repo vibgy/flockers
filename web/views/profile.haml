@@ -53,43 +53,54 @@
               %li.item
                 %a{:'data-bind' => 'text : $data,click : function() { $root.searchEventByCategory($data);}'}
       .row
-        
-        %div.center.panel.panel-primary{:'data-bind' => 'visible : searchedEvents().length'}
+        .span3
+         
+        %div.span6.panel.panel-danger{:'data-bind' => 'visible : searchedEvents().length'}
           %div.panel-heading
-            %h3{:'data-bind' => 'text : selectedCategory'}
-          %ul.list-group.panel-body{:'data-bind'=>'foreach:searchedEvents',:style =>"list-style-type : none;"}
-            %li
-              %a
-                %h4{:'data-bind'=>"click : function(){$root.searchEventByActivity(activity());},text:activity()"} 
+            %h4{:style => "text-align:center",:'data-bind' => 'text : selectedCategory'}
+          %div.panel-body{:style => "padding : 0px;",:'data-bind'=>'foreach:activities',:style =>"list-style-type : none;"}
+            
+            %button.btn-danger.btn.btn-large{:style => "width : 100%;",:'data-bind'=>"click : function(){$root.searchEventByActivity($data);},text:$data"} 
       .row
+        .span3  
+        .span7.panel.panel-info{:'data-bind' => 'visible : searchEvents().length'}
+          %div.panel-heading
+            %h4{:'data-bind' => 'text : selectedActivity'}
+          %div.panel-body{:"data-bind"=>"foreach:searchEvents"}
 
-        %table.table.table-striped.table-bordered{:'data-bind' => "visible : searchEvents().length"}
-          %caption 
-            %p
-              %h4.alert.alert-info{:'data-bind' => 'text : selectedActivity'}
-          %thead
-            %tr
-              %th Name
-              %th Date
-              %th Fees
-              %th Prize
-              %th Place
-              %th Time
-              %th Description
-              %th Want To Participate
-          %tbody{:"data-bind"=>"foreach:searchEvents"}
-            %tr.success
-              %td{:"data-bind" => "text : ename()"}
-              %td{:"data-bind" => "text : date()"}
-              %td{:"data-bind" => "text : fees()"}
-              %td{:"data-bind" => "text : prize()"}
-              %td{:"data-bind" => "text : place()"}
-              %td{:"data-bind" => "text : time()"}
-              %td{:"data-bind" => "text : description()"}
-              %td
-                %button.btn-primary{:'data-bind' =>'click : function() { $root.participate(id());}'}Participate
-
-
+            .span3.panel.panel-info
+            
+              %div.panel-body
+              
+                %table{:border => "0"}
+                  %tr
+                    %th Name
+                    %td{:"data-bind" => "text : ename()"}
+                  %tr
+                    %th Date
+                    %td{:"data-bind" => "text : date()"}
+                  %tr
+                    %th Fees
+                    %td{:"data-bind" => "text : fees()"}
+                  %tr
+                    %th Prize
+                    %td{:"data-bind" => "text : prize()"}
+                  %tr
+                    %th Place
+                    %td{:"data-bind" => "text : place()"}
+                  %tr
+                    %th Time
+                    %td{:"data-bind" => "text : time()"}
+                  %tr
+                    %th Description
+                  
+                    %td{:"data-bind" => "text : ':  '+ description()"}
+                  %tr
+                    %th
+                    %td{:align => "right"}
+                      %button.btn.btn-primary{:'data-bind' =>'click : function() { $root.participate(id());}'}Participate
+              
+      %div
         .row
           .span12
             %button#CreateEvent.btn-success.btn-large{"data-target" => "#createEventModal", "data-toggle" => "modal" , :"data-bind" => "click : createEvent , visible : createEventFlag"} Create Event

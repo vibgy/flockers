@@ -115,6 +115,7 @@ function EventViewModel() {
     this.category = ko.observableArray();
     this.selectedCategory = ko.observable();
     this.selectedActivity = ko.observable();
+    this.activities = ko.observableArray();
     
     this.publicEvents = ko.observableArray();
     this.searchedEvents = ko.observableArray();//this is for wheel
@@ -359,9 +360,14 @@ function EventViewModel() {
                              SEvent.description = item.description;
                              SEvent.category = item.category;
                              SEvent.activity = item.activity;
+                             if(self.activities.indexOf(item.activity)==-1)
+                             {
+                                 self.activities.push(item.activity);
+                             }
                              return new EventModel(SEvent);
                         });
                     self.searchedEvents(SEvents);
+              
                     }
             }); 
         };
@@ -393,7 +399,7 @@ function EventViewModel() {
                    data = JSON.parse(data);
                    for(var i = 0 ; i < data.length; i++)
                    {
-                       var index = isUnique(data[i].ename,uniqueEvents);
+                       var index = uniqueEvents.indexOf(data[i].event);
                        if(index == -1)
                        {
                             uniqueEvents.push({event : data[i].ename, count :1});
