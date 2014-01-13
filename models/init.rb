@@ -27,6 +27,21 @@ class Account
     return self.events.save!
   end
 
+  def self.create_account args
+    
+    raise "You must create an account with an email address" if args[:uname].nil?
+
+    new_account = Account.create()
+
+    new_account.uname = args[:uname] 
+    new_account.password = args[:password] if args.has_key? :password
+    new_account.created_at = Time.now   
+    new_account.save
+    raise 'couldnt create account; wont save' unless new_account.saved?
+
+    if new_account.saved? then new_account else raise 'cannot create account' end
+  end
+
 end
 
 class Event
@@ -66,7 +81,8 @@ class Event
     newEvent.fees = args[:fees] if args.has_key? :fees
     newEvent.prize = args[:prize] if args.has_key? :prize
     newEvent.description = args[:description] if args.has_key? :description
-    newEvent.category args[:category] if args.has_key? :category
+    newEvent.category = args[:category] if args.has_key? :category
+    newEvent.activity = args[:activity] if args.has_key? :activity
 
     newEvent.save
 
