@@ -47,15 +47,15 @@
       .row
         .span12
           .main
-            %a.wheel-button{:href => "#wheel"}Would you like to play
+            %a.wheel-button{:href => "#wheel"} I would you like to 
             .pointer
             %ul#wheel.wheel{:'data-bind' => 'foreach : category'}
               %li.item
-                %a{:'data-bind' => 'text : $data,click : function() { $root.searchEventByCategory($data);}'}
+                %a{:'data-bind' => 'text : $data,click : function() { $root.getActivities($data);}'}
       .row
         .span3
          
-        %div.span6.panel.panel-danger{:'data-bind' => 'visible : searchedEvents().length'}
+        %div.span6.panel.panel-danger{:'data-bind' => 'visible : activities().length'}
           %div.panel-heading
             %h4{:style => "text-align:center",:'data-bind' => 'text : selectedCategory'}
           %div.panel-body{:style => "padding : 0px;",:'data-bind'=>'foreach:activities',:style =>"list-style-type : none;"}
@@ -63,10 +63,10 @@
             %button.btn-danger.btn.btn-large{:style => "width : 100%;",:'data-bind'=>"click : function(){$root.searchEventByActivity($data);},text:$data"} 
       .row
         .span3  
-        .span7.panel.panel-info{:'data-bind' => 'visible : searchEvents().length'}
+        .span7.panel.panel-info{:'data-bind' => 'visible : searchedEvents().length'}
           %div.panel-heading
             %h4{:'data-bind' => 'text : selectedActivity'}
-          %div.panel-body{:"data-bind"=>"foreach:searchEvents"}
+          %div.panel-body{:"data-bind"=>"foreach:searchedEvents"}
 
             .span3.panel.panel-info
             
