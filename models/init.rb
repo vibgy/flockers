@@ -6,14 +6,20 @@ end
 class Participation
 end
 
-class Account 
-	include DataMapper::Resource
+class Verb
+end
 
-	property :id, 	Serial 	# Required in all DM classes coming from d
+class Activity
+end
+
+class Account 
+  include DataMapper::Resource
+
+  property :id, Serial
   property :created_at,   DateTime, :default => Time.now
-	property :uname, String, :required => true
-	property :password, String, :required => true
-  
+  property :uname, String, :required => true
+  property :password, String, :required => true
+
   has n, :participations
   has n, :participatedEvents, :model => Event, :child_key => [:id], :parent_key => [:event_id], :through => :participations
 
@@ -28,7 +34,6 @@ class Account
   end
 
   def self.create_account args
-    
     raise "You must create an account with an email address" if args[:uname].nil?
 
     new_account = Account.create()
@@ -47,7 +52,7 @@ end
 class Event
   include DataMapper::Resource
 
-  property :id, 	Serial 	# Required in all DM classes coming from d
+  property :id,     Serial
   property :created_at,   DateTime, :default => Time.now
   property :ename, String, :required => true
   property :date, Date
@@ -107,11 +112,29 @@ class Event
 end
 
 class Participation
-	include DataMapper::Resource
+  include DataMapper::Resource
   property :created_at,   DateTime, :default => Time.now
 
-	belongs_to :participatedEvent, :model => Event, :key => true, :child_key => [:event_id]
-	belongs_to :attendee, :model => Account, :key => true, :child_key => [:account_id]
+  belongs_to :participatedEvent, :model => Event, :key => true, :child_key => [:event_id]
+  belongs_to :attendee, :model => Account, :key => true, :child_key => [:account_id]
+end
+
+class Verb
+  include DataMapper::Resource
+  property :id,           Serial
+  property :created_at,   DateTime, :default => Time.now
+  property :verb,         String, :unique => true
+
+  has n,   :activities, :model => Activity
+end
+
+class Activity
+  include DataMapper::Resource
+  property :id,           Serial
+  property :created_at,   DateTime, :default => Time.now
+  property :activity,     String, :unique => true
+
+  belongs_to :verb, :model => Verb
 end
 
 # this is very cricial otherwise you get the 
