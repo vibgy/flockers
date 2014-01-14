@@ -3,64 +3,81 @@
   %head
     %title Event Planner
     %link{:href => "../assets/css/bootstrap.css", :rel => "stylesheet"}
+    %link{:href => "../assets/css/jumbotron.css", :rel => "stylesheet"}
   %body
     = haml_partial "topBar"
 
+    .jumbotron
+      .container
+        %h1 Flockers
+        %p A site to reveal The FUN SIDE of you
     .container
-      %h1 Flockers
-      %br
       %p.alert.alert-danger#InvalidUser{:style => 'visibility : hidden',:'data-bind' => 'text : error'}
       %p.alert.alert-success#SuccessfulSignup{:style => 'visibility : hidden'}You have signed up successfully
-      %br
-      .row
-        %button.btn.btn-primary.pull-right{:"data-bind" => "click : showPublicEvents"}Refresh
-        %table.table.table-striped{:"data-bind"=>"foreach:publicEvents",:border => '0'}
-          %tr
-            %td{:"data-bind" => "text : ename()"}
-            %td{:"data-bind" => "text : date()"}
-            %td{:"data-bind" => "astext : fees()"}
-            %td{:"data-bind" => "text : prize()"}
-            %td{:"data-bind" => "text : place()"}
-            %td{:"data-bind" => "text : time()"}
-            %td{:"data-bind" => "text : description()"}
-            %td
-              %button.btn.btn-primary{"data-target" => "#signInModal", "data-toggle" => "modal",:"data-bind" => "click : participateVar"}Participate
-      #signInModal.modal.fade{:tabindex => "-1"}
-        .modal-header
-          %button.close{"aria-hidden" => "true", "data-dismiss" => "modal", :type => "button"} &times;
-          %h4.modal-title Sign In
-        .modal-body
-          %form                    
-            %label Username
-            %input{:"data-bind" => "value : uname", :placeholder => "Email address",:type => "text"}
+      .row{:"data-bind" => "foreach : publicEvents"}
+        .col-md-4
+          %h2{:"data-bind" => "text : ename()"}
+          %p{:"data-bind" => "text : description()"}
+          %p{:"data-bind" => "text : date()"}
+          %p{:"data-bind" => "astext : fees()"}
+          %p{:"data-bind" => "text : prize()"}
+          %p{:"data-bind" => "text : place()"}
+          %p{:"data-bind" => "text : time()"}
+          %p
+            %a.btn.btn-primary{"data-target" => "#signInModal", "data-toggle" => "modal",:"data-bind" => "click : participateVar"}Participate
+      #signInModal.modal.fade{"aria-hidden" => "true", "aris-labelledby" => "signInModal",:role => "dialog" ,:tabindex => "-1"}
+        .modal-dialog
+          .modal-content
+            .modal-header
+              %button.close{"aria-hidden" => "true", "data-dismiss" => "modal", :type => "button"} &times;
+              %h4.modal-title Sign In
+            .modal-body
+              %form.form-horizontal{:role => "form"}                    
+                .form-group
+                  %label.col-sm-4.control-label Username
+                  .col-sm-6
+                    %input.form-control{:"data-bind" => "value : uname", :placeholder => "Email address",:type => "text"}
                       
-            %label Password
-            %input{:"data-bind" => "value : pas", :placeholder => "Password",:type => "password"}
+                .form-group
+                  %label.col-sm-4.control-label Password
+                  .col-sm-6
+                    %input.form-control{:"data-bind" => "value : pas", :placeholder => "Password",:type => "password"}
                           
-            %label.checkbox
-            %input{:type => "checkbox", :value => "remember-me"}
-            Remember me
-            %button#show.btn.btn-large.btn-primary{:'data-dismiss' => "modal",:"data-bind" => "click : login"} Sign In              
-        .modal-footer
-          Not Yet Registered  
-      #signUpModal.modal.fade{:tabindex => "-1"}
-        .modal-header
-          %button.close{"aria-hidden" => "true", "data-dismiss" => "modal", :type => "button"} &times;
-          %h4.modal-title Sign Up
-        .modal-body
-          %form                  
-            %label Username
-            %input{:placeholder => "Email address",:type => "text",:'data-bind' => "value : uname"}
+                .form-group
+                  .col-sm-offset-4.col-sm-6
+                    .checkbox
+                      %label
+                        %input.checkbox{:type => "checkbox", :value => "remember-me"}
+                        Remember me
+                .form-group
+                  .col-sm-offset-4.col-sm-6
+                    %button#show.btn.btn-large.btn-primary{:'data-dismiss' => "modal",:"data-bind" => "click : login"} Sign In              
+      #signUpModal.modal.fade{"aria-hidden" => "true", "aris-labelledby" => "signUnModal",:role => "dialog" ,:tabindex => "-1"}
+        .modal-dialog
+          .modal-content
+            .modal-header
+              %button.close{"aria-hidden" => "true", "data-dismiss" => "modal", :type => "button"} &times;
+              %h4.modal-title Sign Up
+            .modal-body
+              %form.form-horizontal{:role => "form"}                    
+                .form-group
+                  %label.col-sm-4.control-label Username
+                  .col-sm-6
+                    %input.form-control{:placeholder => "Email address",:type => "text",:'data-bind' => "value : uname"}
                       
-            %label Create Password
-            %input{:placeholder => "Create Password",:type => "password",:'data-bind' => "value : pass"}
+                .form-group
+                  %label.col-sm-4.control-label Create Password
+                  .col-sm-6
+                    %input.form-control{:placeholder => "Create Password",:type => "password",:'data-bind' => "value : pass"}
             
-            %label Confirm Password
-            %input{:placeholder => "Confirm Password",:type => "password",:'data-bind' => "value : confirmpass"}
+                .form-group
+                  %label.col-sm-4.control-label Confirm Password
+                  .col-sm-6
+                    %input.form-control{:placeholder => "Confirm Password",:type => "password",:'data-bind' => "value : confirmpass"}
             
-            %br              
-            
-            %button#show.btn.btn-large.btn-primary{:'data-dismiss' => "modal",:'data-bind'=> " click : signup", :type => "submit"} Sign Up               
+                .form-group
+                  .col-sm-offset-4.col-sm-6
+                    %button#show.btn.btn-large.btn-primary{:'data-dismiss' => "modal",:'data-bind'=> " click : signup", :type => "submit"} Sign Up               
     /%script{:src => "../assets/js/login.js"}
     %script{:src => "../assets/js/knockout-2.2.1.js"}  
     %script{:src => "../assets/js/jquery.min.js"}
