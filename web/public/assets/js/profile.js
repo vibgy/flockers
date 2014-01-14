@@ -328,22 +328,23 @@ function EventViewModel() {
                  }
             }); 
         };
-        
-        this.searchEventByCategory = function(data) {
+
+        this.searchEventByActivity = function(activity) {
             var self = this;
-            this.selectedCategory("I would love to "+data);
             var SEvent={};
             this.reset();
             this.uname($("#current_user").val());
             this.userid($("#current_user_id").val());
-            $.get('/searchEventByCategory',
-                 {record : data},
+            this.selectedActivity(this.selectedCategory()+ " " + activity);
+            this.searchedEvents.removeAll();
+            this.createEventFlag(true);
+            $.get('/searchEventByActivity',
+                 {record : activity},
                  function(data)
                  {
-                     data = JSON.parse(data);
                     if(data.status == 'Failure')
                     {
-                        self.message("No Matches Found");                     
+                        self.message("No Matches Found");
                     }
                     else
                     {
@@ -360,34 +361,12 @@ function EventViewModel() {
                              SEvent.description = item.description;
                              SEvent.category = item.category;
                              SEvent.activity = item.activity;
-                             if(self.activities.indexOf(item.activity)==-1)
-                             {
-                                 self.activities.push(item.activity);
-                             }
                              return new EventModel(SEvent);
                         });
-                    self.searchedEvents(SEvents);
-              
+                        self.searchedEvents(SEvents);
                     }
-            }); 
+                }); 
         };
-
-    //we are not getting data from BE.We are using events returned by searchEventsByCategory
-    this.searchEventByActivity = function(activity)
-    {
-         this.selectedActivity(this.selectedCategory()+ " " + activity);
-         this.searchEvents.removeAll();
-         this.createEventFlag(true);
-         for(var i = 0 ; i < this.searchedEvents().length ; i++)
-         {
-              if(this.searchedEvents()[i].activity() == activity)
-              {
-                  this.searchEvents.push(this.searchedEvents()[i]);
-              }
-         }
-    }
-
-
 
     this.getTopEvents = function(){
 
@@ -421,22 +400,35 @@ function EventViewModel() {
     };
     
     this.drawWheel = function() {
-     
-        var self = this;   
-        var category = new Array();
-        $.get('/events',
+        var self = this;
+        var category = [];
+        $.get('/verbs',
               function(data)
               {
-                   data = JSON.parse(data);
-                   
                    for(var i = 0 ; i < data.length; i++)
                    {
-                       if(category.indexOf(data[i].category)==-1)
+                       if(category.indexOf(data[i].verb)==-1)
                        {
-                            category.push(data[i].category);
+                            category.push(data[i].verb);
                        }
                    } 
                    self.category(category);  
+              });
+    }
+
+    this.getActivities = function(data) {
+        var self = this;
+        this.activities([]);
+        this.selectedCategory("I would love to "+data);
+
+        $.get('/activities',
+              {verb : data},
+              function(data)
+              {
+                   for(var i = 0 ; i < data.length; i++)
+                   {
+                       self.activities.push(data[i].activity);
+                   } 
               });
     }
 
