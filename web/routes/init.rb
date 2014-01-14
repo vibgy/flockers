@@ -3,7 +3,7 @@ require 'data_mapper'
 require 'sinatra'
 require 'haml'
 require 'json'
-require 'pry'
+#require 'pry'
 
 require_relative '../../models/init.rb'
 
@@ -32,13 +32,21 @@ get '/events' do
 end
 
 get '/searchEventByCategory' do
-   @hs=Event.all(:category => params[:record])
-   if @hs.any?
-      data = @hs.to_json;
+   hs=Event.all(:category => params[:record])
+   if hs.any?
+      data = hs.to_json;
    else
       data = {:status => 'Failure'}.to_json;
    end
-   return data;
+   content_type :json
+   data.to_json
+end
+
+get '/searchEventByActivity' do
+   data = Event.all('activity.like' => params[:record])
+   data = {:status => 'Failure'} if data.nil?
+   content_type :json
+   data.to_json
 end
 
 get '/login' do 
@@ -199,6 +207,29 @@ post '/participate' do
 
    content_type :json
    response.to_json
+end
+
+get '/verbs' do
+    content_type :json
+    Verb.all.to_json
+end
+
+post '/verbs' do
+    raise "Incorrect Arguments" if params[:verb].nil?
+    Verb.create(:verb => 'params[:verb]')
+end
+
+get '/activities' do
+    raise "Incorrect Arguments" if params[:verb].nil?
+    content_type :json
+    v = Verb.first(:verb => params[:verb])
+    Activity.all(:verb => v).to_json
+end
+
+post '/activities' do
+    raise "Incorrect Arguments" if params[:verb].nil? or params[:activity].nil?
+    v = Verb.first(:verb => params[:verb])
+    Activity.create(:verb => v, :activity => params[:activity])
 end
 
 end
