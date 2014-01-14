@@ -1,5 +1,30 @@
 def populate_users!
 
+    di = Verb.create(:verb => 'discuss')
+    en = Verb.create(:verb => 'enjoy')
+    pl = Verb.create(:verb => 'play')
+    pr = Verb.create(:verb => 'practice')
+    st = Verb.create(:verb => 'study')
+    tr = Verb.create(:verb => 'travel')
+
+    di.activities << Activity.create(:activity => 'politics')
+    en.activities << Activity.create(:activity => 'movie')
+    en.activities << Activity.create(:activity => 'laser-tag')
+    pl.activities << Activity.create(:activity => 'basketball')
+    pl.activities << Activity.create(:activity => 'cricket')
+    pr.activities << Activity.create(:activity => 'guitar')
+    pr.activities << Activity.create(:activity => 'dance')
+    st.activities << Activity.create(:activity => 'physics')
+    st.activities << Activity.create(:activity => 'engines')
+    tr.activities << Activity.create(:activity => 'day-trip')
+    tr.activities << Activity.create(:activity => 'weekend-trip')
+
+    di.save
+    en.save
+    pl.save
+    pr.save
+    st.save
+    tr.save
 
     a = Account.create_account(:uname => 'gnolkha@gmail.com',
              :password => 'gaurav')
