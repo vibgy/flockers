@@ -29,10 +29,15 @@
             %ul#wheel.wheel{:'data-bind' => 'foreach : category'}
               %li.item
                 %a{:'data-bind' => 'text : $data,click : function() { $root.getActivities($data);}'}
+
+      %br
+      %br
+      %br
+      %br
       .row
-        .span3
+        .col-md-4
          
-        %div.span6.panel.panel-danger{:'data-bind' => 'visible : activities().length'}
+        %div.col-md-4.panel.panel-danger{:style => "padding-left : 0px; padding-right : 0px;",:'data-bind' => 'visible : activities().length'}
           %div.panel-heading
             %h4{:style => "text-align:center",:'data-bind' => 'text : selectedCategory'}
           %div.panel-body{:style => "padding : 0px;",:'data-bind'=>'foreach:activities',:style =>"list-style-type : none;"}
@@ -80,7 +85,7 @@
       %div
         .row
           .span12
-            %button#CreateEvent.btn-success.btn-large{"data-target" => "#createEventModal", "data-toggle" => "modal" , :"data-bind" => "click : createEvent , visible : createEventFlag"} Create Event
+            %button#CreateEvent.btn.btn-success.btn-large{"data-target" => "#createEventModal", "data-toggle" => "modal" , :"data-bind" => "click : createEvent , visible : createEventFlag"} Create Event
           .well{:'data-bind' => "visible : myEvents().length"}
             %table.table.table-striped{:border => '0'}
               %tr
@@ -128,7 +133,7 @@
                 %td
                   %button.btn-primary{:"data-bind" => "click : deleteParticipateEvent"}Delete Me
 
-      #createEventModal.modal.fade.hide
+      #createEventModal.modal.fade{:tabindex => "-1"}
         .modal-header
           %button.close{"aria-hidden" => "true", "data-dismiss" => "modal", :type => "button"} &times;
           %h4.modal-title Create Event

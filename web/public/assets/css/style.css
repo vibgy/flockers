@@ -1,19 +1,32 @@
 /* Custom Stylesheet */
+body, html {
+      margin: 0;
+      -webkit-font-smoothing: antialiased;
+      background: white;
+      text-align: center;
+      height: 100%;
+}
 
+body .header{
+  color: #34495e;
+}
+
+.container {
+  float: left;
+  width: 100%;
+}
 
 /* Required Stylesheets */
 .wheel-button {
-  
-  width: 200px; 
-  height: 200px;
+  position: relative;
 }
 
 .wheel {
   margin: 0;
   padding: 0;
   list-style: none;
-  width: 200px; /* this will determine the diameter of the circle  */
-  height: 200px; /* this will determine the diameter of the circle  */
+  width: 300px; /* this will determine the diameter of the circle  */
+  height: 300px; /* this will determine the diameter of the circle  */
   visibility: hidden;
   position: relative;
   display: none;
@@ -41,9 +54,9 @@
   background: #df4727; 
   padding: 10px 11px;
   text-align: center;
-  border-radius: 150px;   /*middle circle*/
-  width: 60px;
-  height: 60px;
+  border-radius: 50px;
+  width: 80px;
+  height: 80px;
   color: white;
   display: block;
   margin: 80px auto 20px;
@@ -80,8 +93,8 @@
   border-radius: 50px;
   padding: 10px;
   text-align: center;
-  width: 28px;
-  height: 28px;
+  width: 70px;
+  height: 70px;
   border: 1px solid black;
   box-shadow: 0 1px 2px rgba(0,0,0,0.25), inset 0 1px 1px rgba(255,255,255,0.5);
   -moz-box-shadow: 0 1px 2px rgba(0,0,0,0.25), inset 0 1px 1px rgba(255,255,255,0.5);

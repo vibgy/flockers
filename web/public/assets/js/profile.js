@@ -471,8 +471,8 @@ $().ready(function() {
     ko.applyBindings(eventViewModel);
     eventViewModel.init();
      $(".wheel-button").wheelmenu({
-          trigger: "hover",
-          animation: "fly",
+          trigger: "click",
+         
           angle: [0, 360]
       });
 });

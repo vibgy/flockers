@@ -25,7 +25,7 @@
             %td{:"data-bind" => "text : description()"}
             %td
               %button.btn.btn-primary{"data-target" => "#signInModal", "data-toggle" => "modal",:"data-bind" => "click : participateVar"}Participate
-      #signInModal.modal.fade.hide
+      #signInModal.modal.fade{:tabindex => "-1"}
         .modal-header
           %button.close{"aria-hidden" => "true", "data-dismiss" => "modal", :type => "button"} &times;
           %h4.modal-title Sign In
@@ -43,7 +43,7 @@
             %button#show.btn.btn-large.btn-primary{:'data-dismiss' => "modal",:"data-bind" => "click : login"} Sign In              
         .modal-footer
           Not Yet Registered  
-      #signUpModal.modal.fade.hide
+      #signUpModal.modal.fade{:tabindex => "-1"}
         .modal-header
           %button.close{"aria-hidden" => "true", "data-dismiss" => "modal", :type => "button"} &times;
           %h4.modal-title Sign Up
