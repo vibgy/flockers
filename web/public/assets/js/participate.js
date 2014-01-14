@@ -89,7 +89,7 @@ function ParticipateViewModel() {
    this.login=function()
 	{
 			var user=this.uname();
-			$.get("/login",
+			$.post("/login",
 				  {user_name : user, pass : this.pas()},
 				  function(data)
 				  {
@@ -125,5 +125,6 @@ participateViewModel = new ParticipateViewModel();
 $().ready(function() {
     
     ko.applyBindings(participateViewModel);
+    participateViewModel.showPublicEvents();
    
 });

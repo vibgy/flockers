@@ -31,16 +31,15 @@ function EventModel(data)
     
     this.participateVar=function()
     {
-	wantsToParticipate=true;
-	oldeventID = this.id(); 
+  wantsToParticipate=true;
+  oldeventID = this.id(); 
     }
     this.DeleteEvent=function(){
           var self=this;
-          $.get("/delete",
+          $.delete("/events",
           {event_id : this.id()},
           function(data)
           {
-              data = JSON.parse(data);
               if(data.status == 'not_success')
               {
                    self.message("Event Cannot be Deleted");
@@ -61,11 +60,10 @@ function EventModel(data)
     this.deleteParticipateEvent = function() {
    
           var self=this;
-          $.get("/deleteParticipationEvent",
+          $.delete("/participationEvent",
           {event_id : this.id()},
           function(data)
           {
-              data = JSON.parse(data);
               if(data.status == 'not_success')
               {
                    self.message("Event Cannot be Deleted");
@@ -127,8 +125,8 @@ function EventViewModel() {
     {
         var self=this;
         $.post("/participate",
-	      {event: eventid,user_id: this.userid()},
-	      function(data){
+        {event: eventid,user_id: this.userid()},
+        function(data){
               self.message("You have participated successfully!!");
        });
     }
@@ -139,7 +137,6 @@ function EventViewModel() {
         $.get(
             '/publicEvents.json',
             function(data){
-              data = JSON.parse(data);
               var events = $.map(data,function(item) 
               {
                 event.id = item.id;
@@ -159,34 +156,33 @@ function EventViewModel() {
     
     
    this.login=function()
-	{
+  {
                        var self = this;
-			var user=this.uname();
-			$.get("/login",
-				  {user_name : user, pass : this.pas()},
-				  function(data)
-				  {
-					 document.getElementById("InvalidUser").style.visibility="hidden";
-					 document.getElementById("Welcome").style.visibility="hidden";
-					 data = JSON.parse(data);
-					 if(data.status == 'not success')
-					 {
-						 document.getElementById("InvalidUser").style.visibility="visible";
-					 }
-					 else
-					 {
-						 if(wantsToParticipate==true)
-						 {
-							 self.participate(oldeventID);
-						 }
+    	var user=this.uname();
+    	$.post("/login",
+    		  {user_name : user, pass : this.pas()},
+    		  function(data)
+    		  {
+    			 document.getElementById("InvalidUser").style.visibility="hidden";
+    			 document.getElementById("Welcome").style.visibility="hidden";
+    			 if(data.status == 'not success')
+    			 {
+    				 document.getElementById("InvalidUser").style.visibility="visible";
+    			 }
+    			 else
+    			 {
+    				 if(wantsToParticipate==true)
+    				 {
+    					 self.participate(oldeventID);
+    				 }
                                                  this.userid(data.id);
-						//alert(user);
-						window.location.href="/loggedIn";
-					 }
-				  }
-			 );
-		
-	};
+    				//alert(user);
+    				window.location.href="/loggedIn";
+    			 }
+    		  }
+    	 );
+    
+  };
 
     this.createEvent = function()
     {
@@ -211,7 +207,6 @@ function EventViewModel() {
         $.get(
             '/myEvents.json',
             function(data){
-              data = JSON.parse(data);
               var events = $.map(data,function(item) 
               {
                 event.id = item.id;
@@ -232,10 +227,9 @@ function EventViewModel() {
     this.signOut = function(){
         
         var self = this;
-        $.get('/signout',
+        $.post('/signout',
                function(data)
                {
-                   data = JSON.parse(data);
                    if(data.status == 'success')
                    {
                        window.location.href = '/home';
@@ -254,7 +248,6 @@ function EventViewModel() {
         $.get(
             '/participationID.json',
             function(data){
-              data = JSON.parse(data);
               if(data.status=='Failure'){
               self.message("No such events");    
             }
@@ -262,26 +255,25 @@ function EventViewModel() {
             {
                 var e=$.map(data,function(item){return item.event_id});
                 $.get(
-              		'/participationEvents.json',
-              		{'event' : e},
-              		function(data){
-              		//alert(data);
-              		data=JSON.parse(data);
-              		var events = $.map(data,function(item) 
-		        {
-		        event.id = item.id;
-		        event.ename = item.ename;
-		        event.date = item.date;
-		        event.time = item.time;
-		        event.place = item.place;
-		        event.organizer = item.organizer;
-		        event.fees = item.fees;
-		        event.prize = item.prize;
-		        event.description = item.description;
-		        return new EventModel(event);
-		      });
-		      self.participationEvents(events);
-		    });
+                  '/participationEvents.json',
+                  {'event' : e},
+                  function(data){
+                  //alert(data);
+                  var events = $.map(data,function(item) 
+            {
+            event.id = item.id;
+            event.ename = item.ename;
+            event.date = item.date;
+            event.time = item.time;
+            event.place = item.place;
+            event.organizer = item.organizer;
+            event.fees = item.fees;
+            event.prize = item.prize;
+            event.description = item.description;
+            return new EventModel(event);
+          });
+          self.participationEvents(events);
+        });
             }
     });
     };
@@ -302,7 +294,6 @@ function EventViewModel() {
              {record : this.event().ename},
              function(data)
              {
-                 data = JSON.parse(data);
                  if(data.status == 'Failure')
                  {
                      self.message("No Matches Found,You Can Create One");
@@ -375,7 +366,6 @@ function EventViewModel() {
         $.get('/events',
               function(data)
               {
-                   data = JSON.parse(data);
                    for(var i = 0 ; i < data.length; i++)
                    {
                        var index = uniqueEvents.indexOf(data[i].event);
@@ -435,6 +425,7 @@ function EventViewModel() {
     this.init = function() {
         this.drawWheel();
         this.getTopEvents();
+        this.showPublicEvents();
     }
 
     this.reset = function(){
@@ -480,10 +471,10 @@ $().ready(function() {
     ko.applyBindings(eventViewModel);
     eventViewModel.init();
      $(".wheel-button").wheelmenu({
-      		trigger: "hover",
-      		animation: "fly",
-      		angle: [0, 360]
-    	});
+          trigger: "hover",
+          animation: "fly",
+          angle: [0, 360]
+      });
 });
 
 

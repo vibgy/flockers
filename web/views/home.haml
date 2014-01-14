@@ -4,16 +4,16 @@
     %title Event Planner
     %link{:href => "../assets/css/bootstrap.css", :rel => "stylesheet"}
   %body
+    = haml_partial "topBar"
+
     .container
       %h1 Flockers
-      %button.btn.btn-success.btn-lg{"data-target" => "#signInModal", "data-toggle" => "modal"} Sign In
-      %button.btn.btn-primary.btn-lg{"data-target" => "#signUpModal", "data-toggle" => "modal"} Sign Up
       %br
       %p.alert.alert-danger#InvalidUser{:style => 'visibility : hidden',:'data-bind' => 'text : error'}
       %p.alert.alert-success#SuccessfulSignup{:style => 'visibility : hidden'}You have signed up successfully
       %br
       .row
-        %button.btn-primary.btn-large{:"data-bind" => "click : showPublicEvents"}Public Events 
+        %button.btn.btn-primary.pull-right{:"data-bind" => "click : showPublicEvents"}Refresh
         %table.table.table-striped{:"data-bind"=>"foreach:publicEvents",:border => '0'}
           %tr
             %td{:"data-bind" => "text : ename()"}
@@ -24,7 +24,7 @@
             %td{:"data-bind" => "text : time()"}
             %td{:"data-bind" => "text : description()"}
             %td
-              %button.btn-primary{"data-target" => "#signInModal", "data-toggle" => "modal",:"data-bind" => "click : participateVar"}Participate
+              %button.btn.btn-primary{"data-target" => "#signInModal", "data-toggle" => "modal",:"data-bind" => "click : participateVar"}Participate
       #signInModal.modal.fade.hide
         .modal-header
           %button.close{"aria-hidden" => "true", "data-dismiss" => "modal", :type => "button"} &times;

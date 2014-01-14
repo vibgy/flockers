@@ -18,26 +18,20 @@ module Flockers
   class WebApp < Sinatra::Application
 
 get '/' do
-"Hello World"
-end
-
-get '/home' do
-   @he=Event.all
-   haml:home
+  @he=Event.all
+  haml:home
 end
 
 get '/events' do
-   @events = Event.all
-   @events.to_json;
+  # this can be a lot
+  events = Event.all
+  content_type :json
+  events.to_json;
 end
 
 get '/searchEventByCategory' do
-   hs=Event.all(:category => params[:record])
-   if hs.any?
-      data = hs.to_json;
-   else
-      data = {:status => 'Failure'}.to_json;
-   end
+   data = Event.all('category.like' => params[:record])
+   data = {:status => 'Failure'} if data.nil?
    content_type :json
    data.to_json
 end
@@ -49,39 +43,39 @@ get '/searchEventByActivity' do
    data.to_json
 end
 
-get '/login' do 
-   
+post '/login' do 
  begin 
-   
    @he =Account.first(:uname => params[:user_name], :password => params[:pass]); 
    raise "Invalid Username or Password" if @he.nil?
    session['user']=params[:user_name];
    session['userid'] = @he.id;
    response = @he;
+   redirect('/loggedIn')
 
    rescue => e
-        response = {:error => {:message => e.message}}
+     response = {:error => {:message => e.message}}
    end
 
    content_type :json
    response.to_json
 end
 
-get '/signout' do
+post '/signout' do
    session['user']='';
    session['userid'] = '';
-   @he=Event.all
-   unless @he.nil?
+   he=Event.all
+   unless he.nil?
       return {:status => 'success'}.to_json;
    else
-      return {:status => 'not success'}.to_json;
+      return {:status => 'failure'}.to_json;
    end
 end
 
 get '/myEvents.json' do
-   @user = session['user'];
-   @hm=Event.all(:account_id => session['userid'])
-   @hm.to_json;
+  raise "Auth Failure" if session['user'].nil? or session['user'] == ''
+  hm=Event.all(:account_id => session['userid'])
+  content_type :json
+  hm.to_json;
 end
 
 get '/publicEvents.json' do
@@ -90,6 +84,7 @@ get '/publicEvents.json' do
 end
 
 get '/participationID.json' do
+  raise "Auth Failure" if session['user'].nil? or session['user'] == ''
    @hm=Participation.all(:account_id => session['userid'])
    if @hm.any?
       @hm.to_json;
@@ -108,6 +103,7 @@ get '/participationEvents.json' do
 end
 
 get '/loggedIn' do
+  raise "Auth Failure" if session['user'].nil? or session['user'] == ''
    @user = session['user'];
    @userid = session['userid'];
    haml :profile
@@ -115,6 +111,7 @@ end
 
 post '/createEvent' do
 
+  raise "Auth Failure" if session['user'].nil? or session['user'] == ''
    event = params[:event];
    puts session['userid']
    
@@ -160,7 +157,7 @@ post '/signup' do
 end
 
 get '/search' do
-   @hs=Event.all(:ename => params[:record])
+   @hs=Event.all('ename.like' => params[:record])
    if @hs.any?
       data = @hs.to_json;
    else
@@ -169,7 +166,7 @@ get '/search' do
    return data;
 end
 
-get '/delete' do
+delete '/events' do
    zoo = Event.first(:id => params[:event_id].to_i)
    foo = Participation.all(:event_id => params[:event_id].to_i)
    unless foo.nil?
@@ -183,7 +180,7 @@ get '/delete' do
    end
 end
 
-get '/deleteParticipationEvent' do
+delete '/participationEvent' do
    zoo = Participation.first(:event_id => params[:event_id].to_i)
    zoo.destroy
    if zoo.destroyed?
@@ -195,6 +192,7 @@ end
 
 post '/participate' do
    begin 
+      raise "Auth Failure" if session['user'].nil? or session['user'] == ''
       puts params
       response = {}
       event = Event.first(:id => params[:event].to_i)
@@ -221,8 +219,8 @@ end
 
 get '/activities' do
     raise "Incorrect Arguments" if params[:verb].nil?
-    content_type :json
     v = Verb.first(:verb => params[:verb])
+    content_type :json
     Activity.all(:verb => v).to_json
 end
 
