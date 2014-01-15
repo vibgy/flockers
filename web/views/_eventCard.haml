@@ -9,6 +9,7 @@
       /%p{:"data-bind" => "astext: fees()"}
       /%p{:"data-bind" => "text: prize()"}
       /%p{:"data-bind" => "text: time()"}
+    .panel-footer
       %button.btn.btn-primary{:'data-bind' =>'click : function() { $root.participate(id());}'}Participate
       /%a.btn.btn-primary.pull-right{"data-target" => "#signInModal", "data-toggle" => "modal",:"data-bind" => "click : participateVar"}Participate
       /%button.btn-primary{:"data-bind" => "click : DeleteEvent"}Delete Me
