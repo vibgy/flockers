@@ -117,7 +117,7 @@ function EventViewModel() {
     
     this.publicEvents = ko.observableArray();
     this.searchedEvents = ko.observableArray();//this is for wheel
-    this.uname=ko.observable();
+    this.uname=ko.observable('');
     this.pas=ko.observable('');
     this.userid = ko.observable();
     
@@ -137,6 +137,7 @@ function EventViewModel() {
         $.get(
             '/publicEvents.json',
             function(data){
+            
               var events = $.map(data,function(item) 
               {
                 event.id = item.id;
@@ -230,9 +231,10 @@ function EventViewModel() {
         $.post('/signout',
                function(data)
                {
-                   if(data.status == 'success')
+                   data=JSON.parse(data);
+                   if(data.status == "success")
                    {
-                       window.location.href = '/home';
+                       window.location.href='/';
                    }
                    else
                    {
@@ -423,6 +425,7 @@ function EventViewModel() {
     }
 
     this.init = function() {
+        this.showPublicEvents();
         this.drawWheel();
         this.getTopEvents();
     }
