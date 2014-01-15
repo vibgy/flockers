@@ -5,26 +5,17 @@
     %link{:href => "../assets/css/bootstrap.css", :rel => "stylesheet"}
     %link{:href => "../assets/css/jumbotron.css", :rel => "stylesheet"}
   %body
-    = haml_partial "topBar"
-
-    .jumbotron
-      .container
-        %h1 Flockers
-        %p A site to reveal The FUN SIDE of you
     .container
-      %p.alert.alert-danger#InvalidUser{:style => 'visibility : hidden',:'data-bind' => 'text : error'}
-      %p.alert.alert-success#SuccessfulSignup{:style => 'visibility : hidden'}You have signed up successfully
-      .row{:"data-bind" => "foreach : publicEvents"}
-        .col-md-4
-          %h2{:"data-bind" => "text : ename()"}
-          %p{:"data-bind" => "text : description()"}
-          %p{:"data-bind" => "text : date()"}
-          %p{:"data-bind" => "astext : fees()"}
-          %p{:"data-bind" => "text : prize()"}
-          %p{:"data-bind" => "text : place()"}
-          %p{:"data-bind" => "text : time()"}
-          %p
-            %a.btn.btn-primary{"data-target" => "#signInModal", "data-toggle" => "modal",:"data-bind" => "click : participateVar"}Participate
+      =haml_partial "topBar"
+
+      .jumbotron
+        %h1 Flockers
+        %p A site to reveal the FUN SIDE of you.
+
+      .row
+        %p.alert.alert-danger#InvalidUser{:style => 'visibility : hidden',:'data-bind' => 'text : error'}
+        %p.alert.alert-success#SuccessfulSignup{:style => 'visibility : hidden'}You have signed up successfully
+      =haml_partial "eventCard"
       #signInModal.modal.fade{"aria-hidden" => "true", "aris-labelledby" => "signInModal",:role => "dialog" ,:tabindex => "-1"}
         .modal-dialog
           .modal-content

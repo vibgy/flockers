@@ -18,8 +18,9 @@ module Flockers
   class WebApp < Sinatra::Application
 
 get '/' do
-  @he=Event.all
-  haml:home
+   @user = session['user'];
+   @userid = session['userid'];
+   haml:home
 end
 
 get '/events' do

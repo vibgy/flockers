@@ -1,0 +1,13 @@
+.row{:"data-bind" => "foreach: publicEvents"}
+  .col-md-4
+    .panel.panel-primary
+      .panel-heading
+        %h3{:"data-bind" => "text: ename()"}
+      .panel-body
+        %p{:"data-bind" => "text: description()"}
+        %div{:"data-bind" => "text: 'When: ' + date()"}
+        %div{:"data-bind" => "text: 'Where: ' + place()"}
+        /%p{:"data-bind" => "astext: fees()"}
+        /%p{:"data-bind" => "text: prize()"}
+        /%p{:"data-bind" => "text: time()"}
+        %a.btn.btn-primary.pull-right{"data-target" => "#signInModal", "data-toggle" => "modal",:"data-bind" => "click : participateVar"}Participate
