@@ -136,8 +136,6 @@ function EventViewModel() {
         $.get(
             '/publicEvents.json',
             function(data){
-               
-               data = JSON.parse(data);
               var events = $.map(data,function(item) 
               {
                 event.id = item.id;
@@ -231,7 +229,6 @@ function EventViewModel() {
         $.post('/signout',
                function(data)
                {
-                   data=JSON.parse(data);
                    if(data.status == "success")
                    {
                        window.location.href='/';

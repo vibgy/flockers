@@ -62,14 +62,10 @@ post '/login' do
 end
 
 post '/signout' do
-   session['user']='';
-   session['userid'] = '';
-   he=Event.all
-   unless he.nil?
-      return {:status => 'success'}.to_json;
-   else
-      return {:status => 'failure'}.to_json;
-   end
+   session['user']=''
+   session['userid'] = ''
+   content_type :json
+   {:status => 'success'}.to_json
 end
 
 get '/myEvents.json' do
@@ -80,18 +76,21 @@ get '/myEvents.json' do
 end
 
 get '/publicEvents.json' do
-   @hm=Event.all
-   @hm.to_json;
+  # TODO: Need to limit this to future events vs past events ? or may be all public events is fine.
+  hm=Event.all
+  content_type :json
+  hm.to_json
 end
 
 get '/participationID.json' do
   raise "Auth Failure" if session['user'].nil? or session['user'] == ''
-   @hm=Participation.all(:account_id => session['userid'])
-   if @hm.any?
-      @hm.to_json;
-   else 
-      {:status => 'Failure'}.to_json;
-   end
+  hm=Participation.all(:account_id => session['userid'])
+  content_type :json
+  if hm.any?
+    hm.to_json;
+  else 
+    {:status => 'Failure'}.to_json;
+  end
 end
 
 get '/participationEvents.json' do
@@ -100,7 +99,8 @@ get '/participationEvents.json' do
    array.each do |i|
       events << Event.first(:id => i.to_i)
    end
-   return events.to_json;
+   content_type :json
+   events.to_json
 end
 
 get '/loggedIn' do
@@ -115,7 +115,7 @@ post '/createEvent' do
   raise "Auth Failure" if session['user'].nil? or session['user'] == ''
    event = params[:event];
    puts session['userid']
-   
+
    #begin 
       Event.createEvent({ 
          :ename => event[:ename], 
