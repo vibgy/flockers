@@ -103,12 +103,11 @@ function EventModel(data)
 function EventViewModel() {
 
     this.event = ko.observable({});
-    this.createEventState = false;
+    this.createEventState = ko.observable(false);
     this.message = ko.observable('');
     this.myEvents = ko.observableArray();
     this.searchEvents = ko.observableArray();//this is for search box
     this.topEvents = ko.observableArray();
-    this.createEventFlag = ko.observable(false);
     this.participationEvents = ko.observableArray();
     this.category = ko.observableArray();
     this.selectedCategory = ko.observable();
@@ -137,7 +136,8 @@ function EventViewModel() {
         $.get(
             '/publicEvents.json',
             function(data){
-            
+               
+               data = JSON.parse(data);
               var events = $.map(data,function(item) 
               {
                 event.id = item.id;
@@ -165,7 +165,7 @@ function EventViewModel() {
     		  function(data)
     		  {
     			 document.getElementById("InvalidUser").style.visibility="hidden";
-    			 document.getElementById("Welcome").style.visibility="hidden";
+    			 //document.getElementById("Welcome").style.visibility="hidden";
     			 if(data.status == 'not success')
     			 {
     				 document.getElementById("InvalidUser").style.visibility="visible";
@@ -176,7 +176,7 @@ function EventViewModel() {
     				 {
     					 self.participate(oldeventID);
     				 }
-                                                 this.userid(data.id);
+                                                self.userid(data.id);
     				//alert(user);
     				window.location.href="/loggedIn";
     			 }
@@ -189,7 +189,7 @@ function EventViewModel() {
     {
         //TODO : make a dropdown for category in create event form
         var newEvent = new EventModel(emptyEvent);
-        this.createEventState = true;
+        this.createEventState(true);
         this.event(newEvent);
     };
 
@@ -283,7 +283,7 @@ function EventViewModel() {
     this.searchEventHelper = function(data)
     {
         this.event().ename = data;
-        this.createEventFlag(true);
+        this.createEventState(true);
         this.searchEvent();
     };
 
@@ -300,7 +300,7 @@ function EventViewModel() {
                  {
                      self.message("No Matches Found,You Can Create One");
                      //document.getElementById("CreateEvent").style.visibility="visible";
-                     self.createEventFlag(true);
+                     self.createEventState(true);
                  }
                  else
                  {
@@ -330,7 +330,7 @@ function EventViewModel() {
             this.userid($("#current_user_id").val());
             this.selectedActivity(this.selectedCategory()+ " " + activity);
             this.searchedEvents.removeAll();
-            this.createEventFlag(true);
+            this.createEventState(true);
             $.get('/searchEventByActivity',
                  {record : activity},
                  function(data)
@@ -437,7 +437,7 @@ function EventViewModel() {
         this.participationEvents.removeAll();
         this.message('');
         this.searchedEvents.removeAll();
-        this.createEventFlag(false);
+        this.createEventState(false);
    }
 }
 

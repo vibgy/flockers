@@ -40,7 +40,7 @@
             %h4{:'data-bind' => 'text : selectedActivity'}
           %div.panel-body{:"data-bind"=>"foreach:searchedEvents"}
             =haml_partial "eventCard"
-            %button#CreateEvent.btn.btn-success.btn-large{"data-target" => "#createEventModal", "data-toggle" => "modal" , :"data-bind" => "click : createEvent , visible : createEventFlag"} Create Event
+          %button#CreateEvent.btn.btn-success.btn-large{"data-target" => "#createEventModal", "data-toggle" => "modal" , :"data-bind" => "click : createEvent , visible : createEventState"} Create Event
 
       .row
         %div.panel.panel-info{:'data-bind' => 'visible : participationEvents().length'}
