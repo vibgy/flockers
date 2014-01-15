@@ -6,7 +6,7 @@
     /%link{:href => "../assets/css/bootstrap3.css", :rel => "stylesheet"}
     %link{:href => "../assets/css/bootstrap-timepicker.css", :rel => "stylesheet"}
     %link{:href => "../assets/css/datepicker.css", :rel => "stylesheet"}
-    %script{:src => "../assets/js/jquery.min.js"}
+    %script{:src => "//code.jquery.com/jquery-1.10.2.min.js"}
     %script{:src => "../assets/js/jquery.wheelmenu.js", :type => "text/javascript"}
     %link{:href => "../assets/css/style.css", :rel => "stylesheet", :type => "text/css"}
     %link{:href => "../assets/css/navbar-fixed-top.css", :rel => "stylesheet"}
@@ -15,94 +15,38 @@
       =haml_partial "topBar"
 
       .row
-        .span4
-          %input.hide{:id =>"current_user", :value => "#{@user}"}
-          %input.hide{:id =>"current_user_id", :value => "#{@userid}"}
+        %input.hide{:id =>"current_user", :value => "#{@user}"}
+        %input.hide{:id =>"current_user_id", :value => "#{@userid}"}
         %p.alert.alert-info{:"data-bind" => "visible: message, text: message"}
 
+      .row
+        .main{:style => 'height: 200px;'}
+          %a.wheel-button{:href => "#wheel"} I would love to
+          .pointer
+          %ul#wheel.wheel{:'data-bind' => 'foreach : category'}
+            %li.item
+              %a{:'data-bind' => 'text : $data,click : function() { $root.getActivities($data);}'}
 
       .row
-        .span12
-          .main
-            %a.wheel-button{:href => "#wheel"} I would love to
-            .pointer
-            %ul#wheel.wheel{:'data-bind' => 'foreach : category'}
-              %li.item
-                %a{:'data-bind' => 'text : $data,click : function() { $root.getActivities($data);}'}
-
-      %br
-      %br
-      %br
-      %br
-      .row
-        .col-md-4
-         
-        %div.col-md-4.panel.panel-danger{:style => "padding-left : 0px; padding-right : 0px;",:'data-bind' => 'visible : activities().length'}
+        %div.panel.panel-danger{:'data-bind' => 'visible : activities().length'}
           %div.panel-heading
             %h4{:style => "text-align:center",:'data-bind' => 'text : selectedCategory'}
-          %div.panel-body{:style => "padding : 0px;",:'data-bind'=>'foreach:activities',:style =>"list-style-type : none;"}
-            
-            %button.btn-danger.btn.btn-large{:style => "width : 100%;",:'data-bind'=>"click : function(){$root.searchEventByActivity($data);},text:$data"} 
+          %div.panel-body{:'data-bind'=>'foreach:activities'}
+            %button.btn-danger.btn.btn-large{:'data-bind'=>"click : function(){$root.searchEventByActivity($data);},text:$data"} 
       .row
-        .span3  
-        .span7.panel.panel-info{:'data-bind' => 'visible : searchedEvents().length'}
+        %div.panel.panel-info{:'data-bind' => 'visible : searchedEvents().length'}
           %div.panel-heading
             %h4{:'data-bind' => 'text : selectedActivity'}
           %div.panel-body{:"data-bind"=>"foreach:searchedEvents"}
-
             =haml_partial "eventCard"
-            %button.btn.btn-primary{:'data-bind' =>'click : function() { $root.participate(id());}'}Participate
-              
-      %div
-        .row
-          .span12
             %button#CreateEvent.btn.btn-success.btn-large{"data-target" => "#createEventModal", "data-toggle" => "modal" , :"data-bind" => "click : createEvent , visible : createEventFlag"} Create Event
-          .well{:'data-bind' => "visible : myEvents().length"}
-            %table.table.table-striped{:border => '0'}
-              %tr
-                %th Name
-                %th Date
-                %th Fees
-                %th Prize
-                %th Place
-                %th Time
-                %th Description
-                %th Delete
-            %table.table.table-striped{:"data-bind"=>"foreach:myEvents",:border => '0'}
-              %tr
-                %td{:"data-bind" => "text : ename()"}
-                %td{:"data-bind" => "text : date()"}
-                %td{:"data-bind" => "text : fees()"}
-                %td{:"data-bind" => "text : prize()"}
-                %td{:"data-bind" => "text : place()"}
-                %td{:"data-bind" => "text : time()"}
-                %td{:"data-bind" => "text : description()"}
-                %td
-                  %button.btn-primary{:"data-bind" => "click : DeleteEvent"}Delete Me
 
-
-          .well{:'data-bind' => "visible : participationEvents().length>0"}
-            %table.table.table-striped{:border => '0'}
-              %tr
-                %th Name
-                %th Date
-                %th Fees
-                %th Prize
-                %th Place
-                %th Time
-                %th Description
-                %th Delete
-            %table.table.table-striped{:"data-bind"=>"foreach:participationEvents",:border => '0'}
-              %tr
-                %td{:"data-bind" => "text : ename()"}
-                %td{:"data-bind" => "text : date()"}
-                %td{:"data-bind" => "text : fees()"}
-                %td{:"data-bind" => "text : prize()"}
-                %td{:"data-bind" => "text : place()"}
-                %td{:"data-bind" => "text : time()"}
-                %td{:"data-bind" => "text : description()"}
-                %td
-                  %button.btn-primary{:"data-bind" => "click : deleteParticipateEvent"}Delete Me
+      .row
+        %div.panel.panel-info{:'data-bind' => 'visible : participationEvents().length'}
+          %div.panel-heading
+            %h4{:'data-bind' => 'text : selectedActivity'}
+          %div.panel-body{:"data-bind"=>"foreach:myEvents"}
+            =haml_partial "eventCard"
 
       #createEventModal.modal.fade{:tabindex => "-1"}
         .modal-header
@@ -112,7 +56,7 @@
           %form                   
             %label Event Name
             %input{:placeholder => "Enter Event Name", :"data-bind" => "value: event().ename", :required => "", :type => "text"}
-                      
+
             %label Date
             %input{:"data-bind" => "value: event().date", :required => "",:type => 'date', :placeholder => "Click to Pick"}  
 
@@ -130,9 +74,10 @@
 
             %label Description
             %textarea{:"data-bind" => "value: event().description"}
-      
+
         .modal-footer
           %button.btn-large{:'data-dismiss' => "modal",:"data-bind" => "click : createEventHelper"} Create 
+
     %script{:src => "../assets/js/knockout-2.2.1.js"} 
     %script{:src => "../assets/js/bootstrap.min.js"}  
     %script{:src => "../assets/js/profile.js"}
