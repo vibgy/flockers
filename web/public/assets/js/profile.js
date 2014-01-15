@@ -423,10 +423,8 @@ function EventViewModel() {
     }
 
     this.init = function() {
-        this.showPublicEvents();
         this.drawWheel();
         this.getTopEvents();
-        this.showPublicEvents();
     }
 
     this.reset = function(){
