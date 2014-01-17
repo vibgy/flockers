@@ -110,7 +110,7 @@ get '/loggedIn' do
    haml :profile
 end
 
-post '/createEvent' do
+post '/events' do
 
   raise "Auth Failure" if session['user'].nil? or session['user'] == ''
    event = params[:event];
@@ -168,6 +168,7 @@ get '/search' do
 end
 
 delete '/events' do
+  # Only the organizer can do this
    zoo = Event.first(:id => params[:event_id].to_i)
    foo = Participation.all(:event_id => params[:event_id].to_i)
    unless foo.nil?
@@ -219,6 +220,9 @@ post '/verbs' do
 end
 
 get '/activities' do
+    puts params
+    puts request
+    puts request.body.read
     raise "Incorrect Arguments" if params[:verb].nil?
     v = Verb.first(:verb => params[:verb])
     content_type :json
