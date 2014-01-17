@@ -83,7 +83,7 @@ function EventModel(data)
 
     this.createEvent = function(event){
         var self = this;
-        $.post('/createEvent',
+        $.post('/events',
                {event : event},
                 function(data){
                     if(!data.error)
