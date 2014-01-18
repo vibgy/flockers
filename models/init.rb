@@ -62,7 +62,7 @@ class Event
   property :fees,Integer
   property :prize, Integer
   property :description,String
-  property :category,String
+  property :verb,String
   property :activity,String
 
   has n, :participations
@@ -86,7 +86,7 @@ class Event
     newEvent.fees = args[:fees] if args.has_key? :fees
     newEvent.prize = args[:prize] if args.has_key? :prize
     newEvent.description = args[:description] if args.has_key? :description
-    newEvent.category = args[:category] if args.has_key? :category
+    newEvent.verb = args[:verb] if args.has_key? :verb
     newEvent.activity = args[:activity] if args.has_key? :activity
 
     newEvent.save

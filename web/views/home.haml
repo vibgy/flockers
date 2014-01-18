@@ -6,18 +6,17 @@
     %link{:href => "../assets/css/jumbotron.css", :rel => "stylesheet"}
     %link{:href => "../assets/css/navbar-fixed-top.css", :rel => "stylesheet"}
   %body
+    =haml_partial "topBar"
     .container
-      =haml_partial "topBar"
-
       .jumbotron
         %h1 Flockers
         %p A site to reveal the FUN SIDE of you.
-
-      .row
-        %p.alert.alert-danger#InvalidUser{:style => 'visibility : hidden',:'data-bind' => 'text : error'}
-        %p.alert.alert-success#SuccessfulSignup{:style => 'visibility : hidden'}You have signed up successfully
-      .row{:"data-bind" => "foreach: publicEvents"}
-        =haml_partial "eventCard"
+      %div#event
+        .row
+          %p.alert.alert-danger#InvalidUser{:style => 'visibility : hidden',:'data-bind' => 'text : message'}
+          %p.alert.alert-success#SuccessfulSignup{:style => 'visibility : hidden'}You have signed up successfully
+        .row{:"data-bind" => "foreach: publicEvents"}
+          =haml_partial "eventCard"
       #signInModal.modal.fade{"aria-hidden" => "true", "aris-labelledby" => "signInModal",:role => "dialog" ,:tabindex => "-1"}
         .modal-dialog
           .modal-content
@@ -45,7 +44,7 @@
                 .form-group
                   .col-sm-offset-4.col-sm-6
                     %button#show.btn.btn-large.btn-primary{:'data-dismiss' => "modal",:"data-bind" => "click : login"} Sign In              
-      #signUpModal.modal.fade{"aria-hidden" => "true", "aris-labelledby" => "signUnModal",:role => "dialog" ,:tabindex => "-1"}
+      #signUpModal.modal.fade{"aria-hidden" => "true", "aris-labelledby" => "signUpModal",:role => "dialog" ,:tabindex => "-1"}
         .modal-dialog
           .modal-content
             .modal-header
@@ -61,19 +60,19 @@
                 .form-group
                   %label.col-sm-4.control-label Create Password
                   .col-sm-6
-                    %input.form-control{:placeholder => "Create Password",:type => "password",:'data-bind' => "value : pass"}
+                    %input.form-control{:placeholder => "Create Password",:type => "password",:'data-bind' => "value : pas"}
             
                 .form-group
                   %label.col-sm-4.control-label Confirm Password
                   .col-sm-6
-                    %input.form-control{:placeholder => "Confirm Password",:type => "password",:'data-bind' => "value : confirmpass"}
+                    %input.form-control{:placeholder => "Confirm Password",:type => "password",:'data-bind' => "value : confirmpas"}
             
                 .form-group
                   .col-sm-offset-4.col-sm-6
-                    %button#show.btn.btn-large.btn-primary{:'data-dismiss' => "modal",:'data-bind'=> " click : signup", :type => "submit"} Sign Up               
-    /%script{:src => "../assets/js/login.js"}
+                    %button#show.btn.btn-large.btn-primary{:'data-dismiss' => "modal",:'data-bind'=> " click : signup"} Sign Up               
     %script{:src => "../assets/js/knockout-2.2.1.js"}  
     %script{:src => "../assets/js/jquery.min.js"}
     %script{:src => "../assets/js/bootstrap.min.js"}  
-    %script{:src => "../assets/js/participate.js"} 
-    %script{:src => "../assets/js/profile.js"}
+    /%script{:src => "../assets/js/profile.js"}
+    %script{:src => "../assets/js/user.js"}
+    %script{:src => "../assets/js/event.js"}

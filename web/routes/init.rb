@@ -5,7 +5,7 @@ require 'haml'
 require 'json'
 #require 'pry'
 
-require_relative '../../models/init.rb'
+require '/flockers/models/init.rb'
 
 enable :sessions
 
@@ -30,8 +30,8 @@ get '/events' do
   events.to_json;
 end
 
-get '/searchEventByCategory' do
-   data = Event.all('category.like' => params[:record])
+get '/searchEventByVerb' do
+   data = Event.all('verb.like' => params[:record])
    data = {:status => 'Failure'} if data.nil?
    content_type :json
    data.to_json
@@ -51,7 +51,7 @@ post '/login' do
    session['user']=params[:user_name];
    session['userid'] = @he.id;
    response = @he;
-   redirect('/loggedIn')
+   #redirect('/loggedIn')
 
    rescue => e
      response = {:error => {:message => e.message}}
