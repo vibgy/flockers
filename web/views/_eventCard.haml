@@ -1,4 +1,4 @@
-.col-md-4
+.col-md-3
   .panel.panel-primary
     .panel-heading
       %h3{:"data-bind" => "text: ename()"}
@@ -10,6 +10,7 @@
       /%p{:"data-bind" => "text: prize()"}
       /%p{:"data-bind" => "text: time()"}
     .panel-footer
-      %button#option.btn.btn-primary{:'data-bind' =>'click : participate'}Participate
-      /%button#delete.btn-primary{:"data-bind" => "click : DeleteEvent"}Delete Me
+      %button#option.btn.btn-primary.btn-lg{:style => "width:40%", 'data-bind' =>'click: details'} Details
+      %button#option.btn.btn-primary.btn-lg{:style => "width:58%", 'data-bind' =>'click: participate'} Participate
+      /%button#delete.btn.btn-primary{:"data-bind" => "click : DeleteEvent"}Delete Me
       /%button#deleteParticipation.btn-primary{:"data-bind" => "click : deleteParticipateEvent"}Delete Me

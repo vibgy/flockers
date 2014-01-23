@@ -1,5 +1,5 @@
 /* Custom Stylesheet */
-body, html {
+/*body, html {
       margin: 0;
       -webkit-font-smoothing: antialiased;
       background: white;
@@ -15,7 +15,7 @@ body .header{
   float: left;
   width: 100%;
 }
-
+*/
 /* Required Stylesheets */
 .wheel-button {
   position: relative;
@@ -29,7 +29,7 @@ body .header{
   height: 300px; /* this will determine the diameter of the circle  */
   visibility: hidden;
   position: relative;
-  display: none;
+  display: block;
 }
 
 .wheel li {
@@ -104,70 +104,9 @@ body .header{
   -webkit-transition: all 0.25s ease;
   -o-transition: all 0.25s ease;
   transition: all 0.25s ease;
-}
+  }
 
 .wheel li a:hover{
   background: rgba(0,0,0,0.8);
 }
 
-/* DEMO #4 */
-
-#demo4 .main {
-  background: rgba(0,0,0,0.03);
-  border-radius: 5px;
-  max-width: 500px;
-  width: 100%;
-  margin: 50px auto;
-  padding: 10px 25px;
-  position: relative;
-  height: 350px;
-}
-
-#demo4 .wheel-button {
-  position: absolute;
-  margin: 0;
-}
-
-#demo4 .wheel-button.sw {
-  top: 5px;
-  right: 5px;
-}
-
-#demo4 .wheel-button.ne {
-  bottom: 5px;
-  left: 5px;
-}
-
-#demo4 .wheel-button.se {
-  top: 5px;
-  left: 5px;
-}
-
-#demo4 .wheel-button.nw {
-  bottom: 5px;
-  right: 5px;
-}
-
-#demo4 .wheel-button.n {
-  bottom: 5px;
-  left: 50%;
-  margin-left: -20px;
-}
-
-#demo4 .wheel-button.s {
-  top: 5px;
-  left: 50%;
-  margin-left: -20px;
-}
-
-#demo4 .wheel-button.e {
-  left: 5px;
-  top: 50%;
-  margin-top: -20px;
-}
-
-#demo4 .wheel-button.w {
-  right: 5px;
-  top: 50%;
-  margin-top: -20px;
-}

@@ -5,8 +5,6 @@ require 'haml'
 require 'json'
 #require 'pry'
 
-require '/flockers/models/init.rb'
-
 enable :sessions
 
 enable :sessions

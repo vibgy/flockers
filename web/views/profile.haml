@@ -3,12 +3,12 @@
   %head
     %title Create Flock
     %script{:src => "../assets/js/jquery.min.js"}
+    %link{:href=>"//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css", :rel=>"stylesheet"}
     %link{:href => "../assets/css/bootstrap.min.css", :rel => "stylesheet"}
     %link{:href => "../assets/css/bootstrap-timepicker.css", :rel => "stylesheet"}
     %link{:href => "../assets/css/datepicker.css", :rel => "stylesheet"}
     %link{:href => "../assets/css/navbar-fixed-top.css", :rel => "stylesheet"}
     %script{:src => "../assets/js/jquery.wheelmenu.js", :type => "text/javascript"}
-    /TODO: this line is disturbing the nav bar for some reason.
     %link{:href => "../assets/css/style.css", :rel => "stylesheet", :type => "text/css"}
   %body
     =haml_partial "topBar"
@@ -16,93 +16,117 @@
       .row
         %input.hide{:id =>"current_user", :value => "#{@user}"}
         %input.hide{:id =>"current_user_id", :value => "#{@userid}"}
-        %p.alert.alert-info{:"data-bind" => "visible: message, text: message"}
-    %div#event
-      .row{:style => "padding-top:40px;"}
-        .main{:style => 'height: 200px;'}
-          %a.wheel-button{:href => "#wheel"} I would love to
-          .pointer
-          %ul#wheel.wheel{:'data-bind' => 'foreach : verb'}
-            %li.item
-              %a{:'data-bind' => 'text : $data,click : function() { $root.getActivities($data);}'}
+        %p.hide.alert.alert-info{:"data-bind" => "visible: message, text: message"}
 
-      .row
-        %div.panel.panel-danger{:'data-bind' => 'visible : activities().length'}
-          %div.panel-heading
-            %h4{:style => "text-align:center",:'data-bind' => 'text : selectedVerb'}
-          %div.panel-body{:'data-bind'=>'foreach:activities'}
-            %button.btn-danger.btn.btn-large{:'data-bind'=>"click : function(){$root.searchEventByActivity($data);},text:$data"} 
-      .row
-        %div.panel.panel-info{:'data-bind' => 'visible : searchedEvents().length'}
-          %div.panel-heading
-            %h4{:'data-bind' => 'text : selectedActivity'}
-          %div.panel-body{:"data-bind"=>"foreach:searchedEvents"}
-            =haml_partial "eventCard"
-        %button#CreateEvent.btn.btn-success.btn-large{"data-target" => "#createEventModal", "data-toggle" => "modal" , :"data-bind" => "click : createEvent , visible : createEventState"} Create Event
+      %div#event
+        .row
+          =haml_partial "progress"
+        .row
+          %span.label.label-info
+            Choose Verb
+          %div.panel.panel-info
+            %div.panel-heading
+              %h4{:href => "#wheel"} I would love to
+            %div.panel-body
+              %ul{:'data-bind' => 'foreach : verb'}
+                %li.item
+                  %a{:'data-bind' => 'text : $data,click : function() { $root.getActivities($data);}'}
 
-      .row
-        %div.panel.panel-info{:'data-bind' => 'visible : participationEvents().length'}
-          %div.panel-heading
-            %h4{:'data-bind' => 'text : selectedActivity'}
-          %div.panel-body{:"data-bind"=>"foreach:myEvents"}
-            =haml_partial "eventCard"
-      .row
-        %div.panel.panel-info{:'data-bind' => 'visible : participationEvents().length'}
-          %div.panel-heading
-            %h4{:'data-bind' => 'text : selectedActivity'}
-          %div.panel-body{:"data-bind"=>"foreach:myEvents"}
-            =haml_partial "eventCard"
-       
+        .row{:'data-bind' => 'visible : activities().length'}
+          %span.label.label-warning
+            Choose Activity
+          %div.panel.panel-warning
+            %div.panel-heading
+              %h4{:'data-bind' => 'text : selectedVerb'}
+            %div.panel-body{:style => "text-align:center"}
+              %div{:'data-bind'=>'foreach:activities'}
+                .col-sm-3.col-md-2
+                  .thumbnail
+                    %i.fa.fa-camera-retro.fa-5x
+                    /%img{alt: "...", "data-src" => "holder.js/300x200"}/
+                    .caption
+                      %button.btn-warning.btn.btn-lg{:'data-bind'=>"click : function(){$root.searchEventByActivity($data);},text:$data", :style => "width:100%"} 
 
-      #createEventModal.modal.fade{"aria-hidden" => "true", "aris-labelledby" => "createEventModal",:role => "dialog" ,:tabindex => "-1"}
-        .modal-dialog
-          .modal-content
-            .modal-header
-              %button.close{"aria-hidden" => "true", "data-dismiss" => "modal", :type => "button"} &times;
-              %h4.modal-title Create Event
-            .modal-body
-              %form.form-horizontal{:role => "form"}                   
-                .form-group
-                  %label.col-sm-4.control-label Event Name
-                  .col-sm-6
-                    %input{:placeholder => "Enter Event Name", :"data-bind" => "value: event().ename", :required => "", :type => "text"}
+        .row{:'data-bind' => 'visible : createEventState'}
+          %div
+            %span.label.label-danger
+              Choose or Create Flock
+            %div.panel.panel-danger
+              %div.panel-heading
+                %h4{:'data-bind' => 'text : selectedActivity'}
+              %div.panel-body
+                %div{:"data-bind"=>"visible : searchedEvents().length, foreach:searchedEvents"}
+                  =haml_partial "eventcard"
+                =haml_partial "createEventCard"
 
-                .form-group
-                  %label.col-sm-4.control-label Event Date
-                  .col-sm-6
-                    %input{:"data-bind" => "value: event().date", :required => "",:type => 'date', :placeholder => "Click to Pick"}  
+        .row{:'data-bind' => 'visible : searchedEvents().length'}
+          %span.label.label-success
+            Flock Details
+          %div.panel.panel-success
+            %div.panel-heading
+              %h4{:'data-bind' => 'text : selectedActivity'}
+            %div.panel-body{:"data-bind"=>""}
+              =haml_partial "eventdetails"
 
-                .form-group
-                  %label.col-sm-4.control-label Event Time
-                  .col-sm-6
-                    %input{:"data-bind" => "value: event().time", :required => "", :type => "text"}
-			
-                .form-group
-                  %label.col-sm-4.control-label Event Place
-                  .col-sm-6
-                    %input{:"data-bind" => "value: event().place", :required => "", :type => "text"}
+        .row{:'data-bind' => 'visible : participationEvents().length'}
+          %span.label.label-danger
+            My Events
+          %div.panel.panel-info
+            %div.panel-heading
+              %h4{:'data-bind' => 'text : selectedActivity'}
+            %div.panel-body{:"data-bind"=>"foreach:myEvents"}
+              =haml_partial "eventcard"
 
-                .form-group
-                  %label.col-sm-4.control-label Event Fees
-                  .col-sm-6
-                    %input{:"data-bind" => "value: event().fees", :type => "text"}
+        #createeventmodal.modal.fade{"aria-hidden" => "true", "aris-labelledby" => "createeventmodal",:role => "dialog" ,:tabindex => "-1"}
+          .modal-dialog
+            .modal-content
+              .modal-header
+                %button.close{"aria-hidden" => "true", "data-dismiss" => "modal", :type => "button"} &times;
+                %h4.modal-title create event
+              .modal-body
+                %form.form-horizontal{:role => "form"}                   
+                  .form-group
+                    %label.col-sm-4.control-label event name
+                    .col-sm-6
+                      %input{:placeholder => "enter event name", :"data-bind" => "value: event().ename", :required => "", :type => "text"}
 
-                .form-group
-                  %label.col-sm-4.control-label Event Prize
-                  .col-sm-6
-                    %input{:"data-bind" => "value: event().prize", :type => "text"}
+                  .form-group
+                    %label.col-sm-4.control-label event date
+                    .col-sm-6
+                      %input{:"data-bind" => "value: event().date", :required => "",:type => 'date', :placeholder => "click to pick"}  
 
-                .form-group
-                  %label.col-sm-4.control-label Event Description
-                  .col-sm-6
-                    %textarea{:"data-bind" => "value: event().description"}
+                  .form-group
+                    %label.col-sm-4.control-label event time
+                    .col-sm-6
+                      %input{:"data-bind" => "value: event().time", :required => "", :type => "text"}
 
-        .modal-footer
-          %button.btn-large{:'data-dismiss' => "modal",:"data-bind" => "click : createEventHelper"} Create 
+                  .form-group
+                    %label.col-sm-4.control-label event place
+                    .col-sm-6
+                      %input{:"data-bind" => "value: event().place", :required => "", :type => "text"}
 
-    %script{:src => "../assets/js/knockout-2.2.1.js"} 
-    %script{:src => "../assets/js/bootstrap.min.js"}  
-    /%script{:src => "../assets/js/profile.js"}
-    %script{:src => "../assets/js/event.js"}
-    %script{:src => "../assets/js/user.js"}
-    %script{:src => "../assets/js/wheel.js"}
+                  .form-group
+                    %label.col-sm-4.control-label event fees
+                    .col-sm-6
+                      %input{:"data-bind" => "value: event().fees", :type => "text"}
+
+                  .form-group
+                    %label.col-sm-4.control-label event prize
+                    .col-sm-6
+                      %input{:"data-bind" => "value: event().prize", :type => "text"}
+
+                  .form-group
+                    %label.col-sm-4.control-label event description
+                    .col-sm-6
+                      %textarea{:"data-bind" => "value: event().description"}
+
+          .modal-footer
+            %button.btn.btn-lg{:'data-dismiss' => "modal",:"data-bind" => "click : createEventHelper"} create 
+
+      =haml_partial "footer"
+
+      %script{:src => "../assets/js/knockout-2.2.1.js"} 
+      %script{:src => "../assets/js/bootstrap.min.js"}  
+      %script{:src => "../assets/js/event.js"}
+      %script{:src => "../assets/js/user.js"}
+      %script{:src => "../assets/js/wheel.js"}
