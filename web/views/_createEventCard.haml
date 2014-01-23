@@ -1,0 +1,10 @@
+.col-md-3
+  .panel.panel-primary
+    .panel-heading
+      %h3 Create New Flock
+    .panel-body
+      %p Some Description
+      %div When: @ Some good time
+      %div Where: @ Some good place
+    .panel-footer
+      %button#createevent.btn.btn-success.btn-lg{:style => "width:100%", "data-target" => "#createeventmodal", "data-toggle" => "modal" , :"data-bind" => "click : createevent"} Create Flock
