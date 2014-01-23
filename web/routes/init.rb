@@ -11,32 +11,66 @@ enable :sessions
 
 enable :sessions
 
-
 enable :sessions
-
 module Flockers
   class WebApp < Sinatra::Application
-
+  
+=begin
+before do
+  if request.request_method == "POST"
+    body_parameters = request.body.read
+    params.merge!(JSON.parse(body_parameters))
+  end
+end
+=end
 get '/' do
    @user = session['user'];
    @userid = session['userid'];
    haml:home
 end
 
-get '/events' do
+get '/eventID' do                          #event_id from participation table
   # this can be a lot
-  events = Event.all
+  events = Participation.all
   content_type :json
   events.to_json;
 end
 
+get '/topevents' do                        #event_details of top events
+	array=params[:eventArray]
+	events = Array.new
+    array.each do |i|
+      events << Event.first(:id => i.to_i)
+    end
+    content_type :json
+    events.to_json
+ end
+ 
+ get '/participantID' do                          #account_id from participation table
+  # this can be a lot
+  events = Participation.all
+  content_type :json
+  events.to_json;
+end
+
+get '/topParticipants' do                        #account_details of top participants
+	array=params[:participantArray]
+	participants = Array.new
+    array.each do |i|
+      participants << Account.first(:id => i.to_i)
+    end
+    content_type :json
+    participants.to_json
+ end
+
+=begin
 get '/searchEventByVerb' do
    data = Event.all('verb.like' => params[:record])
    data = {:status => 'Failure'} if data.nil?
    content_type :json
    data.to_json
 end
-
+=end
 get '/searchEventByActivity' do
    data = Event.all('activity.like' => params[:record])
    data = {:status => 'Failure'} if data.nil?
@@ -44,14 +78,14 @@ get '/searchEventByActivity' do
    data.to_json
 end
 
-post '/login' do 
+get '/login' do 
  begin 
    @he =Account.first(:uname => params[:user_name], :password => params[:pass]); 
    raise "Invalid Username or Password" if @he.nil?
    session['user']=params[:user_name];
    session['userid'] = @he.id;
    response = @he;
-   #redirect('/loggedIn')
+   redirect('/loggedIn')
 
    rescue => e
      response = {:error => {:message => e.message}}
@@ -61,7 +95,7 @@ post '/login' do
    response.to_json
 end
 
-post '/signout' do
+get '/signout' do
    session['user']=''
    session['userid'] = ''
    content_type :json
@@ -214,11 +248,6 @@ get '/verbs' do
     Verb.all.to_json
 end
 
-post '/verbs' do
-    raise "Incorrect Arguments" if params[:verb].nil?
-    Verb.create(:verb => 'params[:verb]')
-end
-
 get '/activities' do
     puts params
     puts request
@@ -235,5 +264,7 @@ post '/activities' do
     Activity.create(:verb => v, :activity => params[:activity])
 end
 
+
+end 
 end
-end
+

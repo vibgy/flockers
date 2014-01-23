@@ -1,15 +1,12 @@
-.col-md-4
-  .panel.panel-primary
-    .panel-heading
-      %h3{:"data-bind" => "text: ename()"}
-    .panel-body
-      %p{:"data-bind" => "text: description()"}
-      %div{:"data-bind" => "text: 'When: ' + date()"}
-      %div{:"data-bind" => "text: 'Where: ' + place()"}
-      /%p{:"data-bind" => "astext: fees()"}
-      /%p{:"data-bind" => "text: prize()"}
-      /%p{:"data-bind" => "text: time()"}
-    .panel-footer
-      %button#option.btn.btn-primary{:'data-bind' =>'click : participate'}Participate
-      /%button#delete.btn-primary{:"data-bind" => "click : DeleteEvent"}Delete Me
-      /%button#deleteParticipation.btn-primary{:"data-bind" => "click : deleteParticipateEvent"}Delete Me
+.panel.event-panel
+  .panel-heading.event
+    %h3{:"data-bind" => "text: ename()"}
+  .panel-body
+    %p{:"data-bind" => "text: description()"}
+    %div{:"data-bind" => "text: 'When: ' + date()"}
+    %div{:"data-bind" => "text: 'Where: ' + place()"}
+    /%p{:"data-bind" => "astext: fees()"}
+    /%p{:"data-bind" => "text: prize()"}
+    /%p{:"data-bind" => "text: time()"}
+  .panel-footer.event
+    

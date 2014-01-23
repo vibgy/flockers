@@ -1,20 +1,4 @@
-/* Custom Stylesheet */
-body, html {
-      margin: 0;
-      -webkit-font-smoothing: antialiased;
-      background: white;
-      text-align: center;
-      height: 100%;
-}
 
-body .header{
-  color: #34495e;
-}
-
-.container {
-  float: left;
-  width: 100%;
-}
 
 /* Required Stylesheets */
 .wheel-button {

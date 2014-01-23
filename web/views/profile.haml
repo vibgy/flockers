@@ -2,56 +2,76 @@
 %html{:lang => "en"}
   %head
     %title Create Flock
-    %script{:src => "../assets/js/jquery.min.js"}
+    %link{:href => "../assets/css/jumbotron.css", :rel => "stylesheet"}
     %link{:href => "../assets/css/bootstrap.min.css", :rel => "stylesheet"}
     %link{:href => "../assets/css/bootstrap-timepicker.css", :rel => "stylesheet"}
     %link{:href => "../assets/css/datepicker.css", :rel => "stylesheet"}
     %link{:href => "../assets/css/navbar-fixed-top.css", :rel => "stylesheet"}
-    %script{:src => "../assets/js/jquery.wheelmenu.js", :type => "text/javascript"}
-    /TODO: this line is disturbing the nav bar for some reason.
+    %link{:href => "../assets/css/custom.css", :rel => "stylesheet"}
     %link{:href => "../assets/css/style.css", :rel => "stylesheet", :type => "text/css"}
-  %body
+    %script{:src => "../assets/js/jquery.min.js"}
+    %script{:src => "../assets/js/jquery.wheelmenu.js", :type => "text/javascript"}
+  %body.main
     =haml_partial "topBar"
     .container
       .row
         %input.hide{:id =>"current_user", :value => "#{@user}"}
         %input.hide{:id =>"current_user_id", :value => "#{@userid}"}
-        %p.alert.alert-info{:"data-bind" => "visible: message, text: message"}
+        /%p.alert.alert-info{:"data-bind" => "visible: message, text: message"}
     %div#event
       .row{:style => "padding-top:40px;"}
-        .main{:style => 'height: 200px;'}
-          %a.wheel-button{:href => "#wheel"} I would love to
-          .pointer
-          %ul#wheel.wheel{:'data-bind' => 'foreach : verb'}
-            %li.item
-              %a{:'data-bind' => 'text : $data,click : function() { $root.getActivities($data);}'}
+        .col-md-4
+          %div.panel.event-panel{'data-bind' => "visible : myEvents().length"}
+            %div.panel-heading.event
+              %h4{:style => "text-align:center"} My Events
+            %div#display.panel-body{:"data-bind"=>"foreach:myEvents"}
+              =haml_partial "eventCard"
+              %button#delete.btn-primary{:"data-bind" => "click : DeleteEvent"}Delete Me
+    
+          %div.panel.event-panel{'data-bind' => "visible : participationEvents().length"}
+            %div.panel-heading.event
+              %h4{:style => "text-align:center"} Participated Events
+            %div#display.panel-body{:"data-bind"=>"foreach:participationEvents"}
+              =haml_partial "eventCard"
+              %button#deleteParticipation.btn-primary{:"data-bind" => "click : deleteParticipateEvent"}Delete Me
+          %div.panel.event-panel{'data-bind' => "visible : topEvents().length"}
+            %div.panel-heading.event
+              %h4{:style => "text-align:center"} Top Trends
+            %div#display.panel-body{:"data-bind"=>"foreach:topEvents"}
+              =haml_partial "eventCard"
+              %button#option.btn.btn-panel{:'data-bind' =>'click : participate'}Participate
+          
+        .col-md-4
+          .main{:style => 'height: 200px'}
+            %a.wheel-button{:href => "#wheel"} I would love to
+            .pointer
+            %ul#wheel.wheel{:'data-bind' => 'foreach : verb'}
+              %li.item
+                %a{:'data-bind' => 'text : $data,click : function() { $root.getActivities($data);}'}
 
-      .row
-        %div.panel.panel-danger{:'data-bind' => 'visible : activities().length'}
-          %div.panel-heading
-            %h4{:style => "text-align:center",:'data-bind' => 'text : selectedVerb'}
-          %div.panel-body{:'data-bind'=>'foreach:activities'}
-            %button.btn-danger.btn.btn-large{:'data-bind'=>"click : function(){$root.searchEventByActivity($data);},text:$data"} 
-      .row
-        %div.panel.panel-info{:'data-bind' => 'visible : searchedEvents().length'}
-          %div.panel-heading
-            %h4{:'data-bind' => 'text : selectedActivity'}
-          %div.panel-body{:"data-bind"=>"foreach:searchedEvents"}
-            =haml_partial "eventCard"
-        %button#CreateEvent.btn.btn-success.btn-large{"data-target" => "#createEventModal", "data-toggle" => "modal" , :"data-bind" => "click : createEvent , visible : createEventState"} Create Event
+        .col-md-4
+          %div.panel.event-panel
+            %div.panel-heading.event
+              %h4{:style => "text-align:center;color:#fff"} Active Participants
+            %div.panel-body{:"data-bind"=>"foreach:topParticipants"}
+              %p{:'data-bind' => "text: uname"}
+      .row-fluid{:style => "padding :30px;"}
+        .col-md-4
+          %div.panel.event-panel{:'data-bind' => 'visible : activities().length'}
+            %div.panel-heading.event
+              %h4{:style => "text-align:center",:'data-bind' => 'text : displaySelectedVerb'}
+            %div.panel-body{:'data-bind'=>'foreach:activities'}
+              %button.btn-danger.btn.btn-large{:'data-bind'=>"click : function(){$root.searchEventByActivity($data);},text:$data"} 
+        .col-md-4
+        .col-md-4
+          %div.panel.panel-info{:'data-bind' => 'visible : searchedEvents().length',:style => "background : rgba(0,0,0,0.2);border-color: #000;box-shadow: 10px 10px 10px #000"}
+            %div.panel-heading{:style => "background:#000;border-color:#000"}
+              %h4{:style => "text-align:center;color:#fff",:'data-bind' => 'text : displaySelectedActivity'}
+            %div.panel-body{:style => "text-align:center",:"data-bind"=>"foreach:searchedEvents"}
+              =haml_partial "eventCard"
+          %button#CreateEvent.btn.btn-success.btn-large{"data-target" => "#createEventModal", "data-toggle" => "modal" , :"data-bind" => "click : createEvent , visible : createEventState"} Create Event
 
-      .row
-        %div.panel.panel-info{:'data-bind' => 'visible : participationEvents().length'}
-          %div.panel-heading
-            %h4{:'data-bind' => 'text : selectedActivity'}
-          %div.panel-body{:"data-bind"=>"foreach:myEvents"}
-            =haml_partial "eventCard"
-      .row
-        %div.panel.panel-info{:'data-bind' => 'visible : participationEvents().length'}
-          %div.panel-heading
-            %h4{:'data-bind' => 'text : selectedActivity'}
-          %div.panel-body{:"data-bind"=>"foreach:myEvents"}
-            =haml_partial "eventCard"
+      
        
 
       #createEventModal.modal.fade{"aria-hidden" => "true", "aris-labelledby" => "createEventModal",:role => "dialog" ,:tabindex => "-1"}
@@ -96,9 +116,9 @@
                   %label.col-sm-4.control-label Event Description
                   .col-sm-6
                     %textarea{:"data-bind" => "value: event().description"}
-
-        .modal-footer
-          %button.btn-large{:'data-dismiss' => "modal",:"data-bind" => "click : createEventHelper"} Create 
+                .form-group
+                  .col-sm-offset-4.col-sm-6    
+                    %button.btn-large{:'data-dismiss' => "modal",:"data-bind" => "click : createEventHelper"} Create 
 
     %script{:src => "../assets/js/knockout-2.2.1.js"} 
     %script{:src => "../assets/js/bootstrap.min.js"}  
