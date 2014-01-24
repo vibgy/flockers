@@ -22,38 +22,41 @@
         .row
           =haml_partial "progress"
         .row
+          %h4.alert.alert-info.text-center{:'data-bind' => 'text : displaySelectedActivity'}
           %span.label.label-info
             Choose Verb
           %div.panel.panel-info
-            %div.panel-heading
-              %h4{:href => "#wheel"} I would love to
-            %div.panel-body
-              %ul{:'data-bind' => 'foreach : verb'}
-                %li.item
-                  %a{:'data-bind' => 'text : $data,click : function() { $root.getActivities($data);}'}
+            /%div.panel-heading
+            /%h4{:href => "#wheel"} I would love to
+            %div.panel-body{:style => "text-align:center"}
+              %div{:'data-bind' => 'foreach : verb'}
+                .col-sm-3.col-md-2
+                  .thumbnail
+                    .caption
+                      %button.btn.btn-lg.btn-link{:'data-bind' => 'text : $data,click : function() { $root.getActivities($data);}'}
 
         .row{:'data-bind' => 'visible : activities().length'}
           %span.label.label-warning
             Choose Activity
           %div.panel.panel-warning
-            %div.panel-heading
-              %h4{:'data-bind' => 'text : selectedVerb'}
+            /%div.panel-heading
+            /  %h4{:'data-bind' => 'text : selectedVerb'}
             %div.panel-body{:style => "text-align:center"}
               %div{:'data-bind'=>'foreach:activities'}
                 .col-sm-3.col-md-2
                   .thumbnail
-                    %i.fa.fa-camera-retro.fa-5x
+                    /%i.fa.fa-camera-retro.fa-5x
                     /%img{alt: "...", "data-src" => "holder.js/300x200"}/
                     .caption
-                      %button.btn-warning.btn.btn-lg{:'data-bind'=>"click : function(){$root.searchEventByActivity($data);},text:$data", :style => "width:100%"} 
+                      %button.btn-warning.btn.btn-lg.btn-link{:'data-bind'=>"click : function(){$root.searchEventByActivity($data);},text:$data", :style => "width:100%"} 
 
         .row{:'data-bind' => 'visible : createEventState'}
           %div
             %span.label.label-danger
               Choose or Create Flock
             %div.panel.panel-danger
-              %div.panel-heading
-                %h4{:'data-bind' => 'text : selectedActivity'}
+              /%div.panel-heading
+              /  %h4{:'data-bind' => 'text : selectedActivity'}
               %div.panel-body
                 %div{:"data-bind"=>"visible : searchedEvents().length, foreach:searchedEvents"}
                   =haml_partial "eventcard"
@@ -63,8 +66,8 @@
           %span.label.label-success
             Flock Details
           %div.panel.panel-success
-            %div.panel-heading
-              %h4{:'data-bind' => 'text : selectedActivity'}
+            /%div.panel-heading
+            /  %h4{:'data-bind' => 'text : selectedActivity'}
             %div.panel-body{:"data-bind"=>""}
               =haml_partial "eventdetails"
 
