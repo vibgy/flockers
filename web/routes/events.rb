@@ -1,3 +1,5 @@
+require_relative '../helpers/init.rb'
+
 module Flockers
   class WebApp < Sinatra::Application
 
@@ -10,7 +12,7 @@ module Flockers
 
     post '/events' do
 
-      raise "Auth Failure" unless loggedIn?
+      raise "Auth Failure" unless loggedIn
       event = params[:event];
       puts session['userid']
 
@@ -68,7 +70,7 @@ module Flockers
 
     # TODO: 
     get '/events/top' do                        #event_details of top events
-      events = Event.all(:attendees.gt => 1)
+      events = Event.all(:attendees.count.gt => 1)
       content_type :json
       events.to_json
     end

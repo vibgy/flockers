@@ -1,25 +1,21 @@
+require_relative '../helpers/init.rb'
+
 module Flockers
   class WebApp < Sinatra::Application
 
     get '/users/events' do
-      raise "Auth Failure" if session['user'].nil? or session['user'] == ''
+      raise "Auth Failure" unless loggedIn
 
-      event = Event.first(:id => params[:event].to_i)
-      account = Account.first(:id => params[:user_id].to_i)
+      user = Account.first(:id => params[:user_id].to_i)
+      events = user.events
 
-       array=params[:event]
-       events = Array.new
-       array.each do |i|
-          events << Event.first(:id => i.to_i)
-       end
-       content_type :json
-       events.to_json
+      content_type :json
+      events.to_json
     end
 
     post '/users/events' do
        begin 
-          raise "Auth Failure" if session['user'].nil? or session['user'] == ''
-          puts params
+          raise "Auth Failure" unless loggedIn
           response = {}
           event = Event.first(:id => params[:event].to_i)
           account = Account.first(:id => params[:user_id].to_i)
@@ -35,7 +31,7 @@ module Flockers
 
     put '/users/events' do
        begin 
-          raise "Auth Failure" if session['user'].nil? or session['user'] == ''
+          raise "Auth Failure" unless loggedIn
           puts params
           response = {}
           event = Event.first(:id => params[:event].to_i)

@@ -17,8 +17,7 @@
           /%p.alert.alert-danger#InvalidUser{:style => 'visibility : hidden',:'data-bind' => 'text : message'}
           /%p.alert.alert-success#SuccessfulSignup{:style => 'visibility : hidden'}You have signed up successfully
         .row{:"data-bind" => "foreach: publicEvents"}
-          .col-md-4
-            =haml_partial "eventCard"
+          =haml_partial "eventCard"
       #signInModal.modal.fade{"aria-hidden" => "true", "aris-labelledby" => "signInModal",:role => "dialog" ,:tabindex => "-1"}
         .modal-dialog
           .modal-content

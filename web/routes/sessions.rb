@@ -1,3 +1,5 @@
+require_relative '../helpers/init.rb'
+
 module Flockers
   class WebApp < Sinatra::Application
   
@@ -41,7 +43,7 @@ end
 
 
 get '/loggedIn' do
-  raise "Auth Failure" if session['user'].nil? or session['user'] == ''
+  raise "Auth Failure" unless loggedIn
    @user = session['user'];
    @userid = session['userid'];
    haml :profile

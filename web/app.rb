@@ -35,6 +35,5 @@ module Flockers
   end
 end
 
-
-require_relative 'routes/init.rb'
 require_relative 'helpers/init.rb'
+require_relative 'routes/init.rb'

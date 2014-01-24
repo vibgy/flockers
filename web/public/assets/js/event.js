@@ -2,7 +2,7 @@ var wantsToParticipate;
 var viewModel;
 var emptyEvent = new function()
 {
-	this.id = "";
+  this.id = "";
     this.ename = "";
     this.date = "";
     this.time = "";
@@ -18,7 +18,7 @@ var emptyEvent = new function()
 };
 function EventModel(data)
 {
-	this.id = ko.observable(data.id);
+  this.id = ko.observable(data.id);
     this.ename = ko.observable(data.ename);
     this.date = ko.observable(data.date);
     this.time = ko.observable(data.time);
@@ -29,74 +29,77 @@ function EventModel(data)
     this.description = ko.observable(data.description);
     this.verb = ko.observable(data.verb);
     this.activity = ko.observable(data.activity);
-	this.account_id = ko.observable(data.account_id);
-	this.state = ko.observable(data.state);
+  this.account_id = ko.observable(data.account_id);
+  this.state = ko.observable(data.state);
 };
 function UserModel(data)
 {
-	this.uname = ko.observable(data.uname);
-	this.account_id = ko.observable(data.account_id);
+  this.uname = ko.observable(data.uname);
+  this.account_id = ko.observable(data.account_id);
 }
 function PublicEventModel(data)
 {
-	ko.utils.extend(this , new EventModel(data));
-	var uname = ko.observable($("#current_user").val());
+  ko.utils.extend(this , new EventModel(data));
+  var uname = ko.observable($("#current_user").val());
     var account_id = ko.observable($("#current_user_id").val());
     this.participate = function()
     {
         var self=this;
         if(uname()==''||uname()==null)
         {
-        		$('#signInModal').modal("show");
+            $('#signInModal').modal("show");
         }
         else{      
-        	$.post("/participate",
-		    	{event: this.id(),user_id: account_id()},
-		    	function(data)
-		    	{
-		       		viewModel.message("You have participated successfully!!");
-		  
-		   		}
-		   	  );}
+          $.post("/users/events",
+          {event: this.id(),user_id: account_id()},
+          function(data)
+          {
+              viewModel.message("You have participated successfully!!");
+      
+          }
+          );}
+    }
+    this.details = function() {
+      
     }
 };
 function ParticipatedEventModel(data)
 {
-	ko.utils.extend(this , new EventModel(data));
-	this.uname = ko.observable($("#current_user").val());
+  ko.utils.extend(this , new EventModel(data));
+  this.uname = ko.observable($("#current_user").val());
     this.account_id = ko.observable($("#current_user_id").val());
-	this.deleteParticipateEvent = function()
-	{
-   		var self=this;
-        $.delete("/participationEvent",
-        			{event_id : this.id()},
-          			function(data)
-          			{
-              			if(data.status == 'not_success')
-              			{
-                   			viewModel.message("Event Cannot be Deleted");
-              			}
-              			else
-              			{
-                   			var oldevent = ko.utils.arrayFirst(viewModel.participationEvents(),function(item)
-                   							{
-                                            	return item.id() == self.id(); 
+  this.deleteParticipateEvent = function()
+  {
+      var self=this;
+        $.delete("/users/events",
+              {event_id : this.id()},
+                function(data)
+                {
+                    if(data.status == 'not_success')
+                    {
+                        viewModel.message("Event Cannot be Deleted");
+                    }
+                    else
+                    {
+                        var oldevent = ko.utils.arrayFirst(viewModel.participationEvents(),function(item)
+                                {
+                                              return item.id() == self.id(); 
                                             });
-                   			viewModel.participationEvents.remove(oldevent);
-                   			viewModel.message("Event Deleted Successfully");
-              			}
-          			}
-          		);
+                        viewModel.participationEvents.remove(oldevent);
+                        viewModel.message("Event Deleted Successfully");
+                    }
+                }
+              );
     };
 
 };
 function UserOwnedEventModel(data)
 {
-	ko.utils.extend(this , new EventModel(data));
-	this.uname = ko.observable($("#current_user").val());
+  ko.utils.extend(this , new EventModel(data));
+  this.uname = ko.observable($("#current_user").val());
     this.account_id = ko.observable($("#current_user_id").val());
-	this.createEvent = function(event)
-	{
+  this.createEvent = function(event)
+  {
         var self = this;
         $.post('/events',
                {event : event},
@@ -138,15 +141,15 @@ function UserOwnedEventModel(data)
     
 function ViewModel()
 {
-	this.message=ko.observable('');
-	this.publicEvents=ko.observableArray();
-	this.myEvents=ko.observableArray();
-	this.participationEvents=ko.observableArray();
-	this.verb=ko.observableArray();
-	this.event = ko.observable({});
-	this.participant = ko.observable({});
-	this.createEventState = ko.observable(false);
-	this.selectedVerb = ko.observable();
+  this.message=ko.observable('');
+  this.publicEvents=ko.observableArray();
+  this.myEvents=ko.observableArray();
+  this.participationEvents=ko.observableArray();
+  this.verb=ko.observableArray();
+  this.event = ko.observable({});
+  this.participant = ko.observable({});
+  this.createEventState = ko.observable(false);
+  this.selectedVerb = ko.observable();
     this.selectedActivity = ko.observable();
     this.displaySelectedVerb = ko.observable();
     this.displaySelectedActivity = ko.observable();
@@ -156,69 +159,69 @@ function ViewModel()
     this.topEventsID = ko.observableArray();
     this.topParticipants = ko.observableArray();
     this.topParticipantsID = ko.observableArray();
-	
-	
-	this.showPublicEvents = function()
-	{
+  
+  
+  this.showPublicEvents = function()
+  {
         var event = {};
         var self = this;
         this.reset();
-        $.get('/publicEvents.json',
-				function(data)
-				{
-			    
-			        var events = $.map(data,function(item)                  
-				      	{
-							event.id = item.id;
-				        	event.ename = item.ename;
-				        	event.date = item.date;
-				        	event.time = item.time;
-				        	event.place = item.place;
-				        	event.organizer = item.organizer;
-				        	event.fees = item.fees;
-				        	event.prize = item.prize;
-				        	event.description = item.description;
-				        	event.verb = item.verb;
-							event.activity = item.activity;
-							event.account_id = item.account_id;
-							event.state = item.state;
-				        	return new PublicEventModel(event);
-				      	}
-		          	);
-              		self.publicEvents(events);
-            	}
+        $.get('/events',
+        function(data)
+        {
+          
+              var events = $.map(data,function(item)                  
+                {
+              event.id = item.id;
+                  event.ename = item.ename;
+                  event.date = item.date;
+                  event.time = item.time;
+                  event.place = item.place;
+                  event.organizer = item.organizer;
+                  event.fees = item.fees;
+                  event.prize = item.prize;
+                  event.description = item.description;
+                  event.verb = item.verb;
+              event.activity = item.activity;
+              event.account_id = item.account_id;
+              event.state = item.state;
+                  return new PublicEventModel(event);
+                }
+                );
+                  self.publicEvents(events);
+              }
             );
             
     };
     this.showMyEvents = function()
     {
-		//TODO: if a user has no events,show him create event
+    //TODO: if a user has no events,show him create event
         var event = {};
         this.reset();
         var self = this;
-        $.get('/myEvents.json',
-            	function(data)
-            	{
-              		var events = $.map(data,function(item) 
-				      {
-				        event.id = item.id;
-				        event.ename = item.ename;
-				        event.date = item.date;
-				        event.time = item.time;
-				        event.place = item.place;
-				        event.organizer = item.organizer;
-				        event.fees = item.fees;
-				        event.prize = item.prize;
-				        event.description = item.description;
-				        event.verb = item.verb;
-						event.activity = item.activity;
-						event.account_id = item.account_id;
-						event.state = item.state;
-				        return new UserOwnedEventModel(event);
-				      });
-              		self.myEvents(events);
-              		
-            	}
+        $.get('/users/events',
+              function(data)
+              {
+                  var events = $.map(data,function(item) 
+              {
+                event.id = item.id;
+                event.ename = item.ename;
+                event.date = item.date;
+                event.time = item.time;
+                event.place = item.place;
+                event.organizer = item.organizer;
+                event.fees = item.fees;
+                event.prize = item.prize;
+                event.description = item.description;
+                event.verb = item.verb;
+            event.activity = item.activity;
+            event.account_id = item.account_id;
+            event.state = item.state;
+                return new UserOwnedEventModel(event);
+              });
+                  self.myEvents(events);
+                  
+              }
             );
              
     };
@@ -227,46 +230,46 @@ function ViewModel()
         var event = {};
         this.reset();
         var self = this;
-        $.get('/participationID.json',
-            	function(data)
-            	{
-		          	if(data.status=='Failure')
-		          	{
-		          		self.message("No such events");    
-		        	}
-		        	else
-		        	{
-		            	var e=$.map(data,function(item){return item.event_id});
-		            	$.get('/participationEvents.json',
-		              			{'event' : e},
-		              			function(data)
-		              			{
-		              		
-									var events = $.map(data,function(item) 
-										{
-											event.id = item.id;
-											event.ename = item.ename;
-											event.date = item.date;
-											event.time = item.time;
-											event.place = item.place;
-											event.organizer = item.organizer;
-											event.fees = item.fees;
-											event.prize = item.prize;
-											event.description = item.description;
-											event.verb = item.verb;
-											event.activity = item.activity;
-											event.account_id = item.account_id;
-											event.state = item.state;
-											return new ParticipatedEventModel(event);
-							  			});
-							  			self.participationEvents(events);
-								}
-							);
-					}
-    			}
-    		);
-    		 document.getElementById("display").setAttribute("data-bind","foreach : participationEvents");
-    		  document.getElementById("option").setAttribute("data-bind","click : deleteParticipateEvent");
+        $.get('/users/events',
+              function(data)
+              {
+                if(data.status=='Failure')
+                {
+                  self.message("No such events");    
+              }
+              else
+              {
+                  var e=$.map(data,function(item){return item.event_id});
+                  $.get('/participationEvents.json',
+                        {'event' : e},
+                        function(data)
+                        {
+                      
+                  var events = $.map(data,function(item) 
+                    {
+                      event.id = item.id;
+                      event.ename = item.ename;
+                      event.date = item.date;
+                      event.time = item.time;
+                      event.place = item.place;
+                      event.organizer = item.organizer;
+                      event.fees = item.fees;
+                      event.prize = item.prize;
+                      event.description = item.description;
+                      event.verb = item.verb;
+                      event.activity = item.activity;
+                      event.account_id = item.account_id;
+                      event.state = item.state;
+                      return new ParticipatedEventModel(event);
+                      });
+                      self.participationEvents(events);
+                }
+              );
+          }
+          }
+        );
+         document.getElementById("display").setAttribute("data-bind","foreach : participationEvents");
+          document.getElementById("option").setAttribute("data-bind","click : deleteParticipateEvent");
     };
     this.createEvent = function()
     {
@@ -281,41 +284,41 @@ function ViewModel()
     {
         this.event().createEvent(JSON.parse(ko.toJSON(this.event())));
     };
-	this.DeleteEvent=function()
-	{
+  this.DeleteEvent=function()
+  {
           var self=this;
           $.delete("/events",
-          			{event_id : this.id()},
-          			function(data)
-          			{
-						  if(data.status == 'not_success')
-						  {
-						       self.message("Event Cannot be Deleted");
-						  }
-						  else
-						  {
-						       var oldevent = ko.utils.arrayFirst(eventViewModel.myEvents(),function(item)
-						       					{
-						                        	return item.id() == self.id(); 
-						                        });
-						       eventViewModel.myEvents.remove(oldevent);
-						       self.message("Event Deleted Successfully");
-						  }
-          			}
-          		);
+                {event_id : this.id()},
+                function(data)
+                {
+              if(data.status == 'not_success')
+              {
+                   self.message("Event Cannot be Deleted");
+              }
+              else
+              {
+                   var oldevent = ko.utils.arrayFirst(eventViewModel.myEvents(),function(item)
+                            {
+                                      return item.id() == self.id(); 
+                                    });
+                   eventViewModel.myEvents.remove(oldevent);
+                   self.message("Event Deleted Successfully");
+              }
+                }
+              );
        
     };
 
-	this.searchEventByActivity = function(activity) 
-	{
-    	var self = this;
+  this.searchEventByActivity = function(activity) 
+  {
+      var self = this;
         var SEvent={};
         this.reset();
         this.displaySelectedActivity(this.displaySelectedVerb()+ " " +activity);
         this.selectedActivity(activity);
         this.searchedEvents.removeAll();
         this.createEventState(true);
-        $.get('/searchEventByActivity',
+        $.get('/events/searchByActivity',
                  {record : activity},
                  function(data)
                  {
@@ -338,9 +341,9 @@ function ViewModel()
                              SEvent.prize = item.prize;
                              SEvent.description = item.description;
                              SEvent.verb = item.verb;
-							 SEvent.activity = item.activity;
-							 SEvent.account_id = item.account_id;
-							 SEvent.state = item.state;
+               SEvent.activity = item.activity;
+               SEvent.account_id = item.account_id;
+               SEvent.state = item.state;
                              return new PublicEventModel(SEvent);
                         });
                         self.searchedEvents(SEvents);
@@ -350,49 +353,49 @@ function ViewModel()
      };
      this.drawWheel = function() 
      {
-		 var self = this;
-		 var verb = [];
-		 $.get('/verbs',
-		          function(data)
-		          {
-		               for(var i = 0 ; i < data.length; i++)
-		               {
-		                   if(verb.indexOf(data[i].verb)==-1)
-		                   {
-		                        verb.push(data[i].verb);
-		                   }
-		               } 
-		              self.verb(verb); 
-		          }
-		          
-		      );
+     var self = this;
+     var verb = [];
+     $.get('/verbs',
+              function(data)
+              {
+                   for(var i = 0 ; i < data.length; i++)
+                   {
+                       if(verb.indexOf(data[i].verb)==-1)
+                       {
+                            verb.push(data[i].verb);
+                       }
+                   } 
+                  self.verb(verb); 
+              }
+              
+          );
       };
-	  this.getActivities = function(data) 
-	  {
-		    var self = this;
-		    this.displaySelectedVerb("I would love to "+data);
-		    this.selectedVerb(data);
-		    self.activities.removeAll();
-		    self.searchedEvents.removeAll();
-			$.get('/activities',
-		            {verb : data},
-		            function(data)
-		            {
-		                 for(var i = 0 ; i < data.length; i++)
-		                 {
-		                     self.activities.push(data[i].activity);
-		                 } 
-		            }
-		         );
+    this.getActivities = function(data) 
+    {
+        var self = this;
+        this.displaySelectedVerb("I would love to "+data);
+        this.selectedVerb(data);
+        self.activities.removeAll();
+        self.searchedEvents.removeAll();
+      $.get('/activities',
+                {verb : data},
+                function(data)
+                {
+                     for(var i = 0 ; i < data.length; i++)
+                     {
+                         self.activities.push(data[i].activity);
+                     } 
+                }
+             );
       };
       
       this.getTopEvents = function()
       {
-		var event={};
+    var event={};
         var uniqueEvents = new Array(); 
         var self = this;   
         this.reset();
-        $.get('/eventID',
+        $.get('/events/top',
               function(data)
               {
                    for(var i = 0 ; i < data.length; i++)
@@ -413,42 +416,42 @@ function ViewModel()
                    {
                        self.topEventsID.push(uniqueEvents[i].event_id);
                    }
-                   $.get('/topevents',
-								{eventArray : self.topEventsID()},
-								function(data)
-								{
-									var events = $.map(data,function(item) 
-													{
-													event.id = item.id;
-													event.ename = item.ename;
-													event.date = item.date;							
-													event.time = item.time;
-													event.place = item.place;
-													event.organizer = item.organizer;
-													event.fees = item.fees;
-													event.prize = item.prize;
-													event.description = item.description;
-													event.verb = item.verb;
-													event.activity = item.activity;
-													event.account_id = item.account_id;
-													event.state = item.state;
-													return new PublicEventModel(event);
-												  });
-									self.topEvents(events);
-								}
-							);
-				}
-			);	
+                   $.get('/events/top',
+                {eventArray : self.topEventsID()},
+                function(data)
+                {
+                  var events = $.map(data,function(item) 
+                          {
+                          event.id = item.id;
+                          event.ename = item.ename;
+                          event.date = item.date;             
+                          event.time = item.time;
+                          event.place = item.place;
+                          event.organizer = item.organizer;
+                          event.fees = item.fees;
+                          event.prize = item.prize;
+                          event.description = item.description;
+                          event.verb = item.verb;
+                          event.activity = item.activity;
+                          event.account_id = item.account_id;
+                          event.state = item.state;
+                          return new PublicEventModel(event);
+                          });
+                  self.topEvents(events);
+                }
+              );
+        }
+      );  
     };
     this.getTopParticipants = function()
       {
-		var participant={};
+    var participant={};
         var uniqueParticipants = new Array();
         this.reset();
         var self = this; 
         self.topParticipants.removeAll();
           
-        $.get('/participantID',
+        $.get('/users/top',
               function(data)
               {
                    for(var i = 0 ; i < data.length; i++)
@@ -470,40 +473,43 @@ function ViewModel()
                        self.topParticipantsID.push(uniqueParticipants[i].account_id);
                    }
                    $.get('/topParticipants',
-								{participantArray : self.topParticipantsID()},
-								function(data)
-								{
-									var participants = $.map(data,function(item) 
-													{
-													participant.uname = item.uname;
-													participant.account_id = item.id;
-													return new UserModel(participant);
-												  });
-									self.topParticipants(participants);
-								}
-							);
-				}
-			);	
+                {participantArray : self.topParticipantsID()},
+                function(data)
+                {
+                  var participants = $.map(data,function(item) 
+                          {
+                          participant.uname = item.uname;
+                          participant.account_id = item.id;
+                          return new UserModel(participant);
+                          });
+                  self.topParticipants(participants);
+                }
+              );
+        }
+      );  
     };
 
       this.init = function() 
-	  {
-		    this.showPublicEvents();
-		    this.drawWheel();
-		    this.getTopEvents();
-		    this.getTopParticipants();
+    {
+        this.showPublicEvents();
+        this.drawWheel();
+        this.getTopEvents();
+        this.getTopParticipants();
       }
 
     this.reset = function()
     {
-  		this.myEvents.removeAll();
+        this.myEvents.removeAll();
         this.participationEvents.removeAll();
         this.message('');
         this.searchedEvents.removeAll();
         this.createEventState(false);
         this.topEvents.removeAll();
         this.topEventsID.removeAll();
-        
+    }
+
+    this.details = function() {
+
     }
 }
 function isUnique(event ,array)
@@ -532,17 +538,17 @@ function compare( a , b )
 }
 
 $().ready(function()
-			{
-				viewModel = new ViewModel();
-				if($("#event").get(0))
-				{
-					ko.applyBindings(viewModel,$("#event").get(0));
-				}
-				if($("#events").get(0))
-				{
-					ko.applyBindings(viewModel,$("#events").get(0));
-				}
-				viewModel.init();
-			}
-		);
-	
+      {
+        viewModel = new ViewModel();
+        if($("#event").get(0))
+        {
+          ko.applyBindings(viewModel,$("#event").get(0));
+        }
+        if($("#events").get(0))
+        {
+          ko.applyBindings(viewModel,$("#events").get(0));
+        }
+        viewModel.init();
+      }
+    );
+  
