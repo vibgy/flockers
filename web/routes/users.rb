@@ -6,11 +6,9 @@ module Flockers
   class WebApp < Sinatra::Application
 
     get '/users/top' do                        #account_details of top participants
-      raise "Auth Failure" unless loggedIn
-      binding.pry
-      events = Account.all(:events.gt => 0)
+      accounts = Account.all
       content_type :json
-      participants.to_json
+      accounts.to_json
     end
 
     get '/users/events' do

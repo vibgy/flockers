@@ -70,7 +70,7 @@ module Flockers
 
     # TODO: 
     get '/events/top' do                        #event_details of top events
-      events = Event.all(:attendees.count.gt => 1)
+      events = Event.all
       content_type :json
       events.to_json
     end
