@@ -12,7 +12,7 @@ end
 class Activity
 end
 
-class Account
+class Account 
   include DataMapper::Resource
 
   property :id, Serial
