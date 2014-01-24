@@ -16,11 +16,11 @@ function UserViewModel()
 	this.login=function()
 	{
 		var self = this;
-    	$.post("/login",
+    	$.get("/login",
 				{user_name : self.uname(), pass : self.pas()},
 				function(data)                                                  //data.status???
 				{
-					alert(data);document.getElementById("InvalidUser").style.visibility="hidden";
+					//document.getElementById("InvalidUser").style.visibility="hidden";
 					if(data.status == 'not success')
 					{
 						document.getElementById("InvalidUser").style.visibility="visible";
@@ -36,7 +36,7 @@ function UserViewModel()
     this.signout=function()
     {
     	var self = this;
-        $.post('/signout',
+        $.get('/signout',
 				function(data)
                	{
                 	if(data.status == "success")

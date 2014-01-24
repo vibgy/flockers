@@ -3,3 +3,14 @@ body {
   padding-top: 50px;
   padding-bottom: 20px;
 }
+.jumbotron.heading h1,
+.jumbotron .h1,
+.jumbotron.heading p
+{
+color: #fff;
+}
+.jumbotron.heading{
+  background: url('http://st.gdefon.com/wallpapers_original/wallpapers/336639_tekstura_fon_metallik_seryj_1920x1200_(www.GdeFon.ru).jpg');
+  box-shadow: 10px 10px 10px #000;
+}
+

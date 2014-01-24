@@ -1,0 +1,43 @@
+.main
+{
+background-image: url('http://1.bp.blogspot.com/-bNdqB-Q2nN4/T8IeZx4CbsI/AAAAAAAAFpI/cP24bJBZ_TQ/s1600/Grey%2BLines.jpg');
+background-attachment:fixed;"
+}
+.panel.event-panel
+{
+background : rgba(0,0,0,0.2);
+border-color: #000;
+box-shadow: 10px 10px 10px #000;
+}
+.panel-heading.event {
+  color: #ffffff;
+  background-color: #000 ;
+  border-color: #000;
+}
+.panel-footer.event {
+  color: #ffffff;
+  background-color: #000 ;
+  border-color: #000;
+}
+.panel-heading.event h1
+{
+	text-align:center;
+	color:#fff;
+}
+.panel-body p,div
+{
+color:#333;
+}
+.btn-panel
+{
+	color: #fff;
+background-color: #303030;
+border-color: #000;
+}
+.col-md-4
+{
+padding-right: 30px;
+padding-left: 10px;
+padding-top: 10px;
+padding-bottom: 30px;
+}
