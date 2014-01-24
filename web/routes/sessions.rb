@@ -4,9 +4,10 @@ module Flockers
   class WebApp < Sinatra::Application
   
 before do
-  if request.request_method == "POST"
+  if request.request_method == "POST" and request.content_type=="application/json"
     body_parameters = request.body.read
-    params.merge!(JSON.parse(body_parameters))
+    parsed = body_parameters && body_parameters.length >= 2 ? JSON.parse(body_parameters) : nil
+    params.merge!(parsed)
   end
 end
 

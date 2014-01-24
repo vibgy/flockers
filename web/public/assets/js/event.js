@@ -472,7 +472,7 @@ function ViewModel()
                    {
                        self.topParticipantsID.push(uniqueParticipants[i].account_id);
                    }
-                   $.get('/topParticipants',
+                   $.get('/users/top',
                 {participantArray : self.topParticipantsID()},
                 function(data)
                 {
