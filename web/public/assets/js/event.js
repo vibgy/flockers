@@ -299,7 +299,7 @@ function ViewModel()
         time = date.toDateString()+" "+time;
         this.event().time(time);
         this.event().createEvent(JSON.parse(ko.toJSON(this.event())));
-        //this.showCreateEventForm(false);
+        this.showCreateEventForm(false);
     };
   this.DeleteEvent=function()
   {
