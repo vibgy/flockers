@@ -33,6 +33,9 @@ function EventModel(data)
     this.activity = ko.observable(data.activity);
   this.account_id = ko.observable(data.account_id);
   this.state = ko.observable(data.state);
+  this.details = function() {
+      viewModel.details(this);
+    }
 };
 function UserModel(data)
 {
@@ -61,9 +64,7 @@ function PublicEventModel(data)
           }
           );}
     }
-    this.details = function() {
-      viewModel.details(this);
-    }
+    
 };
 function ParticipatedEventModel(data)
 {
@@ -233,6 +234,7 @@ function ViewModel()
                   self.myEvents(events);
                   
               }
+            //window.location.href = '/myEvents';
             );
              
     };
@@ -287,13 +289,17 @@ function ViewModel()
         //TODO : make a dropdown for category in create event form
         this.showCreateEventForm(true);
         var newEvent = new UserOwnedEventModel(emptyEvent);
-        newEvent.verb = this.selectedVerb;
-        newEvent.activity = this.selectedActivity;
+        newEvent.verb = this.selectedVerb();
+        newEvent.activity = this.selectedActivity();
         this.event(newEvent);
     };
 
     this.createEventHelper = function()
     {
+        var time  = this.event().time();
+        var date  = new Date();
+        time = date.toDateString()+" "+time;
+        this.event().time(time);
         this.event().createEvent(JSON.parse(ko.toJSON(this.event())));
         this.showCreateEventForm(false);
     };
@@ -516,6 +522,7 @@ function ViewModel()
       this.init = function() 
     {
         this.showPublicEvents();
+        this.showMyEvents();
         this.drawWheel();
         this.getTopEvents();
         this.getTopParticipants();
@@ -574,4 +581,57 @@ $().ready(function()
         
       }
     );
+$(function() {
+
+    inittimepicker();
+    initdatepicker();
+
+});
+
+function inittimepicker() {
+  $(".timepicker-from").each( function() {
+    $(this).val("05:00 AM");
+    $(this).timepicker({defaultTime: 'value'});
+  });
+
+  $(".timepicker-to").each( function() {
+    $(this).val("11:00 PM");
+    $(this).timepicker({defaultTime: 'value'});
+  });
+}
+
+function initdatepicker() {
+  $(".dpicker").each(function () {
+
+    var d = new Date();
+
+    // set date
+    if ($(this).hasClass('datepicker-tomorrow')) {
+      d.setDate(d.getDate()+1);
+      $(this).datepicker({format: 'yyyy-mm-dd'});
+      $(this).datepicker('setValue', d);
+    } else {
+      $(this).datepicker({format: 'yyyy-mm-dd'});
+      $(this).val(d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate());        
+    }
+
+    // attach hanlder to check the values that user picks
+    if (!($(this).hasClass('datepicker-any'))) {
+      $(this).datepicker()
+        .on('changeDate', function(ev){
+          if (ev.date.valueOf() < d.valueOf()) {
+            if (ev.date.getFullYear() == d.getFullYear() &&
+                ev.date.getDate() == d.getDate() &&
+                ev.date.getMonth() == d.getMonth()) {
+              // never mind, user picked today
+            } else {
+              // show error, that you cant choose in past
+              $(this).datepicker('setValue', d);
+              alert("Please choose an appropriate date.");
+            }
+          }
+        });
+    }
+  });
+}
   

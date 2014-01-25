@@ -25,7 +25,9 @@ module Flockers
              :account_id => session['userid'],
              :fees => event[:fees],
              :prize => event[:prize],
-             :description =>event[:description]})
+             :description =>event[:description],
+             :verb => event[:verb],
+             :activity =>event[:activity]})
 
        #rescue => e
        #   response = {:error => {:message => e.message}}

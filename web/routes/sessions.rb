@@ -17,6 +17,9 @@ get '/' do
    haml:home
 end
 
+get '/myevents' do
+  haml :userEvents
+end
 
 post '/login' do 
  begin 
