@@ -11,12 +11,5 @@ module Flockers
       accounts.to_json
     end
 
-    get '/users/events' do
-      raise "Auth Failure" unless loggedIn
-      hm=Event.all(:account_id => session['userid'])
-      content_type :json
-      hm.to_json;
-    end
-
 end
 end
