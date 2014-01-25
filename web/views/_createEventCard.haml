@@ -1,10 +1,16 @@
-.col-md-3
+.col-md-4
   .panel.panel-primary
     /.panel-heading
     .panel-body
-      %h4 Create New Flock
-      %p Some Description
-      %div When: @ Some good time
-      %div Where: @ Some good place
+      %h4{:"data-bind" => "text: event().ename()"}
+      %p{:"data-bind" => "text: event().description()"}
+      %div{:"data-bind" => "text: 'When: ' + event().date()"}
+      %div{:"data-bind" => "text: 'Where: ' + event().place()"}
+      /%p{:"data-bind" => "astext: fees()"}
+      /%p{:"data-bind" => "text: prize()"}
+      /%p{:"data-bind" => "text: time()"}
     .panel-footer
-      %button#createevent.btn.btn-primary{:style => "width:100%",:"data-bind" => "click : createEvent"} Create Flock
+      %button#option.btn.btn-primary{:style => "width:100%", 'data-bind' =>'click: createEvent'} Create Flock
+      /%button#option.btn.btn-primary{:style => "width:58%", 'data-bind' =>'click: participate'} Participate
+      /%button#delete.btn.btn-primary{:"data-bind" => "click : DeleteEvent"}Delete Me
+      /%button#deleteParticipation.btn-primary{:"data-bind" => "click : deleteParticipateEvent"}Delete Me

@@ -5,14 +5,14 @@ var viewModel;
 var emptyEvent = new function()
 {
   this.id = "";
-    this.ename = "";
-    this.date = "";
-    this.time = "";
+    this.ename = "New Flock";
+    this.date = new Date();
+    this.time = "11:00 AM";
     this.place = "";
     this.organizer = "";
     this.fees = "";
     this.prize = "";
-    this.description = "";
+    this.description = "Just for fun";
     this.verb = "";
     this.activity = "";
     this.account_id = "";
@@ -150,7 +150,7 @@ function ViewModel()
   this.myParticipatedEvents = ko.observableArray();
   this.participationEvents=ko.observableArray();
   this.verb=ko.observableArray();
-  this.event = ko.observable({});
+  this.event = ko.observable(new EventModel(emptyEvent));
   this.participant = ko.observable({});
   this.createEventState = ko.observable(false);
   this.showCreateEventForm = ko.observable(false);

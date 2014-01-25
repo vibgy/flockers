@@ -46,7 +46,7 @@
                     /%i.fa.fa-camera-retro.fa-5x
                     /%img{alt: "...", "data-src" => "holder.js/300x200"}/
                     .caption
-                      %button.btn-warning.btn.btn-lg.btn-link{:'data-bind'=>"click : function(){$root.searchEventByActivity($data);},text:$data", :style => "width:100%"}
+                      %button.btn-warning.btn.btn-link{:'data-bind'=>"click : function(){$root.searchEventByActivity($data);},text:$data", :style => "width:100%"}
               .col-sm-4.col-md-4
                 .thumbnail
                   /%i.fa.fa-camera-retro.fa-5x
@@ -89,50 +89,12 @@
             %div.panel-body{:"data-bind"=>"foreach:myParticipatedEvents"}
               =haml_partial "participatedEventCard"
 
-        .row.thumbnail{:'data-bind' => 'visible : showCreateEventForm()'}               
-          %h4 Create Event             
-          %form.form-horizontal{:role => "form"}                   
-            .form-group
-              %label.col-sm-4.control-label event name
-              .col-sm-6
-                %input{:placeholder => "enter event name", :"data-bind" => "value: event().ename", :required => "", :type => "text"}
-
-            .form-group
-              %label.col-sm-4.control-label event date
-              .col-sm-6
-                %input{:"data-bind" => "value: event().date", :required => "",:type => 'date', :placeholder => "click to pick"}  
-
-            .form-group
-              %label.col-sm-4.control-label event time
-              .col-sm-6  
-                %div.control-group.ptime
-                  %label.control-label{:for => 'time-start'} Pick Time:
-                  %div.controls
-                    %input.input-small.timepicker-from{:"data-bind" => "value: event().time", :required => "", :type => 'text',:id => 'time-start', :name => 'time-start'}         
-               
-
-            .form-group
-              %label.col-sm-4.control-label event place
-              .col-sm-6
-                %input{:"data-bind" => "value: event().place", :required => "", :type => "text"}
-
-            .form-group
-              %label.col-sm-4.control-label event fees
-              .col-sm-6
-                %input{:"data-bind" => "value: event().fees"}
-
-            .form-group
-              %label.col-sm-4.control-label event prize
-              .col-sm-6
-                %input{:"data-bind" => "value: event().prize"}
-
-            .form-group
-              %label.col-sm-4.control-label event description
-              .col-sm-6
-                %textarea{:"data-bind" => "value: event().description"}
-
-          
-            %button.btn.btn-success{:'data-dismiss' => "modal",:"data-bind" => "click : createEventHelper"} create 
+        .row{:'data-bind' => 'visible : showCreateEventForm()'}
+          %span.label.label-success
+            Create Flock
+          .panel.panel-success
+            .panel-body
+            =haml_partial "createEvent"
 
       =haml_partial "footer"
 
