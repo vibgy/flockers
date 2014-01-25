@@ -151,6 +151,8 @@ function ViewModel()
   this.event = ko.observable({});
   this.participant = ko.observable({});
   this.createEventState = ko.observable(false);
+  this.showCreateEventForm = ko.observable(false);
+  this.detailedState = ko.observable(false);
   this.selectedVerb = ko.observable();
     this.selectedActivity = ko.observable();
     this.displaySelectedVerb = ko.observable();
@@ -167,6 +169,7 @@ function ViewModel()
   
   this.details = function(data)
   {
+	this.detailedState(true);
 	this.detailedEvent(data);
   };
   this.showPublicEvents = function()
@@ -282,6 +285,7 @@ function ViewModel()
     this.createEvent = function()
     {
         //TODO : make a dropdown for category in create event form
+        this.showCreateEventForm(true);
         var newEvent = new UserOwnedEventModel(emptyEvent);
         newEvent.verb = this.selectedVerb;
         newEvent.activity = this.selectedActivity;
@@ -291,6 +295,7 @@ function ViewModel()
     this.createEventHelper = function()
     {
         this.event().createEvent(JSON.parse(ko.toJSON(this.event())));
+        this.showCreateEventForm(false);
     };
   this.DeleteEvent=function()
   {
@@ -523,6 +528,7 @@ function ViewModel()
         this.message('');
         this.searchedEvents.removeAll();
         this.createEventState(false);
+        this.detailedState(false);
         this.topEvents.removeAll();
         this.topEventsID.removeAll();
     }

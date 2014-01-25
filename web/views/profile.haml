@@ -73,13 +73,13 @@
                   =haml_partial "eventCard"
                 =haml_partial "createEventCard"
 
-        .row
+        .row{:"data-bind"=>"visible : detailedState()"}
           %span.label.label-success
             Flock Details
           %div.panel.panel-success
             /%div.panel-heading
             /  %h4{:'data-bind' => 'text : selectedActivity'}
-            %div.panel-body{:"data-bind"=>""}
+            %div.panel-body
               =haml_partial "eventdetails"
 
         .row{:'data-bind' => 'visible : participationEvents().length'}
@@ -91,51 +91,46 @@
             %div.panel-body{:"data-bind"=>"foreach:myEvents"}
               =haml_partial "eventCard"
 
-        #createeventmodal.modal.fade{"aria-hidden" => "true", "aris-labelledby" => "createeventmodal",:role => "dialog" ,:tabindex => "-1"}
-          .modal-dialog
-            .modal-content
-              .modal-header
-                %button.close{"aria-hidden" => "true", "data-dismiss" => "modal", :type => "button"} &times;
-                %h4.modal-title create event
-              .modal-body
-                %form.form-horizontal{:role => "form"}                   
-                  .form-group
-                    %label.col-sm-4.control-label event name
-                    .col-sm-6
-                      %input{:placeholder => "enter event name", :"data-bind" => "value: event().ename", :required => "", :type => "text"}
+        .row.thumbnail{:'data-bind' => 'visible : showCreateEventForm()'}               
+          %h4 Create Event             
+          %form.form-horizontal{:role => "form"}                   
+            .form-group
+              %label.col-sm-4.control-label event name
+              .col-sm-6
+                %input{:placeholder => "enter event name", :"data-bind" => "value: event().ename", :required => "", :type => "text"}
 
-                  .form-group
-                    %label.col-sm-4.control-label event date
-                    .col-sm-6
-                      %input{:"data-bind" => "value: event().date", :required => "",:type => 'date', :placeholder => "click to pick"}  
+            .form-group
+              %label.col-sm-4.control-label event date
+              .col-sm-6
+                %input{:"data-bind" => "value: event().date", :required => "",:type => 'date', :placeholder => "click to pick"}  
 
-                  .form-group
-                    %label.col-sm-4.control-label event time
-                    .col-sm-6
-                      %input{:"data-bind" => "value: event().time", :required => "", :type => "text"}
+            .form-group
+              %label.col-sm-4.control-label event time
+              .col-sm-6
+                %input{:"data-bind" => "value: event().time", :required => "", :type => "text"}
 
-                  .form-group
-                    %label.col-sm-4.control-label event place
-                    .col-sm-6
-                      %input{:"data-bind" => "value: event().place", :required => "", :type => "text"}
+            .form-group
+              %label.col-sm-4.control-label event place
+              .col-sm-6
+                %input{:"data-bind" => "value: event().place", :required => "", :type => "text"}
 
-                  .form-group
-                    %label.col-sm-4.control-label event fees
-                    .col-sm-6
-                      %input{:"data-bind" => "value: event().fees", :type => "text"}
+            .form-group
+              %label.col-sm-4.control-label event fees
+              .col-sm-6
+                %input{:"data-bind" => "value: event().fees", :type => "text"}
 
-                  .form-group
-                    %label.col-sm-4.control-label event prize
-                    .col-sm-6
-                      %input{:"data-bind" => "value: event().prize", :type => "text"}
+            .form-group
+              %label.col-sm-4.control-label event prize
+              .col-sm-6
+                %input{:"data-bind" => "value: event().prize", :type => "text"}
 
-                  .form-group
-                    %label.col-sm-4.control-label event description
-                    .col-sm-6
-                      %textarea{:"data-bind" => "value: event().description"}
+            .form-group
+              %label.col-sm-4.control-label event description
+              .col-sm-6
+                %textarea{:"data-bind" => "value: event().description"}
 
-          .modal-footer
-            %button.btn.btn-lg{:'data-dismiss' => "modal",:"data-bind" => "click : createEventHelper"} create 
+          
+            %button.btn.btn-success{:'data-dismiss' => "modal",:"data-bind" => "click : createEventHelper"} create 
 
       =haml_partial "footer"
 
