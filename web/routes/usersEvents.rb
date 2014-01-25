@@ -8,6 +8,7 @@ module Flockers
 
       user = Account.first(:id => params[:user_id].to_i)
       events = user.events
+      events << user.participatedEvents
 
       content_type :json
       events.to_json
