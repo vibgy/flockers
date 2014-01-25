@@ -18,6 +18,9 @@ get '/' do
 end
 
 get '/myevents' do
+  raise "Auth Failure" unless loggedIn
+   @user = session['user'];
+   @userid = session['userid'];
   haml :userEvents
 end
 
