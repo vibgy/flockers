@@ -104,7 +104,7 @@ function UserOwnedEventModel(data)
   this.createEvent = function(event)
   {
         var self = this;
-        $.post('/users/events/owner',
+        $.post('/users/events',
                {event : event},
                 function(data){
                     if(!data.error)
@@ -211,7 +211,7 @@ function ViewModel()
         var event = {};
         this.reset();
         var self = this;
-        $.get('/users/events/owner',
+        $.get('/users/events',
               function(data)
               {
                   var events = $.map(data,function(item) 
