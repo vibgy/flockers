@@ -162,7 +162,7 @@ function ViewModel()
     this.topParticipants = ko.observableArray();
     this.topParticipantsID = ko.observableArray();
     this.newActivity = ko.observable();
-    this.detailedEvent = ko.observable();
+    this.detailedEvent = ko.observable(new EventModel(emptyEvent));
   
   
   this.details = function(data)
@@ -527,9 +527,6 @@ function ViewModel()
         this.topEventsID.removeAll();
     }
 
-    this.details = function() {
-
-    }
 }
 function isUnique(event ,array)
 {

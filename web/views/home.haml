@@ -16,6 +16,14 @@
           /%p.alert.alert-success#SuccessfulSignup{:style => 'visibility : hidden'}You have signed up successfully
         .row{:"data-bind" => "foreach: publicEvents"}
           =haml_partial "eventCard"
+        .row
+          %span.label.label-success
+            Flock Details
+          %div.panel.panel-success
+            /%div.panel-heading
+            /  %h4{:'data-bind' => 'text : selectedActivity'}
+            %div.panel-body
+              =haml_partial "eventdetails"
       #signInModal.modal.fade{"aria-hidden" => "true", "aris-labelledby" => "signInModal",:role => "dialog" ,:tabindex => "-1"}
         .modal-dialog
           .modal-content
