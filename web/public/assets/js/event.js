@@ -62,7 +62,7 @@ function PublicEventModel(data)
           );}
     }
     this.details = function() {
-      
+      viewModel.details(this);
     }
 };
 function ParticipatedEventModel(data)
@@ -162,8 +162,13 @@ function ViewModel()
     this.topParticipants = ko.observableArray();
     this.topParticipantsID = ko.observableArray();
     this.newActivity = ko.observable();
+    this.detailedEvent = ko.observable();
   
   
+  this.details = function(data)
+  {
+	this.detailedEvent(data);
+  };
   this.showPublicEvents = function()
   {
         var event = {};
@@ -550,10 +555,11 @@ function compare( a , b )
     }
     return 0;
 }
-
+viewModel = new ViewModel();
+viewModel.init();
 $().ready(function()
       {
-        viewModel = new ViewModel();
+        
         if($("#event").get(0))
         {
           ko.applyBindings(viewModel,$("#event").get(0));
@@ -562,7 +568,7 @@ $().ready(function()
         {
           ko.applyBindings(viewModel,$("#events").get(0));
         }
-        viewModel.init();
+        
       }
     );
   
