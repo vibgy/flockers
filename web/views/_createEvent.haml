@@ -1,0 +1,37 @@
+%form.form-horizontal{:role => "form"}                   
+  .form-group
+    %label.col-sm-2.control-label Flock Name
+    .col-sm-6
+      %input.form-control{:placeholder => "Flock Name", :"data-bind" => "value: event().ename", :required => "", :type => "text"}
+
+  .form-group
+    %label.col-sm-2.control-label When
+    .col-sm-3
+      %input.form-control{:"data-bind" => "value: event().date", :required => "",:type => 'date', :placeholder => "click to pick"}  
+    .col-sm-3  
+      %input.form-control.timepicker-from{:required => "", :type => 'text',:id => 'time-start', :name => 'time-start'}         
+
+  .form-group
+    %label.col-sm-2.control-label Where
+    .col-sm-6
+      %input.form-control{:"data-bind" => "value: event().place", :required => "", :type => "text"}
+
+  .form-group
+    %label.col-sm-2.control-label Fees
+    .col-sm-6
+      %input.form-control{:"data-bind" => "value: event().fees"}
+
+  .form-group
+    %label.col-sm-2.control-label Prize
+    .col-sm-6
+      %input.form-control{:"data-bind" => "value: event().prize"}
+
+  .form-group
+    %label.col-sm-2.control-label Description
+    .col-sm-6
+      %textarea.form-control{:"data-bind" => "value: event().description"}
+
+  .form-group
+    .col-sm-2
+    .col-sm-6
+      %button.btn.btn-primary{:type => "button", :"data-bind" => "click : createEventHelper"} Create Flock
