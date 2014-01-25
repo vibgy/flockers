@@ -55,7 +55,7 @@ function PublicEventModel(data)
             $('#signInModal').modal("show");
         }
         else{      
-          $.post("/users/events/participation",
+          $.post("/users/events/participant",
           {event: this.id(),user_id: account_id()},
           function(data)
           {
@@ -146,7 +146,8 @@ function ViewModel()
 {
   this.message=ko.observable('');
   this.publicEvents=ko.observableArray();
-  this.myEvents=ko.observableArray();
+  this.myOwnedEvents=ko.observableArray();
+  this.myParticipatedEvents = ko.observableArray();
   this.participationEvents=ko.observableArray();
   this.verb=ko.observableArray();
   this.event = ko.observable({});
@@ -254,7 +255,7 @@ function ViewModel()
             event.activity = item.activity;
             event.account_id = item.account_id;
             event.state = item.state;
-                return new UserOwnedEventModel(event);
+                return new ParticipatedEventModel(event);
               });
                   self.myParticipatedEvents(events);
                   

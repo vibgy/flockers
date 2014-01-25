@@ -90,7 +90,7 @@
             %div.panel-heading
               %h4{:'data-bind' => 'text : selectedActivity'}
             %div.panel-body{:"data-bind"=>"foreach:myParticipatedEvents"}
-              =haml_partial "participationEventCard"
+              =haml_partial "participatedEventCard"
 
         .row.thumbnail{:'data-bind' => 'visible : showCreateEventForm()'}               
           %h4 Create Event             

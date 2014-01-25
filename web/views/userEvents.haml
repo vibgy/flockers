@@ -12,10 +12,14 @@
         %p A site to reveal the FUN SIDE of you.
       %div#event
         .row
+          %input.hide{:id =>"current_user", :value => "#{@user}"}
+          %input.hide{:id =>"current_user_id", :value => "#{@userid}"}
           /%p.alert.alert-danger#InvalidUser{:style => 'visibility : hidden',:'data-bind' => 'text : message'}
           /%p.alert.alert-success#SuccessfulSignup{:style => 'visibility : hidden'}You have signed up successfully
+        %h4 Owned events
         .row{:"data-bind" => "foreach: myOwnedEvents"}
           =haml_partial "ownedEventCard"
+        %h4 Participated Events
         .row{:"data-bind" => "foreach: myParticipatedEvents"}
           =haml_partial "participatedEventCard"
         .row{:"data-bind"=>"visible : detailedState()"}
