@@ -1,25 +1,25 @@
 !!!
 %html{:lang => "en"}
   %head
-    %title Event Planner
+    %title My Flocks
     %link{:href => "../assets/css/bootstrap.min.css", :rel => "stylesheet"}
     %link{:href => "../assets/css/navbar-fixed-top.css", :rel => "stylesheet"}
   %body.main
     =haml_partial "topBar"
     .container
-      .jumbotron.heading
-        %h1 Flockers
-        %p A site to reveal the FUN SIDE of you.
+      %h1
+        Flockers
+        %small A site to reveal the FUN SIDE of you.
       %div#event
         .row
           %input.hide{:id =>"current_user", :value => "#{@user}"}
           %input.hide{:id =>"current_user_id", :value => "#{@userid}"}
           /%p.alert.alert-danger#InvalidUser{:style => 'visibility : hidden',:'data-bind' => 'text : message'}
           /%p.alert.alert-success#SuccessfulSignup{:style => 'visibility : hidden'}You have signed up successfully
-        %h4 Owned events
+        %h4 Flocks Owned
         .row{:"data-bind" => "foreach: myOwnedEvents"}
           =haml_partial "ownedEventCard"
-        %h4 Participated Events
+        %h4 Flocks Participating In
         .row{:"data-bind" => "foreach: myParticipatedEvents"}
           =haml_partial "participatedEventCard"
         .row{:"data-bind"=>"visible : detailedState()"}
@@ -30,6 +30,8 @@
             /  %h4{:'data-bind' => 'text : selectedActivity'}
             %div.panel-body
               =haml_partial "eventdetails"
+
+    =haml_partial "footer"
 
     %script{:src => "../assets/js/knockout-2.2.1.js"}  
     %script{:src => "../assets/js/jquery.min.js"}

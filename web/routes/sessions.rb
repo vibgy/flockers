@@ -1,4 +1,5 @@
 require_relative '../helpers/init.rb'
+require 'pry'
 
 module Flockers
   class WebApp < Sinatra::Application
@@ -12,15 +13,15 @@ before do
 end
 
 get '/' do
-   @user = session['user'];
-   @userid = session['userid'];
-   haml:home
+   @user = session['user']
+   @userid = session['userid']
+   haml :home
 end
 
 get '/myevents' do
   raise "Auth Failure" unless loggedIn
-   @user = session['user'];
-   @userid = session['userid'];
+  @user = session['user']
+  @userid = session['userid']
   haml :userEvents
 end
 

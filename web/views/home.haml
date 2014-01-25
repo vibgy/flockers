@@ -78,7 +78,11 @@
             
                 .form-group
                   .col-sm-offset-4.col-sm-6
-                    %button#show.btn.btn-large.btn-primary{:'data-dismiss' => "modal",:'data-bind'=> " click : signup"} Sign Up               
+                    %button#show.btn.btn-large.btn-primary{:'data-dismiss' => "modal",:'data-bind'=> " click : signup"} Sign Up
+
+
+    =haml_partial "footer"
+
     %script{:src => "../assets/js/knockout-2.2.1.js"}  
     %script{:src => "../assets/js/jquery.min.js"}
     %script{:src => "../assets/js/bootstrap.min.js"}  
