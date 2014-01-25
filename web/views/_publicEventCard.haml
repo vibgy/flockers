@@ -1,0 +1,14 @@
+.col-md-4
+  .panel.panel-primary
+    /.panel-heading
+    .panel-body
+      %h4{:"data-bind" => "text: ename()"}
+      %p{:"data-bind" => "text: description()"}
+      %div{:"data-bind" => "text: 'When: ' + date()"}
+      %div{:"data-bind" => "text: 'Where: ' + place()"}
+      /%p{:"data-bind" => "astext: fees()"}
+      /%p{:"data-bind" => "text: prize()"}
+      /%p{:"data-bind" => "text: time()"}
+    .panel-footer
+      %button#option.btn.btn-primary{:style => "width:40%", 'data-bind' =>'click: details'} Details
+      %button#option.btn.btn-primary{:style => "width:58%", 'data-bind' =>'click: participate'} Participate

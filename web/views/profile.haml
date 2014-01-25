@@ -71,7 +71,7 @@
               /  %h4{:'data-bind' => 'text : selectedActivity'}
               %div.panel-body
                 %div{:"data-bind"=>"visible : searchedEvents().length, foreach:searchedEvents"}
-                  =haml_partial "eventCard"
+                  =haml_partial "publicEventCard"
                 =haml_partial "createEventCard"
 
         .row{:"data-bind"=>"visible : detailedState()"}
@@ -89,8 +89,8 @@
           %div.panel.panel-info
             %div.panel-heading
               %h4{:'data-bind' => 'text : selectedActivity'}
-            %div.panel-body{:"data-bind"=>"foreach:myEvents"}
-              =haml_partial "eventCard"
+            %div.panel-body{:"data-bind"=>"foreach:myParticipatedEvents"}
+              =haml_partial "participationEventCard"
 
         .row.thumbnail{:'data-bind' => 'visible : showCreateEventForm()'}               
           %h4 Create Event             

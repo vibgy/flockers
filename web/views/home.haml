@@ -15,7 +15,7 @@
           /%p.alert.alert-danger#InvalidUser{:style => 'visibility : hidden',:'data-bind' => 'text : message'}
           /%p.alert.alert-success#SuccessfulSignup{:style => 'visibility : hidden'}You have signed up successfully
         .row{:"data-bind" => "foreach: publicEvents"}
-          =haml_partial "eventCard"
+          =haml_partial "publicEventCard"
         .row{:"data-bind"=>"visible : detailedState()"}
           %span.label.label-success
             Flock Details

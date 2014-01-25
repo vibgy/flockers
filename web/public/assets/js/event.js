@@ -55,7 +55,7 @@ function PublicEventModel(data)
             $('#signInModal').modal("show");
         }
         else{      
-          $.post("/users/events",
+          $.post("/users/events/participation",
           {event: this.id(),user_id: account_id()},
           function(data)
           {
@@ -104,7 +104,7 @@ function UserOwnedEventModel(data)
   this.createEvent = function(event)
   {
         var self = this;
-        $.post('/events',
+        $.post('/users/events/owner',
                {event : event},
                 function(data){
                     if(!data.error)
@@ -211,7 +211,7 @@ function ViewModel()
         var event = {};
         this.reset();
         var self = this;
-        $.get('/users/events',
+        $.get('/users/events/owner',
               function(data)
               {
                   var events = $.map(data,function(item) 
@@ -231,10 +231,34 @@ function ViewModel()
             event.state = item.state;
                 return new UserOwnedEventModel(event);
               });
-                  self.myEvents(events);
+                  self.myOwnedEvents(events);
                   
               }
-            //window.location.href = '/myEvents';
+            );
+
+      $.get('/users/events/participant',
+              function(data)
+              {
+                  var events = $.map(data,function(item) 
+              {
+                event.id = item.id;
+                event.ename = item.ename;
+                event.date = item.date;
+                event.time = item.time;
+                event.place = item.place;
+                event.organizer = item.organizer;
+                event.fees = item.fees;
+                event.prize = item.prize;
+                event.description = item.description;
+                event.verb = item.verb;
+            event.activity = item.activity;
+            event.account_id = item.account_id;
+            event.state = item.state;
+                return new UserOwnedEventModel(event);
+              });
+                  self.myParticipatedEvents(events);
+                  
+              }
             );
              
     };
@@ -530,7 +554,8 @@ function ViewModel()
 
     this.reset = function()
     {
-        this.myEvents.removeAll();
+        this.myOwnedEvents.removeAll();
+        this.myParticipatedEvents.removeAll();
         this.participationEvents.removeAll();
         this.message('');
         this.searchedEvents.removeAll();
