@@ -33,6 +33,9 @@ function EventModel(data)
     this.activity = ko.observable(data.activity);
   this.account_id = ko.observable(data.account_id);
   this.state = ko.observable(data.state);
+  this.details = function() {
+      viewModel.details(this);
+    }
 };
 function UserModel(data)
 {
@@ -61,9 +64,7 @@ function PublicEventModel(data)
           }
           );}
     }
-    this.details = function() {
-      viewModel.details(this);
-    }
+    
 };
 function ParticipatedEventModel(data)
 {
@@ -233,6 +234,7 @@ function ViewModel()
                   self.myEvents(events);
                   
               }
+            //window.location.href = '/myEvents';
             );
              
     };
@@ -520,6 +522,7 @@ function ViewModel()
       this.init = function() 
     {
         this.showPublicEvents();
+        this.showMyEvents();
         this.drawWheel();
         this.getTopEvents();
         this.getTopParticipants();
