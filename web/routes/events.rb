@@ -10,38 +10,6 @@ module Flockers
       events.to_json;
     end
 
-    post '/events' do
-
-      raise "Auth Failure" unless loggedIn
-      event = params[:event];
-      puts session['userid']
-
-      #begin 
-          Event.createEvent({ 
-             :ename => event[:ename], 
-             :date => event[:date],
-             :time => event[:time],
-             :place => event[:place],
-             :account_id => session['userid'],
-             :fees => event[:fees],
-             :prize => event[:prize],
-             :description =>event[:description],
-             :verb => event[:verb],
-             :activity =>event[:activity]})
-
-       #rescue => e
-       #   response = {:error => {:message => e.message}}
-       #end
-
-       content_type :json
-       response.to_json
-    end
-
-    delete '/events' do
-      # Only the organizer can do this
-      # Not allowed right now.. need to figure out policy to let the other users know
-    end
-
     get '/events/searchByVerb' do
        data = Event.all('verb.like' => params[:record])
        data = {:status => 'Failure'} if data.nil?

@@ -6,25 +6,35 @@ module Flockers
     get '/users/events' do
       raise "Auth Failure" unless loggedIn
 
-      user = Account.first(:id => params[:user_id].to_i)
+      user = Account.first(:id => session['userid'].to_i)
       events = user.events
-      events << user.participatedEvents
 
       content_type :json
       events.to_json
     end
 
     post '/users/events' do
-       begin 
-          raise "Auth Failure" unless loggedIn
-          response = {}
-          event = Event.first(:id => params[:event].to_i)
-          account = Account.first(:id => params[:user_id].to_i)
 
-          event.addAttendee(account)
-       rescue => e
-          response = {:error => {:message => e.message}}
-       end
+      raise "Auth Failure" unless loggedIn
+      event = params[:event];
+      puts session['userid']
+
+      #begin 
+          Event.createEvent({ 
+             :ename => event[:ename], 
+             :date => event[:date],
+             :time => event[:time],
+             :place => event[:place],
+             :account_id => session['userid'],
+             :fees => event[:fees],
+             :prize => event[:prize],
+             :description =>event[:description],
+             :verb => event[:verb],
+             :activity =>event[:activity]})
+
+       #rescue => e
+       #   response = {:error => {:message => e.message}}
+       #end
 
        content_type :json
        response.to_json
@@ -36,7 +46,7 @@ module Flockers
           puts params
           response = {}
           event = Event.first(:id => params[:event].to_i)
-          account = Account.first(:id => params[:user_id].to_i)
+          account = Account.first(:id => session['userid'].to_i)
 
           event.addAttendee(account)
        rescue => e
@@ -48,13 +58,37 @@ module Flockers
     end
 
     delete '/users/events' do
-       zoo = Event.first(:id => params[:event_id].to_i)
-       zoo.destroy
-       if zoo.destroyed?
-          return {:status => 'success'}.to_json;
-       else
-          return {:status => 'not_success'}.to_json; 
+      # Only the organizer can do this
+      # Not allowed right now.. need to figure out policy to let the other users know
+    end
+
+    #
+    #  This is to GET / POST participation to an event
+    #
+    get '/users/events/participant' do
+      raise "Auth Failure" unless loggedIn
+
+      user = Account.first(:id => session['userid'].to_i)
+      events = user.participatedEvents
+
+      content_type :json
+      events.to_json
+    end
+
+    post '/users/events/participant' do
+       begin 
+          raise "Auth Failure" unless loggedIn
+          response = {}
+          event = Event.first(:id => params[:event].to_i)
+          account = Account.first(:id => session['userid'].to_i)
+
+          event.addAttendee(account)
+       rescue => e
+          response = {:error => {:message => e.message}}
        end
+
+       content_type :json
+       response.to_json
     end
 
 end
