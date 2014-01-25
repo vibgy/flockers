@@ -16,7 +16,7 @@
           /%p.alert.alert-success#SuccessfulSignup{:style => 'visibility : hidden'}You have signed up successfully
         .row{:"data-bind" => "foreach: publicEvents"}
           =haml_partial "eventCard"
-        .row
+        .row{:"data-bind"=>"visible : detailedState()"}
           %span.label.label-success
             Flock Details
           %div.panel.panel-success

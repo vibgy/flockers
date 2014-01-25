@@ -71,7 +71,6 @@ class Event
   belongs_to :account
 
   def self.createEvent args
-
     raise 401, "Must provide owner" if args[:account_id].nil?
 
     newEvent = Event.create :account => Account.first(:id => args[:account_id])
@@ -83,8 +82,8 @@ class Event
     newEvent.time = args[:time] if args.has_key? :time
     newEvent.place = args[:place] if args.has_key? :place
     newEvent.organizer = args[:organizer] if args.has_key? :organizer
-    newEvent.fees = args[:fees] if args.has_key? :fees
-    newEvent.prize = args[:prize] if args.has_key? :prize
+    newEvent.fees = args[:fees].to_i if args.has_key? :fees
+    newEvent.prize = args[:prize].to_i if args.has_key? :prize
     newEvent.description = args[:description] if args.has_key? :description
     newEvent.verb = args[:verb] if args.has_key? :verb
     newEvent.activity = args[:activity] if args.has_key? :activity
