@@ -48,7 +48,18 @@
                     /%i.fa.fa-camera-retro.fa-5x
                     /%img{alt: "...", "data-src" => "holder.js/300x200"}/
                     .caption
-                      %button.btn-warning.btn.btn-lg.btn-link{:'data-bind'=>"click : function(){$root.searchEventByActivity($data);},text:$data", :style => "width:100%"} 
+                      %button.btn-warning.btn.btn-lg.btn-link{:'data-bind'=>"click : function(){$root.searchEventByActivity($data);},text:$data", :style => "width:100%"}
+              .col-sm-4.col-md-4
+                .thumbnail
+                  /%i.fa.fa-camera-retro.fa-5x
+                  /%img{alt: "...", "data-src" => "holder.js/300x200"}/
+                  .caption
+                    %form.form-inline{role: "form"}
+                      .form-group
+                        %input.form-control{:placeholder => "Activity", :type => "text", :'data-bind' => "newActivity"}
+                      %button.btn.btn-default{:type => "button", :'data-bind'=> "click: addActivity"}
+                        %span.glyphicon.glyphicon-plus
+                        Add
 
         .row{:'data-bind' => 'visible : createEventState'}
           %div

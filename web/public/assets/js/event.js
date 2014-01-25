@@ -1,3 +1,5 @@
+"use strict";
+
 var wantsToParticipate;
 var viewModel;
 var emptyEvent = new function()
@@ -159,6 +161,7 @@ function ViewModel()
     this.topEventsID = ko.observableArray();
     this.topParticipants = ko.observableArray();
     this.topParticipantsID = ko.observableArray();
+    this.newActivity = ko.observable();
   
   
   this.showPublicEvents = function()
@@ -350,6 +353,16 @@ function ViewModel()
                     }
                 });
                  
+     };
+     this.addActiviy = function() {
+       $.post('/activities',
+              {verb: this.searchedVerb(), activity: this.newActivity()},
+              function() {
+                // this means success
+                self.getActivities(self.searchedVerb());
+              }
+              );
+       return false;
      };
      this.drawWheel = function() 
      {
