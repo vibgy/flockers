@@ -356,10 +356,10 @@ function ViewModel()
      };
      this.addActivity = function() {
        $.post('/activities',
-              {verb: this.searchedVerb(), activity: this.newActivity()},
+              {verb: this.selectedVerb(), activity: this.newActivity()},
               function() {
                 // this means success
-                self.getActivities(self.searchedVerb());
+                self.getActivities(self.selectedVerb());
               }
               );
        return false;
