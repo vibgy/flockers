@@ -56,7 +56,7 @@
                   .caption
                     %form.form-inline{role: "form"}
                       .form-group
-                        %input.form-control{:placeholder => "Activity", :type => "text", :'data-bind' => "newActivity"}
+                        %input.form-control{:placeholder => "Activity", :type => "text", :'data-bind' => "value : newActivity"}
                       %button.btn.btn-default{:type => "button", :'data-bind'=> "click: addActivity"}
                         %span.glyphicon.glyphicon-plus
                         Add
@@ -70,7 +70,7 @@
               /  %h4{:'data-bind' => 'text : selectedActivity'}
               %div.panel-body
                 %div{:"data-bind"=>"visible : searchedEvents().length, foreach:searchedEvents"}
-                  =haml_partial "eventcard"
+                  =haml_partial "eventCard"
                 =haml_partial "createEventCard"
 
         .row{:'data-bind' => 'visible : searchedEvents().length'}
@@ -89,7 +89,7 @@
             %div.panel-heading
               %h4{:'data-bind' => 'text : selectedActivity'}
             %div.panel-body{:"data-bind"=>"foreach:myEvents"}
-              =haml_partial "eventcard"
+              =haml_partial "eventCard"
 
         #createeventmodal.modal.fade{"aria-hidden" => "true", "aris-labelledby" => "createeventmodal",:role => "dialog" ,:tabindex => "-1"}
           .modal-dialog
@@ -143,4 +143,4 @@
       %script{:src => "../assets/js/bootstrap.min.js"}  
       %script{:src => "../assets/js/event.js"}
       %script{:src => "../assets/js/user.js"}
-      %script{:src => "../assets/js/wheel.js"}
+      /%script{:src => "../assets/js/wheel.js"}

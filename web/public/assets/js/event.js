@@ -354,7 +354,7 @@ function ViewModel()
                 });
                  
      };
-     this.addActiviy = function() {
+     this.addActivity = function() {
        $.post('/activities',
               {verb: this.searchedVerb(), activity: this.newActivity()},
               function() {
