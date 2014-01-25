@@ -355,6 +355,7 @@ function ViewModel()
                  
      };
      this.addActivity = function() {
+       var self = this;
        $.post('/activities',
               {verb: this.selectedVerb(), activity: this.newActivity()},
               function() {
