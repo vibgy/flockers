@@ -14,12 +14,13 @@
       .row
         %input.hide{:id =>"current_user", :value => "#{@user}"}
         %input.hide{:id =>"current_user_id", :value => "#{@userid}"}
-        %p.hide.alert.alert-info{:"data-bind" => "visible: message, text: message"}
+        %p.alert.alert-info#sessionMsg{:'data-bind' => 'text: sessionMessage, visible: sessionMessage'}
 
       %div#event
         .row
           =haml_partial "progress"
         .row
+          %p.alert.alert-info#errorMsg{:'data-bind' => 'text: message, visible: message'}
           %h4.alert.alert-info.text-center{:'data-bind' => 'text : displaySelectedActivity'}
           %span.label.label-info
             Choose Verb

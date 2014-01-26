@@ -10,12 +10,13 @@
       %h1
         Flockers
         %small A site to reveal the FUN SIDE of you.
+      %p.alert.alert-info#sessionMsg{:'data-bind' => 'text: sessionMessage, visible: sessionMessage'}
+
       %div#event
         .row
           %input.hide{:id =>"current_user", :value => "#{@user}"}
           %input.hide{:id =>"current_user_id", :value => "#{@userid}"}
-          /%p.alert.alert-danger#InvalidUser{:style => 'visibility : hidden',:'data-bind' => 'text : message'}
-          /%p.alert.alert-success#SuccessfulSignup{:style => 'visibility : hidden'}You have signed up successfully
+          %p.hide.alert.alert-info{:"data-bind" => "visible: message, text: message"}
         %h4 Flocks Owned
         .row{:"data-bind" => "foreach: myOwnedEvents"}
           =haml_partial "ownedEventCard"
