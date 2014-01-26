@@ -16,7 +16,7 @@
         .row
           %input.hide{:id =>"current_user", :value => "#{@user}"}
           %input.hide{:id =>"current_user_id", :value => "#{@userid}"}
-          %p.hide.alert.alert-info{:"data-bind" => "visible: message, text: message"}
+          %p.alert.alert-info#errorMsg{:"data-bind" => "visible: message, text: message"}
         %h4 Flocks Owned
         .row{:"data-bind" => "foreach: myOwnedEvents"}
           =haml_partial "ownedEventCard"

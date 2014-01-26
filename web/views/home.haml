@@ -3,7 +3,7 @@
   %head
     %title Lets flock together
     %link{:href => "../assets/css/bootstrap.min.css", :rel => "stylesheet"}
-    %link{:href => "../assets/css/navbar-fixed-top.css", :rel => "stylesheet"}
+    /%link{:href => "../assets/css/navbar-fixed-top.css", :rel => "stylesheet"}
   %body.main
     =haml_partial "topBar"
     .container
@@ -16,7 +16,7 @@
         .row
           %input.hide{:id =>"current_user", :value => "#{@user}"}
           %input.hide{:id =>"current_user_id", :value => "#{@userid}"}
-          %p.alert.alert-info{:'data-bind' => 'text: message, visible: message'}
+          %p.alert.alert-info#errorMsg{:'data-bind' => 'text: message, visible: message'}
 
         .row{:"data-bind" => "foreach: publicEvents"}
           =haml_partial "publicEventCard"

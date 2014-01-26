@@ -159,12 +159,11 @@ function UserOwnedEventModel(data)
 
     this.verb=ko.observableArray();
     this.selectedVerb = ko.observable();
-    this.displaySelectedVerb = ko.observable();
+    this.displayText = ko.observable("I would love to ");
 
     this.activities = ko.observableArray([]);
     this.newActivity = ko.observable();
     this.selectedActivity = ko.observable();
-    this.displaySelectedActivity = ko.observable();
 
   this.event = ko.observable(new EventModel(emptyEvent)); // this is for new Event
   this.createEventState = ko.observable(false);
@@ -387,7 +386,7 @@ this.createEvent = function() {
         var self = this;
         var SEvent={};
         this.reset();
-        this.displaySelectedActivity(this.displaySelectedVerb()+ " " +activity);
+        this.displayText(this.displayText()+ " " +activity);
         this.selectedActivity(activity);
         this.searchedEvents.removeAll();
         this.createEventState(true);
@@ -448,7 +447,7 @@ this.drawWheel = function()
 this.getActivities = function(data) 
 {
   var self = this;
-  this.displaySelectedVerb("I would love to "+data);
+  this.displayText(this.displayText() + data);
   this.selectedVerb(data);
   self.activities.removeAll();
   self.searchedEvents.removeAll();
@@ -581,7 +580,7 @@ this.init = function()
 {
   this.showPublicEvents();
   this.showMyEvents();
-  //this.drawWheel();
+  this.drawWheel();
   this.getTopEvents();
   this.getTopParticipants();
 }

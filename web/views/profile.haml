@@ -18,10 +18,13 @@
 
       %div#event
         .row
+          .navbar-fixed-top{:style => 'top: 60px;'}
+            %em
+              %h2.text-danger.text-center{:'data-bind' => 'text : displayText'}
+        .row
           =haml_partial "progress"
         .row
-          %p.alert.alert-info#errorMsg{:'data-bind' => 'text: message, visible: message'}
-          %h4.alert.alert-info.text-center{:'data-bind' => 'text : displaySelectedActivity'}
+          %p.alert.alert-info#errorMsg{:'data-bind' => 'text: message, visible: message'}          
           %span.label.label-info
             Choose Verb
           %div.panel.panel-info

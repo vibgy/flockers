@@ -5,16 +5,10 @@
       %ul.list-inline.text-right
         %li
           %a{:href => "/about"} about
-        -unless @user.nil? or @user == ''
-          %li
-            %a{:href => "/login"} log in
-        -else
-          %li
-            %a{:href => "/legal"} legal
-          %li
-            %a{:href => "/support"} support
-          %li
-            %a{:href => "/logout"} log out
+        %li
+          %a{:href => "/legal"} legal
+        %li
+          %a{:href => "/support"} support
       .text-right &copy; #{SiteConfig.author} #{Date.today.year}
   %script{:src => "../assets/js/jquery.min.js"}
   //dropdown does not work, if i use this
