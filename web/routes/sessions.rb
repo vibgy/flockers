@@ -5,7 +5,9 @@ module Flockers
   class WebApp < Sinatra::Application
   
 before do
-  if request.request_method == "POST" and request.content_type=="application/json"
+  if request.request_method == "POST" and request.content_type.include? "application/json"
+    # NOTE: By Gaurav - this is critical, otherwise for some reason request.body.read gets a nil string
+    request.body.rewind
     body_parameters = request.body.read
     parsed = body_parameters && body_parameters.length >= 2 ? JSON.parse(body_parameters) : nil
     params.merge!(parsed)
