@@ -79,25 +79,21 @@ function ParticipatedEventModel(data)
   this.deleteParticipateEvent = function()
   {
     var self=this;
-    $.delete("/users/events",
-      {event_id : this.id()},
-      function(data)
-      {
-        if(data.status == 'not_success')
-        {
-          viewModel.setMessage("Event Cannot be Deleted");
-        }
-        else
-        {
-          var oldevent = ko.utils.arrayFirst(viewModel.participationEvents(),function(item)
-          {
-            return item.id() == self.id(); 
+    $.ajax({
+       url: "/users/events/participant",
+       data: {event_id : this.id()},
+       type: 'DELETE',
+       success: function(data)
+                {                   
+                        var oldevent = ko.utils.arrayFirst(viewModel.myParticipatedEvents(),
+                                                            function(item)
+                                                            {
+                                                                return item.id() == self.id(); 
+                                                           });
+                       viewModel.myParticipatedEvents.remove(oldevent);
+                       viewModel.setMessage("Event Deleted Successfully");
+               }
           });
-          viewModel.participationEvents.remove(oldevent);
-          viewModel.setMessage("Event Deleted Successfully");
-        }
-      }
-      );
   };
 
 };

@@ -96,5 +96,12 @@ module Flockers
        response.to_json
     end
 
+    delete '/users/events/participant' do
+      raise "Incorrect Arguments" if params[:event_id].nil?
+      raise "Authorization Failed" unless loggedIn
+      par = Participation.first(:event_id => params[:event_id].to_i , :account_id => session['userid']);
+      par.destroy
+    end
+
 end
 end
