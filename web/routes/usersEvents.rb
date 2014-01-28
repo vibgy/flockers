@@ -58,6 +58,11 @@ module Flockers
     end
 
     delete '/users/events' do
+      raise "Incorrect Arguments" if params[:event_id].nil?
+      event = Event.first(:id => params[:event_id].to_i);
+      par = Participation.all(:event_id => params[:event_id].to_i);
+      par.destroy
+      event.destroy
       # Only the organizer can do this
       # Not allowed right now.. need to figure out policy to let the other users know
     end

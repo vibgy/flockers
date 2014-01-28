@@ -126,7 +126,27 @@ function UserOwnedEventModel(data)
   }
   this.DeleteEvent=function(){
     var self=this;
-    $.delete("/events",
+ $.ajax({
+    url: '/users/events',
+    data: {event_id : this.id()},
+    type: 'DELETE',
+    success: function(data) {
+       if(data.status == 'not_success')
+              {
+                   self.message("Event Cannot be Deleted");
+              }
+              else
+              {
+                   var oldevent = ko.utils.arrayFirst(viewModel.myOwnedEvents(),
+                                                     function(item){
+                                                         return item.id() == self.id(); 
+                                                     });
+                   viewModel.myOwnedEvents.remove(oldevent);
+                   viewModel.message("Event Deleted Successfully");
+              }
+    }
+});
+   /* $.delete("/events",
       {event_id : this.id()},
       function(data)
       {
@@ -143,7 +163,7 @@ function UserOwnedEventModel(data)
          eventViewModel.myEvents.remove(oldevent);
          self.setMessage("Event Deleted Successfully");
        }
-     });
+     });*/
 
   };
 };
