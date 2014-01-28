@@ -447,6 +447,7 @@ this.drawWheel = function()
 this.getActivities = function(data) 
 {
   var self = this;
+  this.displayText("I would love to ");
   this.displayText(this.displayText() + data);
   this.selectedVerb(data);
   self.activities.removeAll();
