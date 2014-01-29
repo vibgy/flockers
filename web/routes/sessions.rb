@@ -9,7 +9,7 @@ before do
     # NOTE: By Gaurav - this is critical, otherwise for some reason request.body.read gets a nil string
     request.body.rewind
     body_parameters = request.body.read
-    parsed = body_parameters && body_parameters.length >= 2 ? JSON.parse(body_parameters) : nil
+    parsed = body_parameters && body_parameters.length >= 2 ? JSON.parse(body_parameters, :symbolize_names => true) : nil
     params.merge!(parsed)
   end
 end

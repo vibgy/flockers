@@ -7,7 +7,7 @@ module Flockers
       # this can be a lot - we can atleast restrict it to future events
       events = Event.all
       content_type :json
-      events.to_json;
+      events.to_json
     end
 
     get '/events/searchByVerb' do
@@ -41,6 +41,16 @@ module Flockers
     # TODO: 
     get '/events/top' do                        #event_details of top events
       events = Event.all
+      content_type :json
+      events.to_json
+    end
+
+    # BIG NOTE - this should always be the last route
+    # otherwise any other /events/xyz route will not work
+    # Sinatra always matches routes serially
+    get '/events/:id' do                          #event_id from participation table
+      # this can be a lot - we can atleast restrict it to future events
+      events = Event.first(:id => params[:id])
       content_type :json
       events.to_json
     end

@@ -14,7 +14,6 @@ module Flockers
     end
 
     post '/users/events' do
-
       raise "Auth Failure" unless loggedIn
       event = params[:event];
       puts session['userid']
