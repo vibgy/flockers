@@ -1,5 +1,5 @@
 require_relative '../helpers/init.rb'
-#require 'pry'
+require 'pry'
 
 module Flockers
   class WebApp < Sinatra::Application
@@ -15,9 +15,21 @@ before do
 end
 
 get '/' do
+  binding.pry
    @user = session['user']
    @userid = session['userid']
    haml :home
+end
+
+# Usage - 
+#   Once user logs in - call /auth to get the session token
+#   For other future requests - put token in the header along with the requests
+#   Android should ask user to login only when /auth returns failure
+get '/auth' do
+  raise "Auth Failure" unless loggedIn
+  sessionToken = request.cookies["rack.session"]
+  content_type :json
+  sessionToken.to_json
 end
 
 get '/myevents' do
