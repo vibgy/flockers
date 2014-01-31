@@ -17,13 +17,13 @@ module Flockers
       raise "Auth Failure" unless loggedIn
       event = params[:event];
       puts session['userid']
-
       #begin 
           Event.createEvent({ 
              :ename => event[:ename], 
              :date => event[:date],
              :time => event[:time],
              :place => event[:place],
+             :organizer => session['user'],
              :account_id => session['userid'],
              :fees => event[:fees],
              :prize => event[:prize],
@@ -32,11 +32,11 @@ module Flockers
              :activity =>event[:activity]})
 
        #rescue => e
-       #   response = {:error => {:message => e.message}}
+          #response = {:error => {:message => e.message}}
        #end
-
        content_type :json
        response.to_json
+       
     end
 
     put '/users/events' do
@@ -85,12 +85,14 @@ module Flockers
           response = {}
           event = Event.first(:id => params[:event].to_i)
           account = Account.first(:id => session['userid'].to_i)
-
-          event.addAttendee(account)
+		  if account.id!=event.account_id
+          	event.addAttendee(account)
+          else
+          	response = "NO"
+          end
        rescue => e
           response = {:error => {:message => e.message}}
        end
-
        content_type :json
        response.to_json
     end

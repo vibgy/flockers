@@ -63,7 +63,10 @@ function PublicEventModel(data)
         {event: this.id(), user_id: account_id()},
         function(data)
         {
-          viewModel.setMessage("You have joined this flock!!");
+          if(data=="NO")
+		  	   viewModel.setMessage("You are the organizer.You cannot join this flock!!");
+		  else
+          	   viewModel.setMessage("You have joined this flock!!");
         }
         );
     }
