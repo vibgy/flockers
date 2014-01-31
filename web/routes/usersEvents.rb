@@ -81,15 +81,12 @@ module Flockers
 
     post '/users/events/participant' do
        begin 
-          raise "Auth Failure" unless loggedIn
           response = {}
+          raise "Auth Failure" unless loggedIn
           event = Event.first(:id => params[:event].to_i)
           account = Account.first(:id => session['userid'].to_i)
-		  if account.id!=event.account_id
-          	event.addAttendee(account)
-          else
-          	response = "NO"
-          end
+          raise "Owner of a flock is by default a participant!" if account.id == event.account_id
+          event.addAttendee(account)
        rescue => e
           response = {:error => {:message => e.message}}
        end

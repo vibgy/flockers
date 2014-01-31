@@ -61,12 +61,12 @@ function PublicEventModel(data)
     {      
       $.post("/users/events/participant",
         {event: this.id(), user_id: account_id()},
-        function(data)
+        function(response)
         {
-          if(data=="NO")
-		  	   viewModel.setMessage("You are the organizer.You cannot join this flock!!");
-		  else
-          	   viewModel.setMessage("You have joined this flock!!");
+          if(response.error)
+            viewModel.setMessage(response.error.message);
+          else
+            viewModel.setMessage("You have joined this flock!!");
         }
         );
     }
