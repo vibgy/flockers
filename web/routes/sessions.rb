@@ -15,7 +15,6 @@ before do
 end
 
 get '/' do
-  binding.pry
    @user = session['user']
    @userid = session['userid']
    haml :home
@@ -27,9 +26,9 @@ end
 #   Android should ask user to login only when /auth returns failure
 get '/auth' do
   raise "Auth Failure" unless loggedIn
-  sessionToken = request.cookies["rack.session"]
+  response = {:sessionToken => request.cookies["rack.session"]}
   content_type :json
-  sessionToken.to_json
+  response.to_json
 end
 
 get '/myevents' do
