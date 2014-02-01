@@ -25,14 +25,14 @@ end
 #   For other future requests - put token in the header along with the requests
 #   Android should ask user to login only when /auth returns failure
 get '/auth' do
-  raise "Auth Failure" unless loggedIn
+  halt 401 unless loggedIn
   response = {:sessionToken => request.cookies["rack.session"]}
   content_type :json
   response.to_json
 end
 
 get '/myevents' do
-  raise "Auth Failure" unless loggedIn
+  halt 401 unless loggedIn
   @user = session['user']
   @userid = session['userid']
   haml :userEvents
@@ -64,7 +64,7 @@ end
 
 
 get '/loggedIn' do
-  raise "Auth Failure" unless loggedIn
+  halt 401 unless loggedIn
    @user = session['user'];
    @userid = session['userid'];
    haml :profile
