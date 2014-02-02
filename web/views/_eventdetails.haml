@@ -6,6 +6,6 @@
 %div{:"data-bind" => "text: 'Fees: ' + detailedEvent().fees()"}
 %div{:"data-bind" => "text: 'Prize: Rs.' + detailedEvent().prize()"}
 %div{:"data-bind" => "text: 'Timings: ' + detailedEvent().time()"}
-%button.btn.btn-primary{:"data-bind" => "click: detailedEvent().showParticipants"}Friends participating
+%div Friends Participating:
 %div{:"data-bind" => "visible : detailedEvent().participants().length, foreach :detailedEvent().participants"}
 	%div{:"data-bind" => "text : $data"}

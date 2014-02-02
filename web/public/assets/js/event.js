@@ -36,8 +36,7 @@ function EventModel(data)
   this.state = ko.observable(data.state);
   this.participants = ko.observableArray();
   var self=this;
-  this.showParticipants = function()
-  {
+  this.details = function() {
   	$.get("/event/participants",
   		{event_id : self.id()},
   		function(response)
@@ -48,8 +47,6 @@ function EventModel(data)
           	self.participants(response["uname"]);
   		}
   		);
-  }
-  this.details = function() {
     viewModel.details(this);
   }
 };
