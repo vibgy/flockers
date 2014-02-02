@@ -72,6 +72,16 @@ module Flockers
       return true
     end
 
+    # Help from here: 
+    # http://www.gittr.com/index.php/archive/sinatra-basic-authentication-selectively-applied/
+    def authenticate!
+      realm = SiteConfig.url_base
+      # Without this Volley does not get AuthFailureError Exception
+      # http://stackoverflow.com/questions/1748374/http-401-whats-an-appropriate-www-authenticate-header-value
+      response.headers['WWW-Authenticate'] = %(Basic realm="#{realm}")
+      halt 401 unless loggedIn
+    end
+
   end
   end
 end
