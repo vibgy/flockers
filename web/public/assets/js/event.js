@@ -34,6 +34,21 @@ function EventModel(data)
   this.activity = ko.observable(data.activity);
   this.account_id = ko.observable(data.account_id);
   this.state = ko.observable(data.state);
+  this.participants = ko.observableArray();
+  var self=this;
+  this.showParticipants = function()
+  {
+  	$.get("/event/participants",
+  		{event_id : self.id()},
+  		function(response)
+  		{
+  		  if(response.error)
+            viewModel.setMessage(response.error.message);
+          else
+          	self.participants(response["uname"]);
+  		}
+  		);
+  }
   this.details = function() {
     viewModel.details(this);
   }
@@ -47,9 +62,11 @@ function UserModel(data)
 
 function PublicEventModel(data)
 {
+  var self=this;
   ko.utils.extend(this , new EventModel(data));
   var uname = ko.observable($("#current_user").val());
   var account_id = ko.observable($("#current_user_id").val());
+  
   this.participate = function()
   {
     var self=this;

@@ -37,6 +37,25 @@ module Flockers
       content_type :json
       hm.to_json
     end
+    
+    get '/event/participants' do
+	   begin
+	   	   response={}
+		   event = Event.first(:id => params[:event_id])
+		   participantId = event.participations
+		   participant=[]
+		   participantId.each do |i|
+		   		account=Account.first(:id => i.account_id)
+		   		participant.push(account.uname)
+	   	   end
+	   	   response["uname"]=participant
+	   	   raise "No Participants" if response["uname"].empty?
+	   rescue => e
+          response = {:error => {:message => e.message}}
+       end
+       content_type :json
+	   response.to_json
+    end
 
     # TODO: 
     get '/events/top' do                        #event_details of top events
