@@ -4,7 +4,7 @@ module Flockers
   class WebApp < Sinatra::Application
 
     get '/users/events' do
-      halt 401 unless loggedIn
+      authenticate!
 
       user = Account.first(:id => session['userid'].to_i)
       events = user.events
@@ -14,7 +14,7 @@ module Flockers
     end
 
     post '/users/events' do
-      halt 401 unless loggedIn
+      authenticate!
       event = params[:event];
       puts session['userid']
       #begin 
@@ -41,7 +41,7 @@ module Flockers
 
     put '/users/events' do
        begin 
-          halt 401 unless loggedIn
+          authenticate!
           puts params
           response = {}
           event = Event.first(:id => params[:event].to_i)
@@ -70,7 +70,7 @@ module Flockers
     #  This is to GET / POST participation to an event
     #
     get '/users/events/participant' do
-      halt 401 unless loggedIn
+      authenticate!
 
       user = Account.first(:id => session['userid'].to_i)
       events = user.participatedEvents
@@ -82,7 +82,7 @@ module Flockers
     post '/users/events/participant' do
        begin 
           response = {}
-          halt 401 unless loggedIn
+          authenticate!
           event = Event.first(:id => params[:event].to_i)
           account = Account.first(:id => session['userid'].to_i)
           raise "Owner of a flock is by default a participant!" if account.id == event.account_id

@@ -20,19 +20,8 @@ get '/' do
    haml :home
 end
 
-# Usage - 
-#   Once user logs in - call /auth to get the session token
-#   For other future requests - put token in the header along with the requests
-#   Android should ask user to login only when /auth returns failure
-get '/auth' do
-  halt 401 unless loggedIn
-  response = {:sessionToken => request.cookies["rack.session"]}
-  content_type :json
-  response.to_json
-end
-
 get '/myevents' do
-  halt 401 unless loggedIn
+  authenticate!
   @user = session['user']
   @userid = session['userid']
   haml :userEvents
@@ -64,7 +53,7 @@ end
 
 
 get '/loggedIn' do
-  halt 401 unless loggedIn
+  authenticate!
    @user = session['user'];
    @userid = session['userid'];
    haml :profile
