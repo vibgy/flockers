@@ -24,7 +24,7 @@ class Account
   has n, :participatedEvents, :model => Event, :child_key => [:id], :parent_key => [:event_id], :through => :participations
 
   has n, :events
-	
+
   # NOTE: this should not be used right now.. use createEvent to create event 
   def addEvent(a)
     self.save
@@ -71,7 +71,7 @@ class Event
   belongs_to :account
 
   def self.createEvent args
-    raise 401, "Must provide owner" if args[:account_id].nil?
+    #raise 401, "Must provide owner" if args[:account_id].nil?
 
     newEvent = Event.create :account => Account.first(:id => args[:account_id])
     newEvent.account.save

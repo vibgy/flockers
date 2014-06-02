@@ -52,7 +52,7 @@ def db_setup!
                      :host => "127.0.0.1",
                      :database => 'cf_db_'+ext,
                      :username => "root",
-                     :password => "winner"
+                     :password => ""
 
     return
   end

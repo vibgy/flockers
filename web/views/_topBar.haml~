@@ -25,7 +25,7 @@
               %li.divider
               %li
                 %a{:href => '/me'} Profile
-                / profile to be implemented .....
+                / imp
               %li
                 %a{:href => '#', :"data-bind" => "click: signout"} Sign Out
         - else

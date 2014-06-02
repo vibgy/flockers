@@ -17,8 +17,8 @@ function EventModel(data)
     
     this.participateVar=function()
     {
-			wantsToParticipate=true;
-			oldeventID = self.id(); 
+	wantsToParticipate=true;
+	oldeventID = self.id(); 
     }
  
 }

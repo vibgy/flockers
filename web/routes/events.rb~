@@ -40,7 +40,7 @@ module Flockers
     
     get '/event/participants' do
 	   begin
-	   	 response={}
+	   	   response={}
 		   event = Event.first(:id => params[:event_id])
 		   participantId = event.participations
 		   participant=[]
@@ -48,12 +48,12 @@ module Flockers
 		   		account=Account.first(:id => i.account_id)
 		   		participant.push(account.uname)
 	   	 end
-	   	 response["uname"]=participant
+	   	   response["uname"]=participant
 	   	   #raise "No Participants" if response["uname"].empty?
 	   #rescue => e
           #response = {:error => {:message => e.message}}
-     end
-     content_type :json
+       #end
+       content_type :json
 	   response.to_json
     end
 

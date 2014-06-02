@@ -1,5 +1,4 @@
 "use strict";
-
 var wantsToParticipate;
 var viewModel;
 var emptyEvent = new function()
@@ -36,7 +35,7 @@ function EventModel(data)
   this.state = ko.observable(data.state);
   this.participants = ko.observableArray();
   var self=this;
-  this.showParticipants = function()
+  this.getParticipants = function()
   {
   	$.get("/event/participants",
   		{event_id : self.id()},
@@ -47,7 +46,7 @@ function EventModel(data)
           else
           	self.participants(response["uname"]);
   		}
-   	);
+  		);
   }
   this.details = function() {
     viewModel.details(this);
@@ -64,12 +63,13 @@ function PublicEventModel(data)
 {
   var self=this;
   ko.utils.extend(this , new EventModel(data));
+  this.showParticipants();
   var uname = ko.observable($("#current_user").val());
   var account_id = ko.observable($("#current_user_id").val());
   
   this.participate = function()
   {
-    var self1=this;
+    var self=this;
     if(uname()==''||uname()==null)
     {
       $('#signInModal').modal("show");
@@ -77,11 +77,11 @@ function PublicEventModel(data)
     else 
     { 
     	var flag =0 ;
-    	if(self.participants() != undefined)
+    	if(this.participants() != undefined)
     	{
-		  	for(var i =0 ; i < self.participants().length;i++)
+		  	for(var i =0 ; i < this.participants().length;i++)
 		  	{
-		  		if(self.participants()[i] === uname())
+		  		if(this.participants()[i] === uname())
 		  		{
 		  			viewModel.setMessage("You have already joined this flock !!!");
 		  			flag = 1; 
@@ -98,14 +98,15 @@ function PublicEventModel(data)
 		    	    viewModel.setMessage(response.error.message);
 		     	 	else
 		     	 	{
-		     	 		self.participants().push(uname());
+		     	 		self.participants().push(uname);
 		        	viewModel.setMessage("You have joined this flock!!");
 		    		}
 		    	}
 		  	);
 		  }
     }
-  }    
+  }
+    
 };
 
 function ParticipatedEventModel(data)
@@ -212,9 +213,7 @@ function ViewModel()
     // NOTE: this is important to make it work with the fading for some reason
     this.message(''); 
     this.message(msg);
-    window.location="#comehere";
     setTimeout( function() {$("#errorMsg").fadeOut(3000);}, 1000);
-    
   }
 
   this.details = function(data)
@@ -223,7 +222,7 @@ function ViewModel()
     this.detailedEvent(data);
   };
 
-  this.initPublicEvents = function()
+  this.showPublicEvents = function()
   {
     var event = {};
     var self = this;
@@ -233,18 +232,30 @@ function ViewModel()
       {
 
         var events = $.map(data,function(item)                  
-        {         
-          event = item;
-          var publicevent =  new PublicEventModel(event);
-          publicevent.showParticipants();
-        	return publicevent;
+        {
+          event.id = item.id;
+          event.ename = item.ename;
+          event.date = item.date;
+          event.time = item.time;
+          event.place = item.place;
+          event.organizer = item.organizer;
+          event.fees = item.fees;
+          event.prize = item.prize;
+          event.description = item.description;
+          event.verb = item.verb;
+          event.activity = item.activity;
+          event.account_id = item.account_id;
+          event.state = item.state;
+          return new EventModel(event);
         }
         );
         self.publicEvents(events);
       }
-    );
+      );
+
   };
-  this.initMyEvents = function()
+
+  this.showMyEvents = function()
   {
     var uname = $("#current_user").val();
     var account_id = $("#current_user_id").val();
@@ -259,7 +270,19 @@ function ViewModel()
         {
           var events = $.map(data,function(item) 
           {
-          	event = item;	
+            event.id = item.id;
+            event.ename = item.ename;
+            event.date = item.date;
+            event.time = item.time;
+            event.place = item.place;
+            event.organizer = item.organizer;
+            event.fees = item.fees;
+            event.prize = item.prize;
+            event.description = item.description;
+            event.verb = item.verb;
+            event.activity = item.activity;
+            event.account_id = item.account_id;
+            event.state = item.state;
             return new UserOwnedEventModel(event);
           });
           self.myOwnedEvents(events);
@@ -271,7 +294,19 @@ function ViewModel()
         {
           var events = $.map(data,function(item) 
           {
-          	event = item;  
+            event.id = item.id;
+            event.ename = item.ename;
+            event.date = item.date;
+            event.time = item.time;
+            event.place = item.place;
+            event.organizer = item.organizer;
+            event.fees = item.fees;
+            event.prize = item.prize;
+            event.description = item.description;
+            event.verb = item.verb;
+            event.activity = item.activity;
+            event.account_id = item.account_id;
+            event.state = item.state;
             return new ParticipatedEventModel(event);
           });
           self.myParticipatedEvents(events);
@@ -280,7 +315,7 @@ function ViewModel()
       );
     }
   };
-  this.initParticipationEvents = function()
+  this.showParticipationEvents = function()
   {
     var event = {};
     this.reset();
@@ -301,7 +336,19 @@ function ViewModel()
             {
               var events = $.map(data,function(item) 
               {
-                event = item;
+                event.id = item.id;
+                event.ename = item.ename;
+                event.date = item.date;
+                event.time = item.time;
+                event.place = item.place;
+                event.organizer = item.organizer;
+                event.fees = item.fees;
+                event.prize = item.prize;
+                event.description = item.description;
+                event.verb = item.verb;
+                event.activity = item.activity;
+                event.account_id = item.account_id;
+                event.state = item.state;
                 return new ParticipatedEventModel(event);
               });
               self.participationEvents(events);
@@ -376,7 +423,19 @@ function ViewModel()
         {
           var SEvents = $.map(data,function(item) 
           {
-						SEvent = item;
+						SEvent.id =item.id;
+						SEvent.ename = item.ename;
+						SEvent.date = item.date;
+						SEvent.time = item.time;
+						SEvent.place = item.place;
+						SEvent.organizer = item.organizer;
+						SEvent.fees = item.fees;
+						SEvent.prize = item.prize;
+						SEvent.description = item.description;
+						SEvent.verb = item.verb;
+						SEvent.activity = item.activity;
+						SEvent.account_id = item.account_id;
+						SEvent.state = item.state;
 						return new PublicEventModel(SEvent);
          	});
           self.searchedEvents(SEvents);
@@ -467,8 +526,20 @@ function ViewModel()
 		  	{
 		    	var events = $.map(data,function(item) 
 		    	{
-		    		event = item;
-	     	 		return new PublicEventModel(event);
+	     	 		event.id = item.id;
+		      	event.ename = item.ename;
+		      	event.date = item.date;             
+		      	event.time = item.time;
+		      	event.place = item.place;
+		      	event.organizer = item.organizer;
+		      	event.fees = item.fees;
+		      	event.prize = item.prize;
+		      	event.description = item.description;
+		      	event.verb = item.verb;
+		      	event.activity = item.activity;
+		      	event.account_id = item.account_id;
+		      	event.state = item.state;
+		      	return new PublicEventModel(event);
 		    	});
 		   	 	self.topEvents(events);
 		  	}
@@ -510,7 +581,8 @@ function ViewModel()
 		  		{
 		    		var participants = $.map(data,function(item) 
 		    		{
-		      		participant = item;
+		      		participant.uname = item.uname;
+		      		participant.account_id = item.id;
 		      		return new UserModel(participant);
 		    		});
 		    		self.topParticipants(participants);
@@ -519,10 +591,11 @@ function ViewModel()
  			}
 	 	);  
 	};
+
 	this.init = function() 
 	{
-		this.initPublicEvents();
-		this.initMyEvents();
+		this.showPublicEvents();
+		this.showMyEvents();
 		this.drawWheel();
 		this.getTopEvents();
 		this.getTopParticipants();
@@ -539,6 +612,7 @@ function ViewModel()
 		this.topEvents.removeAll();
 		this.topEventsID.removeAll();
 	}
+
 }
 function isUnique(event ,array)
 {

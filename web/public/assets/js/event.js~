@@ -182,7 +182,7 @@ function ViewModel()
   this.publicEvents=ko.observableArray();
   this.myOwnedEvents=ko.observableArray();
   this.myParticipatedEvents = ko.observableArray();
-  this.participationEvents=ko.observableArray();
+  //this.participationEvents=ko.observableArray();
 
   this.verb=ko.observableArray();
   this.selectedVerb = ko.observable();

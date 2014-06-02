@@ -47,8 +47,6 @@
               %div{:'data-bind'=>'foreach:activities'}
                 .col-sm-3.col-md-2
                   .thumbnail{:style => 'background-color: black'}
-                    /%i.fa.fa-camera-retro.fa-5x
-                    /%img{alt: "...", "data-src" => "holder.js/300x200"}/
                     .caption
                       %button.btn-warning.btn.btn-link{:'data-bind'=>"click : function(){$root.searchEventByActivity($data);},text:$data", :style => "width:100%"}
               .col-sm-4.col-md-4

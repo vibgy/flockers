@@ -212,9 +212,7 @@ function ViewModel()
     // NOTE: this is important to make it work with the fading for some reason
     this.message(''); 
     this.message(msg);
-    window.location="#comehere";
     setTimeout( function() {$("#errorMsg").fadeOut(3000);}, 1000);
-    
   }
 
   this.details = function(data)
@@ -223,7 +221,7 @@ function ViewModel()
     this.detailedEvent(data);
   };
 
-  this.initPublicEvents = function()
+  this.showPublicEvents = function()
   {
     var event = {};
     var self = this;
@@ -244,7 +242,7 @@ function ViewModel()
       }
     );
   };
-  this.initMyEvents = function()
+  this.showMyEvents = function()
   {
     var uname = $("#current_user").val();
     var account_id = $("#current_user_id").val();
@@ -280,7 +278,7 @@ function ViewModel()
       );
     }
   };
-  this.initParticipationEvents = function()
+  this.showParticipationEvents = function()
   {
     var event = {};
     this.reset();
@@ -521,8 +519,8 @@ function ViewModel()
 	};
 	this.init = function() 
 	{
-		this.initPublicEvents();
-		this.initMyEvents();
+		this.showPublicEvents();
+		this.showMyEvents();
 		this.drawWheel();
 		this.getTopEvents();
 		this.getTopParticipants();

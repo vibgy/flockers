@@ -13,9 +13,9 @@ gem 'dm-mysql-adapter'
 #gem 'newrelic_rpm'
 
 group :development, :test do
-  #gem 'pry-debugger'
+  gem 'pry-debugger'
   #gem 'pry-stack_explorer'
-  #gem 'pry'
+  gem 'pry'
 end
 
 group :test do

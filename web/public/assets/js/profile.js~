@@ -386,7 +386,8 @@ function EventViewModel() {
                    
               });
 
-    };    
+    };
+    
     this.drawWheel = function() {
         var self = this;
         var category = [];

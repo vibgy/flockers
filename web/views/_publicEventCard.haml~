@@ -11,5 +11,5 @@
       /%p{:"data-bind" => "text: time()"}
     .panel-footer
       %button#option.btn.btn-primary{:style => "width:40%", 'data-bind' =>'click: details'} Details
-      %a{:href => "#user"}     
+      %a{:href => "#errorMsg"}     
         %button#option.btn.btn-primary{:style => "width:58%", 'data-bind' =>'click: participate'} Participate

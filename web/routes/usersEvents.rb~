@@ -81,8 +81,8 @@ module Flockers
 
     post '/users/events/participant' do
        begin 
-          authenticate!
           response = {}
+          authenticate!
           event = Event.first(:id => params[:event].to_i)
           account = Account.first(:id => session['userid'].to_i)
           raise "Owner of a flock is by default a participant!" if account.id == event.account_id
