@@ -19,7 +19,13 @@ module Flockers
       @userid = session['userid']
       haml :home
     end
-
+		
+		get '/me' do
+      @user = session['user']
+      @userid = session['userid']
+      haml :gameprofile
+		end  
+		
     get '/myevents' do
       authenticate!
       @user = session['user']
@@ -61,16 +67,9 @@ module Flockers
 
     post '/signup' do
       begin
-        zoo = Account.new(
+        zoo = Account.create_account(
           :uname => params[:user_name], 
           :password => params[:pass] )
-        if zoo.save
-          response = "Success"
-        else
-        response = "Failure"
-        raise "Unable to create account" 
-        end
-
       rescue => e
         response = {:error => {:message => e.message}}
       end

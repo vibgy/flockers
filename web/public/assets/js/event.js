@@ -36,6 +36,9 @@ function EventModel(data)
   this.state = ko.observable(data.state);
   this.participants = ko.observableArray();
   var self=this;
+  this.uname = ko.observable($("#current_user").val());
+  this.account_id = ko.observable($("#current_user_id").val());
+
   this.showParticipants = function()
   {
   	$.get("/event/participants",
@@ -52,25 +55,9 @@ function EventModel(data)
   this.details = function() {
     viewModel.details(this);
   }
-};
-
-function UserModel(data)
-{
-  this.uname = ko.observable(data.uname);
-  this.account_id = ko.observable(data.account_id);
-}
-
-function PublicEventModel(data)
-{
-  var self=this;
-  ko.utils.extend(this , new EventModel(data));
-  var uname = ko.observable($("#current_user").val());
-  var account_id = ko.observable($("#current_user_id").val());
-  
   this.participate = function()
   {
-    var self1=this;
-    if(uname()==''||uname()==null)
+    if(self.uname()==''||self.uname()==null)
     {
       $('#signInModal').modal("show");
     } 
@@ -81,7 +68,7 @@ function PublicEventModel(data)
     	{
 		  	for(var i =0 ; i < self.participants().length;i++)
 		  	{
-		  		if(self.participants()[i] === uname())
+		  		if(self.participants()[i] == self.uname())
 		  		{
 		  			viewModel.setMessage("You have already joined this flock !!!");
 		  			flag = 1; 
@@ -91,28 +78,21 @@ function PublicEventModel(data)
     	if(flag != 1)
     	{
       	$.post("/users/events/participant",
-      	{event: this.id(), user_id: account_id()},
+      	{event: this.id(), user_id: this.account_id()},
       		function(response)
       		{
 		    	  if(response.error)
 		    	    viewModel.setMessage(response.error.message);
 		     	 	else
 		     	 	{
-		     	 		self.participants().push(uname());
+		     	 		self.participants().push(self.uname());
 		        	viewModel.setMessage("You have joined this flock!!");
 		    		}
 		    	}
 		  	);
 		  }
     }
-  }    
-};
-
-function ParticipatedEventModel(data)
-{
-  ko.utils.extend(this , new EventModel(data));
-  this.uname = ko.observable($("#current_user").val());
-  this.account_id = ko.observable($("#current_user_id").val());
+  }
   this.deleteParticipateEvent = function()
   {
     var self=this;
@@ -132,14 +112,6 @@ function ParticipatedEventModel(data)
     	}
     });
   };
-
-};
-
-function UserOwnedEventModel(data)
-{
-  ko.utils.extend(this , new EventModel(data));
-  this.uname = ko.observable($("#current_user").val());
-  this.account_id = ko.observable($("#current_user_id").val());
   this.createEvent = function(event)
   {
     var self = this;
@@ -149,6 +121,7 @@ function UserOwnedEventModel(data)
       if(!data.error)
       {
         viewModel.setMessage("Event Created Successfully");
+        
       }
       else
       {
@@ -171,14 +144,23 @@ function UserOwnedEventModel(data)
        	viewModel.myOwnedEvents.remove(oldevent);
        	viewModel.message("Event Deleted Successfully");
       }
-   	});
-   
- 	};
+   	});   
+ 	};  
 };
+
+function UserModel(data)
+{
+  this.uname = ko.observable(data.uname);
+  this.account_id = ko.observable(data.account_id);
+}
+
 
 function ViewModel()
 {
   this.message = ko.observable('');
+  this.uname = ko.observable($("#current_user").val());
+  this.account_id = ko.observable($("#current_user_id").val());
+
   this.publicEvents=ko.observableArray();
   this.myOwnedEvents=ko.observableArray();
   this.myParticipatedEvents = ko.observableArray();
@@ -220,6 +202,8 @@ function ViewModel()
   this.details = function(data)
   {
     this.detailedState(true);
+    window.location="#details		";
+
     this.detailedEvent(data);
   };
 
@@ -235,7 +219,7 @@ function ViewModel()
         var events = $.map(data,function(item)                  
         {         
           event = item;
-          var publicevent =  new PublicEventModel(event);
+          var publicevent =  new EventModel(event);
           publicevent.showParticipants();
         	return publicevent;
         }
@@ -260,7 +244,7 @@ function ViewModel()
           var events = $.map(data,function(item) 
           {
           	event = item;	
-            return new UserOwnedEventModel(event);
+            return new EventModel(event);
           });
           self.myOwnedEvents(events);
 
@@ -272,7 +256,7 @@ function ViewModel()
           var events = $.map(data,function(item) 
           {
           	event = item;  
-            return new ParticipatedEventModel(event);
+            return new EventModel(event);
           });
           self.myParticipatedEvents(events);
 
@@ -302,7 +286,7 @@ function ViewModel()
               var events = $.map(data,function(item) 
               {
                 event = item;
-                return new ParticipatedEventModel(event);
+                return new EventModel(event);
               });
               self.participationEvents(events);
             }
@@ -316,7 +300,7 @@ function ViewModel()
 	this.createEvent = function() {
     //TODO : make a dropdown for category in create event form
     this.showCreateEventForm(true);
-    var newEvent = new UserOwnedEventModel(emptyEvent);
+    var newEvent = new EventModel(emptyEvent);
     newEvent.verb = this.selectedVerb();
     newEvent.activity = this.selectedActivity();
     this.event(newEvent);
@@ -359,7 +343,7 @@ function ViewModel()
     var self = this;
     var SEvent={};
     this.reset();
-    this.displayText(this.displayText()+ " " +activity);
+    this.displayText("I would love to  " +activity);
     this.selectedActivity(activity);
     this.searchedEvents.removeAll();
     this.createEventState(true);
@@ -377,12 +361,30 @@ function ViewModel()
           var SEvents = $.map(data,function(item) 
           {
 						SEvent = item;
-						return new PublicEventModel(SEvent);
+						return new EventModel(SEvent);
          	});
           self.searchedEvents(SEvents);
         }
       }
     );
+	};
+	this.getActivities = function(data) 
+	{
+		var self = this;
+		this.displayText("I would love to " + data);
+		this.selectedVerb(data);
+		self.activities.removeAll();
+		self.searchedEvents.removeAll();
+		$.get('/activities',
+		  {verb : data},
+		  function(data)
+		  {
+		   for(var i = 0 ; i < data.length; i++)
+		   {
+		     self.activities.push(data[i].activity);
+		   } 
+		 }
+		 );
 	};
 	this.drawWheel = function() 
 	{
@@ -402,38 +404,6 @@ function ViewModel()
 		}
 		);
 	};
-	this.getActivities = function(data) 
-	{
-		var self = this;
-		this.displayText("I would love to ");
-		this.displayText(this.displayText() + data);
-		this.selectedVerb(data);
-		self.activities.removeAll();
-		self.searchedEvents.removeAll();
-		$.get('/activities',
-		  {verb : data},
-		  function(data)
-		  {
-		   for(var i = 0 ; i < data.length; i++)
-		   {
-		     self.activities.push(data[i].activity);
-		   } 
-		 }
-		 );
-	};
-
-	this.addActivity = function() {
- 		var self = this;
- 		$.post('/activities',
- 	 	{verb: this.selectedVerb(), activity: this.newActivity()},
-  	function() 
-  	{                // this means success
-	    self.getActivities(self.selectedVerb());
-	  }
-    );
- 		return false;
-	};
-
 	this.getTopEvents = function()
 	{
 		var event={};
@@ -468,7 +438,7 @@ function ViewModel()
 		    	var events = $.map(data,function(item) 
 		    	{
 		    		event = item;
-	     	 		return new PublicEventModel(event);
+	     	 		return new EventModel(event);
 		    	});
 		   	 	self.topEvents(events);
 		  	}
@@ -519,6 +489,18 @@ function ViewModel()
  			}
 	 	);  
 	};
+	this.addActivity = function() {
+ 		var self = this;
+ 		$.post('/activities',
+ 	 	{verb: this.selectedVerb(), activity: this.newActivity()},
+  	function() 
+  	{                // this means success
+	    self.getActivities(self.selectedVerb());
+	  }
+    );
+ 		return false;
+	};
+
 	this.init = function() 
 	{
 		this.initPublicEvents();
@@ -540,32 +522,8 @@ function ViewModel()
 		this.topEventsID.removeAll();
 	}
 }
-function isUnique(event ,array)
-{
-  for( var i = 0 ; i < array.length; i++)
-  {
-    if(event == array[i].event)
-    {
-      return i;
-    }
-  }
-  return -1;
-}
 
-function compare( a , b )
-{
-  if(a.count < b.count)
-  {
-    return 1;
-  }
-  if(a.count > b.count)
-  {
-    return -1;
-  }
-  return 0;
-}
-
-$().ready(function()
+$(document).ready(function()
 {	
 	viewModel = new ViewModel();
 	viewModel.init();

@@ -1,0 +1,51 @@
+.col-md-10#profilepanel
+  .panel.panel-primary#profileview
+    .panel-heading.text-center{:'data-bind' => "with:profile"}
+      %a{:href => '/me',:'data-bind' => "text: Name"} 
+    .panel-body{:'data-bind' => "with:profile"}
+      .row
+        .col-md-1
+          %p
+            Name:
+        .col-md-3
+          %p{:"data-bind" => "text: Name"}  
+        .col-md-3.col-md-offset-2
+          %p
+            Gender:
+        .col-md-3
+          %p{:"data-bind" => "text: gender"}  
+      .row
+        .col-md-1
+          %p
+            Email:
+        .col-md-3
+          %p{:"data-bind" => "text: email"}  
+        .col-md-3.col-md-offset-2
+          %p
+            Contact Number:
+        .col-md-3
+          %p{:"data-bind" => "text: phone"}  
+      .row
+        .col-md-1
+          %p
+            College:
+        .col-md-3
+          %p{:"data-bind" => "text: college"}  
+        .col-md-3.col-md-offset-2
+          %p
+            semester:
+        .col-md-3
+          %p{:"data-bind" => "text: semester"}  
+      .row
+        .col-md-1
+          %p
+            About:
+        .col-md-4
+          %p{:"data-bind" => "text: description"}
+    .panel-footer
+      .row
+        .col-md-4
+          %button.btn.btn-primary{"data-target" => "#BadgeslistModal", "data-toggle" => "modal"} Your Badges
+        .col-md-2.col-md-offset-6    
+          %button.btn.btn-primary{ "data-target" => "#EditProfileModal", "data-toggle" => "modal"} Edit
+                

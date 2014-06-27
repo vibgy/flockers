@@ -19,10 +19,10 @@
       %div#event
         .row
           .navbar-fixed-top{:style => 'top: 60px;'}
-            %em
-              %h2.text-danger.text-center{:'data-bind' => 'text : displayText'}
         .row
           =haml_partial "progress"
+          %em
+            %h2.text-danger.text-center{:'data-bind' => 'text : displayText'}
         .row
           %p.alert.alert-info#errorMsg{:'data-bind' => 'text: message, visible: message'}          
           %span.label.label-info

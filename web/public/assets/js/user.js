@@ -18,7 +18,7 @@ function UserViewModel()
     // NOTE: this is important to make it work with the fading for some reason
     this.sessionMessage(''); 
     this.sessionMessage(msg);
-    setTimeout( function() {$("#sessionMsg").fadeOut(3000);}, 1000);
+    setTimeout( function() {$("#sessionMsg").fadeOut(500);}, 500);
   }
 
   this.login = function()
@@ -29,7 +29,7 @@ function UserViewModel()
         function(data)                                                  //data.status???
         {
           //document.getElementById("InvalidUser").style.visibility="hidden";
-          if(data.status == 'not success')
+          if(data.hasOwnProperty("error"))
           {
             self.setMessage("Login failed. Please try again");
           }
@@ -43,54 +43,53 @@ function UserViewModel()
       );
     return false;
   };
+  this.signout=function()
+  {
+    var self = this;
+      $.post('/signout',
+      function(data)
+        {
+          if(data.status == "success")
+            {
+              window.location.href='/';
+            }
+            else
+            {
+              self.setMessage("Sign Out Unsuccessful");
+            } 
+        }
+      );
+  };
 
-    this.signout=function()
+   this.signup = function()
+   {
+    var self=this;
+    if(this.pas() == this.confirmpas())
     {
-      var self = this;
-        $.post('/signout',
-        function(data)
+      $.post("/signup",
+        {user_name :self.uname(),pass : self.pas()},
+          function(data)
           {
-            if(data.status == "success")
-              {
-                window.location.href='/';
-              }
-              else
-              {
-                self.setMessage("Sign Out Unsuccessful");
-              } 
+                if(data.error)
+                {
+                    self.setMessage("Unable to create account :(");
+                }
+                else
+                {
+                    self.setMessage("You are now ready to flock!!");
+                }
           }
         );
-    };
-
-     this.signup = function()
-     {
-      var self=this;
-      if(this.pas() == this.confirmpas())
-      {
-        $.post("/signup",
-              {user_name :self.uname(),pass : self.pas()},
-                function(data)
-                {
-                      if(data.error)
-                      {
-                          self.setMessage("Unable to create account :(");
-                      }
-                      else
-                      {
-                          self.setMessage("You are now ready to flock!!");
-                      }
-                }
-                );
-      }
-      else
-      {
-          this.setMessage("Passwords do not match!!");   
-      }
-      return false;
-    };
+    	}
+    else
+    {
+        this.setMessage("Passwords do not match!!");   
+    }
+    return false;
+  };
 }
 
-$().ready ( function() {
+$().ready(function() {
     userViewModel = new UserViewModel();
     if($("#user").get(0))
     {

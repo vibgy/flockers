@@ -1,0 +1,91 @@
+!!!
+%html{:lang => "en"}
+  %head
+    %title Lets flock together
+    %link{:href => "../assets/css/bootstrap.min.css", :rel => "stylesheet"}
+    %link{:href => "../assets/css/jumbotron.css", :rel => "stylesheet"}
+    %link{:href => "../assets/css/simple-sidebar.css", :rel => "stylesheet"}
+  %body.main
+    %div
+      =haml_partial "topBar"
+    .container
+      %div#profile1
+        =haml_partial "sidebar"
+        
+              
+      #EditProfileModal.modal.fade{"aria-hidden" => "true", "aris-labelledby" => "EditProfileModal",:role => "dialog" ,:tabindex => "-1"}
+        .modal-dialog
+          .modal-content
+            .modal-header
+              %button.close{"aria-hidden" => "true", "data-dismiss" => "modal", :type => "button"} &times;
+              %h4.modal-title Edit Profile
+            .modal-body{:'data-bind' => "with:profile"}
+              %form.form-horizontal{:role => "form"}                    
+                .form-group
+                  %label.col-sm-4.control-label  Name:
+                  .col-sm-6
+                    %input.form-control{:placeholder => "Name",:type => "text",:'data-bind' => "value :  Name"}
+                
+                .form-group   
+                  %label.col-sm-4.control-label  Email:
+                  .col-sm-6
+                    %input.form-control{:type => "email",:'data-bind' => "value :  email"}
+                      
+                .form-group
+                  %label.col-sm-4.control-label Contact Number
+                  .col-sm-6
+                    %input.form-control{:placeholder => "Contact number",:type => "text",:'data-bind' => "value : phone"}
+            
+                .form-group
+                  %label.col-sm-4.control-label College
+                  .col-sm-6
+                    %input.form-control{:placeholder => "College",:type => "text",:'data-bind' => "value : college"}
+                .form-group
+                  %label.col-sm-4.control-label Gender                  
+                  .col-sm-6
+                    %input#optionsradio1{:type => "radio",:name => "optionsRadios",:value => "Male",:'data-bind' => "checked : gender"}
+                      Male
+                    %input#optionsradio2{:type => "radio",:name => "optionsRadios",:value => "Female",:'data-bind' => "checked : gender"}
+                      Female       
+                .form-group
+                  %label.col-sm-4.control-label Semester
+                  .col-sm-6
+                    %input.form-control{:placeholder => "Semester",:type => "text",:'data-bind' => "value : semester"}
+                    
+                .form-group
+                  %label.col-sm-4.control-label About me
+                  .col-sm-6
+                    %textarea.form-control{:rows => 3,:'data-bind' => "value : description"}
+                .form-group
+                  .col-sm-offset-4.col-sm-6
+                    %button#show.btn.btn-large.btn-primary{:'data-dismiss' => "modal",:'data-bind' => "click : $root.editdetails"} Edit
+
+      #FlocksParticipatedModal.modal.fade{"aria-hidden" => "true", "aris-labeledby" => "FlocksParticipatedModal",:role => "dialog" ,:tabindex => "-1"}
+        .modal-dialog
+          .modal-content
+            .modal-header
+              %button.close{"aria-hidden" => "true", "data-dismiss" => "modal", :type => "button"} &times;
+              %h4.modal-title Flocks Participated 
+            .modal-body
+              %ul.list-group{:'data-bind' => "foreach:flocks"}
+                %li.list-group-item.text-center{:'data-bind' => "text : $data"}
+
+      #BadgeslistModal.modal.fade{"aria-hidden" => "true", "aris-labeledby" => "BadgeslistModal",:role => "dialog" ,:tabindex => "-1"}
+        .modal-dialog
+          .modal-content
+            .modal-header
+              %button.close{"aria-hidden" => "true", "data-dismiss" => "modal", :type => "button"} &times;
+              %h4.modal-title Flocks Participated 
+            .modal-body{:'data-bind' => "with:gameProfile"}
+              %ul.list-group{:'data-bind' => "foreach:badges"}
+                %li.list-group-item.text-center{:'data-bind' => "text : $data"}
+
+    =haml_partial "footer"
+
+    %script{:src => "../assets/js/knockout-2.2.1.js"}  
+    %script{:src => "../assets/js/jquery.min.js"}
+    %script{:src => "../assets/js/bootstrap.min.js"}  
+    %script{:src => "../assets/js/user.js"}
+    %script{:src => "../assets/js/profile.js"}
+    %script
+    /%script{:src => "../assets/js/event.js"}

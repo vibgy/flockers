@@ -3,14 +3,16 @@
   %head
     %title Lets flock together
     %link{:href => "../assets/css/bootstrap.min.css", :rel => "stylesheet"}
+    %link{:href => "../assets/css/jumbotron.css", :rel => "stylesheet"}
   %body.main
-    =haml_partial "topBar"
+    %div
+      =haml_partial "topBar"
     .container
       .jumbotron.heading
         %h1 Flockers
         %p#comehere A site to reveal the FUN SIDE of you.
         %p.alert.alert-info#sessionMsg{:'data-bind' => 'text: sessionMessage, visible: sessionMessage'}
-
+        
       %div#event
         .row
           %input.hide{:id =>"current_user", :value => "#{@user}"}
@@ -19,12 +21,10 @@
 
         .row{:"data-bind" => "foreach: publicEvents"}
           =haml_partial "publicEventCard"
-        .row{:"data-bind"=>"visible : detailedState()"}
+        .row#details{:"data-bind"=>"visible : detailedState()"}
           %span.label.label-success
             Flock Details
           %div.panel.panel-success
-            /%div.panel-heading
-            /  %h4{:'data-bind' => 'text : selectedActivity'}
             %div.panel-body
               =haml_partial "eventdetails"
 
@@ -89,6 +89,6 @@
     %script{:src => "../assets/js/knockout-2.2.1.js"}  
     %script{:src => "../assets/js/jquery.min.js"}
     %script{:src => "../assets/js/bootstrap.min.js"}  
-    /%script{:src => "../assets/js/profile.js"}
+    %script{:src => "../assets/js/profile.js"}
     %script{:src => "../assets/js/user.js"}
     %script{:src => "../assets/js/event.js"}

@@ -16,6 +16,7 @@ module Flockers
     post '/users/events' do
       authenticate!
       event = params[:event];
+      puts event[:place];
       puts session['userid']
       #begin 
           Event.createEvent({ 
@@ -85,6 +86,14 @@ module Flockers
           response = {}
           event = Event.first(:id => params[:event].to_i)
           account = Account.first(:id => session['userid'].to_i)
+         # if account.participatedEvents.count%10 == 9
+  	    	#	name = "Participation in "+ (newEvent.account.events.count + 1).to_s + " Event"
+					#	badge = Badge.first_or_create(:name => name);
+					#	newEvent.account.gameProfile.badgesowned.reload
+					#	newEvent.account.gameProfile.badgesowned << badge
+					#	newEvent.account.gameProfile.save
+					#	newEvent.account.gameProfile.badgesowned.save
+				#	end
           raise "Owner of a flock is by default a participant!" if account.id == event.account_id
           event.addAttendee(account)
        rescue => e
